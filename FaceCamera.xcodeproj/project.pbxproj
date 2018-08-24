@@ -1,0 +1,623 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1E52129B02C00265D61 /* AppDelegate.m */; };
+		CB83E1E92129B02D00265D61 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1E82129B02D00265D61 /* ViewController.mm */; };
+		CB83E1EC2129B02D00265D61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB83E1EA2129B02D00265D61 /* Main.storyboard */; };
+		CB83E1EE2129B03100265D61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB83E1ED2129B03100265D61 /* Assets.xcassets */; };
+		CB83E1F12129B03100265D61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB83E1EF2129B03100265D61 /* LaunchScreen.storyboard */; };
+		CB83E1F42129B03100265D61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1F32129B03100265D61 /* main.m */; };
+		CB83E1FE2129B03100265D61 /* BikaCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1FD2129B03100265D61 /* BikaCameraTests.m */; };
+		CB83E20E212A61CF00265D61 /* FaceDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB83E20D212A61CF00265D61 /* FaceDetector.mm */; };
+		CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
+		CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
+		CB83E22A212A8EC100265D61 /* haarcascade_upperbody.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E219212A8EC100265D61 /* haarcascade_upperbody.xml */; };
+		CB83E22B212A8EC100265D61 /* haarcascade_frontalcatface_extended.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E21A212A8EC100265D61 /* haarcascade_frontalcatface_extended.xml */; };
+		CB83E22C212A8EC100265D61 /* haarcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E21B212A8EC100265D61 /* haarcascade_profileface.xml */; };
+		CB83E22D212A8EC100265D61 /* haarcascade_frontalcatface.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E21C212A8EC100265D61 /* haarcascade_frontalcatface.xml */; };
+		CB83E22E212A8EC100265D61 /* haarcascade_frontalface_alt2.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E21D212A8EC100265D61 /* haarcascade_frontalface_alt2.xml */; };
+		CB83E22F212A8EC100265D61 /* haarcascade_eye.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E21E212A8EC100265D61 /* haarcascade_eye.xml */; };
+		CB83E230212A8EC100265D61 /* haarcascade_lefteye_2splits.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E21F212A8EC100265D61 /* haarcascade_lefteye_2splits.xml */; };
+		CB83E231212A8EC100265D61 /* haarcascade_frontalface_alt_tree.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E220212A8EC100265D61 /* haarcascade_frontalface_alt_tree.xml */; };
+		CB83E232212A8EC100265D61 /* haarcascade_licence_plate_rus_16stages.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E221212A8EC100265D61 /* haarcascade_licence_plate_rus_16stages.xml */; };
+		CB83E233212A8EC100265D61 /* haarcascade_righteye_2splits.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E222212A8EC100265D61 /* haarcascade_righteye_2splits.xml */; };
+		CB83E234212A8EC100265D61 /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E223212A8EC100265D61 /* haarcascade_frontalface_alt.xml */; };
+		CB83E235212A8EC100265D61 /* haarcascade_lowerbody.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E224212A8EC100265D61 /* haarcascade_lowerbody.xml */; };
+		CB83E236212A8EC100265D61 /* haarcascade_russian_plate_number.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E225212A8EC100265D61 /* haarcascade_russian_plate_number.xml */; };
+		CB83E237212A8EC100265D61 /* haarcascade_frontalface_default.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E226212A8EC100265D61 /* haarcascade_frontalface_default.xml */; };
+		CB83E238212A8EC100265D61 /* haarcascade_smile.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E227212A8EC100265D61 /* haarcascade_smile.xml */; };
+		CB83E239212A8EC100265D61 /* haarcascade_fullbody.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E228212A8EC100265D61 /* haarcascade_fullbody.xml */; };
+		CB83E23A212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E229212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml */; };
+		CB83E23B212A8ED700265D61 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E2092129B0AE00265D61 /* opencv2.framework */; };
+		CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E23E212C418A00265D61 /* VideoCamera.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CB83E1FA2129B03100265D61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB83E1D92129B02C00265D61 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB83E1E02129B02C00265D61;
+			remoteInfo = BikaCamera;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CB83E1E12129B02C00265D61 /* BikaCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikaCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB83E1E42129B02C00265D61 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CB83E1E52129B02C00265D61 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CB83E1E72129B02D00265D61 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CB83E1E82129B02D00265D61 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		CB83E1EB2129B02D00265D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CB83E1ED2129B03100265D61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CB83E1F02129B03100265D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CB83E1F22129B03100265D61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB83E1F32129B03100265D61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CB83E1F92129B03100265D61 /* BikaCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BikaCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB83E1FD2129B03100265D61 /* BikaCameraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BikaCameraTests.m; sourceTree = "<group>"; };
+		CB83E1FF2129B03100265D61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB83E2092129B0AE00265D61 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		CB83E20C212A61CF00265D61 /* FaceDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceDetector.h; sourceTree = "<group>"; };
+		CB83E20D212A61CF00265D61 /* FaceDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FaceDetector.mm; sourceTree = "<group>"; };
+		CB83E211212A69E400265D61 /* FaceCamera.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceCamera.pch; sourceTree = "<group>"; };
+		CB83E213212A861F00265D61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		CB83E215212A864E00265D61 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		CB83E219212A8EC100265D61 /* haarcascade_upperbody.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_upperbody.xml; sourceTree = "<group>"; };
+		CB83E21A212A8EC100265D61 /* haarcascade_frontalcatface_extended.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalcatface_extended.xml; sourceTree = "<group>"; };
+		CB83E21B212A8EC100265D61 /* haarcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_profileface.xml; sourceTree = "<group>"; };
+		CB83E21C212A8EC100265D61 /* haarcascade_frontalcatface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalcatface.xml; sourceTree = "<group>"; };
+		CB83E21D212A8EC100265D61 /* haarcascade_frontalface_alt2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt2.xml; sourceTree = "<group>"; };
+		CB83E21E212A8EC100265D61 /* haarcascade_eye.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_eye.xml; sourceTree = "<group>"; };
+		CB83E21F212A8EC100265D61 /* haarcascade_lefteye_2splits.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_lefteye_2splits.xml; sourceTree = "<group>"; };
+		CB83E220212A8EC100265D61 /* haarcascade_frontalface_alt_tree.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt_tree.xml; sourceTree = "<group>"; };
+		CB83E221212A8EC100265D61 /* haarcascade_licence_plate_rus_16stages.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_licence_plate_rus_16stages.xml; sourceTree = "<group>"; };
+		CB83E222212A8EC100265D61 /* haarcascade_righteye_2splits.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_righteye_2splits.xml; sourceTree = "<group>"; };
+		CB83E223212A8EC100265D61 /* haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
+		CB83E224212A8EC100265D61 /* haarcascade_lowerbody.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_lowerbody.xml; sourceTree = "<group>"; };
+		CB83E225212A8EC100265D61 /* haarcascade_russian_plate_number.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_russian_plate_number.xml; sourceTree = "<group>"; };
+		CB83E226212A8EC100265D61 /* haarcascade_frontalface_default.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_default.xml; sourceTree = "<group>"; };
+		CB83E227212A8EC100265D61 /* haarcascade_smile.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_smile.xml; sourceTree = "<group>"; };
+		CB83E228212A8EC100265D61 /* haarcascade_fullbody.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_fullbody.xml; sourceTree = "<group>"; };
+		CB83E229212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_eye_tree_eyeglasses.xml; sourceTree = "<group>"; };
+		CB83E23D212C418A00265D61 /* VideoCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCamera.h; sourceTree = "<group>"; };
+		CB83E23E212C418A00265D61 /* VideoCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCamera.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CB83E1DE2129B02C00265D61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */,
+				CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */,
+				CB83E23B212A8ED700265D61 /* opencv2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB83E1F62129B03100265D61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CB83E1D82129B02C00265D61 = {
+			isa = PBXGroup;
+			children = (
+				CB83E217212A8EC100265D61 /* resources */,
+				CB83E1E32129B02C00265D61 /* sources */,
+				CB83E1FC2129B03100265D61 /* tests */,
+				CB83E2082129B0AE00265D61 /* libs */,
+				CB83E1E22129B02C00265D61 /* Products */,
+				CB83E212212A861F00265D61 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CB83E1E22129B02C00265D61 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E1E12129B02C00265D61 /* BikaCamera.app */,
+				CB83E1F92129B03100265D61 /* BikaCameraTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB83E1E32129B02C00265D61 /* sources */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E23C212C415800265D61 /* components */,
+				CB83E20B212A5FFB00265D61 /* static */,
+				CB83E1E42129B02C00265D61 /* AppDelegate.h */,
+				CB83E1E52129B02C00265D61 /* AppDelegate.m */,
+				CB83E1E72129B02D00265D61 /* ViewController.h */,
+				CB83E1E82129B02D00265D61 /* ViewController.mm */,
+				CB83E1EA2129B02D00265D61 /* Main.storyboard */,
+				CB83E1ED2129B03100265D61 /* Assets.xcassets */,
+				CB83E1EF2129B03100265D61 /* LaunchScreen.storyboard */,
+				CB83E1F22129B03100265D61 /* Info.plist */,
+				CB83E1F32129B03100265D61 /* main.m */,
+				CB83E20C212A61CF00265D61 /* FaceDetector.h */,
+				CB83E20D212A61CF00265D61 /* FaceDetector.mm */,
+				CB83E211212A69E400265D61 /* FaceCamera.pch */,
+			);
+			path = sources;
+			sourceTree = "<group>";
+		};
+		CB83E1FC2129B03100265D61 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E1FD2129B03100265D61 /* BikaCameraTests.m */,
+				CB83E1FF2129B03100265D61 /* Info.plist */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
+		CB83E2082129B0AE00265D61 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E2092129B0AE00265D61 /* opencv2.framework */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		CB83E20B212A5FFB00265D61 /* static */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = static;
+			sourceTree = "<group>";
+		};
+		CB83E212212A861F00265D61 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E215212A864E00265D61 /* CoreMedia.framework */,
+				CB83E213212A861F00265D61 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB83E217212A8EC100265D61 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E218212A8EC100265D61 /* haarcascades */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		CB83E218212A8EC100265D61 /* haarcascades */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E219212A8EC100265D61 /* haarcascade_upperbody.xml */,
+				CB83E21A212A8EC100265D61 /* haarcascade_frontalcatface_extended.xml */,
+				CB83E21B212A8EC100265D61 /* haarcascade_profileface.xml */,
+				CB83E21C212A8EC100265D61 /* haarcascade_frontalcatface.xml */,
+				CB83E21D212A8EC100265D61 /* haarcascade_frontalface_alt2.xml */,
+				CB83E21E212A8EC100265D61 /* haarcascade_eye.xml */,
+				CB83E21F212A8EC100265D61 /* haarcascade_lefteye_2splits.xml */,
+				CB83E220212A8EC100265D61 /* haarcascade_frontalface_alt_tree.xml */,
+				CB83E221212A8EC100265D61 /* haarcascade_licence_plate_rus_16stages.xml */,
+				CB83E222212A8EC100265D61 /* haarcascade_righteye_2splits.xml */,
+				CB83E223212A8EC100265D61 /* haarcascade_frontalface_alt.xml */,
+				CB83E224212A8EC100265D61 /* haarcascade_lowerbody.xml */,
+				CB83E225212A8EC100265D61 /* haarcascade_russian_plate_number.xml */,
+				CB83E226212A8EC100265D61 /* haarcascade_frontalface_default.xml */,
+				CB83E227212A8EC100265D61 /* haarcascade_smile.xml */,
+				CB83E228212A8EC100265D61 /* haarcascade_fullbody.xml */,
+				CB83E229212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml */,
+			);
+			path = haarcascades;
+			sourceTree = "<group>";
+		};
+		CB83E23C212C415800265D61 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E23D212C418A00265D61 /* VideoCamera.h */,
+				CB83E23E212C418A00265D61 /* VideoCamera.m */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CB83E1E02129B02C00265D61 /* BikaCamera */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB83E2022129B03100265D61 /* Build configuration list for PBXNativeTarget "BikaCamera" */;
+			buildPhases = (
+				CB83E1DD2129B02C00265D61 /* Sources */,
+				CB83E1DE2129B02C00265D61 /* Frameworks */,
+				CB83E1DF2129B02C00265D61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BikaCamera;
+			productName = BikaCamera;
+			productReference = CB83E1E12129B02C00265D61 /* BikaCamera.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CB83E1F82129B03100265D61 /* BikaCameraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB83E2052129B03100265D61 /* Build configuration list for PBXNativeTarget "BikaCameraTests" */;
+			buildPhases = (
+				CB83E1F52129B03100265D61 /* Sources */,
+				CB83E1F62129B03100265D61 /* Frameworks */,
+				CB83E1F72129B03100265D61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB83E1FB2129B03100265D61 /* PBXTargetDependency */,
+			);
+			name = BikaCameraTests;
+			productName = BikaCameraTests;
+			productReference = CB83E1F92129B03100265D61 /* BikaCameraTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CB83E1D92129B02C00265D61 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = zcat;
+				TargetAttributes = {
+					CB83E1E02129B02C00265D61 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					CB83E1F82129B03100265D61 = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = CB83E1E02129B02C00265D61;
+					};
+				};
+			};
+			buildConfigurationList = CB83E1DC2129B02C00265D61 /* Build configuration list for PBXProject "FaceCamera" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CB83E1D82129B02C00265D61;
+			productRefGroup = CB83E1E22129B02C00265D61 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CB83E1E02129B02C00265D61 /* BikaCamera */,
+				CB83E1F82129B03100265D61 /* BikaCameraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CB83E1DF2129B02C00265D61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB83E231212A8EC100265D61 /* haarcascade_frontalface_alt_tree.xml in Resources */,
+				CB83E1F12129B03100265D61 /* LaunchScreen.storyboard in Resources */,
+				CB83E232212A8EC100265D61 /* haarcascade_licence_plate_rus_16stages.xml in Resources */,
+				CB83E22F212A8EC100265D61 /* haarcascade_eye.xml in Resources */,
+				CB83E237212A8EC100265D61 /* haarcascade_frontalface_default.xml in Resources */,
+				CB83E236212A8EC100265D61 /* haarcascade_russian_plate_number.xml in Resources */,
+				CB83E22C212A8EC100265D61 /* haarcascade_profileface.xml in Resources */,
+				CB83E22E212A8EC100265D61 /* haarcascade_frontalface_alt2.xml in Resources */,
+				CB83E22D212A8EC100265D61 /* haarcascade_frontalcatface.xml in Resources */,
+				CB83E22B212A8EC100265D61 /* haarcascade_frontalcatface_extended.xml in Resources */,
+				CB83E22A212A8EC100265D61 /* haarcascade_upperbody.xml in Resources */,
+				CB83E1EE2129B03100265D61 /* Assets.xcassets in Resources */,
+				CB83E1EC2129B02D00265D61 /* Main.storyboard in Resources */,
+				CB83E230212A8EC100265D61 /* haarcascade_lefteye_2splits.xml in Resources */,
+				CB83E234212A8EC100265D61 /* haarcascade_frontalface_alt.xml in Resources */,
+				CB83E23A212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml in Resources */,
+				CB83E239212A8EC100265D61 /* haarcascade_fullbody.xml in Resources */,
+				CB83E235212A8EC100265D61 /* haarcascade_lowerbody.xml in Resources */,
+				CB83E233212A8EC100265D61 /* haarcascade_righteye_2splits.xml in Resources */,
+				CB83E238212A8EC100265D61 /* haarcascade_smile.xml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB83E1F72129B03100265D61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CB83E1DD2129B02C00265D61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB83E20E212A61CF00265D61 /* FaceDetector.mm in Sources */,
+				CB83E1E92129B02D00265D61 /* ViewController.mm in Sources */,
+				CB83E1F42129B03100265D61 /* main.m in Sources */,
+				CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */,
+				CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB83E1F52129B03100265D61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB83E1FE2129B03100265D61 /* BikaCameraTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CB83E1FB2129B03100265D61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB83E1E02129B02C00265D61 /* BikaCamera */;
+			targetProxy = CB83E1FA2129B03100265D61 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CB83E1EA2129B02D00265D61 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB83E1EB2129B02D00265D61 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CB83E1EF2129B03100265D61 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB83E1F02129B03100265D61 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CB83E2002129B03100265D61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CB83E2012129B03100265D61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CB83E2032129B03100265D61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9UK6KA2LHR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framworks",
+					"$(PROJECT_DIR)/libs",
+				);
+				GCC_PREFIX_HEADER = sources/FaceCamera.pch;
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.zcating.BikaCamera;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB83E2042129B03100265D61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9UK6KA2LHR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framworks",
+					"$(PROJECT_DIR)/libs",
+				);
+				GCC_PREFIX_HEADER = sources/FaceCamera.pch;
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.zcating.BikaCamera;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CB83E2062129B03100265D61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9UK6KA2LHR;
+				INFOPLIST_FILE = BikaCameraTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.zcating.BikaCameraTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BikaCamera.app/BikaCamera";
+			};
+			name = Debug;
+		};
+		CB83E2072129B03100265D61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9UK6KA2LHR;
+				INFOPLIST_FILE = BikaCameraTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.zcating.BikaCameraTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BikaCamera.app/BikaCamera";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CB83E1DC2129B02C00265D61 /* Build configuration list for PBXProject "FaceCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB83E2002129B03100265D61 /* Debug */,
+				CB83E2012129B03100265D61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB83E2022129B03100265D61 /* Build configuration list for PBXNativeTarget "BikaCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB83E2032129B03100265D61 /* Debug */,
+				CB83E2042129B03100265D61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB83E2052129B03100265D61 /* Build configuration list for PBXNativeTarget "BikaCameraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB83E2062129B03100265D61 /* Debug */,
+				CB83E2072129B03100265D61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CB83E1D92129B02C00265D61 /* Project object */;
+}

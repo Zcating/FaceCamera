@@ -1,0 +1,19 @@
+//
+//  PrefixHeader.pch
+//  FaceCamera
+//
+//  Created by  zcating on 2018/8/20.
+//  Copyright © 2018 zcat. All rights reserved.
+//
+
+#ifdef __cplusplus
+#import <opencv2/opencv.hpp>
+#import <opencv2/core/core.hpp>
+#import <opencv2/imgcodecs/ios.h>
+#endif
+
+#ifdef __OBJC__
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#endif
