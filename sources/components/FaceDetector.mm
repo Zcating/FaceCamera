@@ -36,7 +36,6 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     // 检测人脸并储存
     std::vector<cv::Rect>faces;
     if (image.empty() ) {
-        NSLog(@"fuck");
         return faces;
     }
     _faceDetector.detectMultiScale(image, faces, 1.1, 2, kHaarOptions, cv::Size(60, 60));

@@ -14,20 +14,29 @@
 #import "FaceDetector.h"
 #import "VideoCamera.h"
 
-@interface ViewController ()<CvVideoCameraDelegate, VideoCameraDelegate> {
+@interface ViewController ()<
+//CvVideoCameraDelegate,
+VideoCameraDelegate
+> {
     dispatch_queue_t _queue;
     NSUInteger _frameCount;
 }
 
-@property (nonatomic, strong) VideoCamera* bkVideoCamera;
+@property (nonatomic, strong) VideoCamera* videoCamera;
 
-@property (nonatomic, strong) CvVideoCamera* videoCamera;
+//@property (nonatomic, strong) CvVideoCamera* videoCamera;
 
 @property (nonatomic, strong) CIDetector *detector;
 
 @property (nonatomic, strong) UIView *faceView;
 
-@property (nonatomic, strong) BKFaceDetector *faceDetector;
+@property (nonatomic, strong) FaceDetector *faceDetector;
+
+@property (nonatomic, strong) UILabel *label;
+
+@property (weak, nonatomic) IBOutlet UIView *imageView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *faceImageView;
 
 @end
 
@@ -46,10 +55,10 @@
     // 创建人脸识别器
     self.detector = [CIDetector detectorOfType:CIDetectorTypeFace context:content options:param];
     
-//    self.faceDetector = [[BKFaceDetector alloc] init];
-//    [self.videoCamera start];
+    [self.videoCamera start];
     
-    [self.bkVideoCamera start];
+//    self.imageView.image = [UIImage imageNamed:@"myself.jpg"];
+    
 }
 
 
@@ -57,28 +66,28 @@
     [super didReceiveMemoryWarning];
 }
 
--(CvVideoCamera *)videoCamera {
+//-(CvVideoCamera *)videoCamera {
+//    if (_videoCamera == nil) {
+//        _videoCamera = [[CvVideoCamera alloc] initWithParentView:self.view];
+//        _videoCamera.delegate = self;
+//        _videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
+//        _videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
+//        //竖屏
+//        _videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
+//        _videoCamera.defaultFPS = 30;
+//        _videoCamera.grayscaleMode = NO;
+//    }
+//    return _videoCamera;
+//}
+
+-(VideoCamera *)videoCamera {
     if (_videoCamera == nil) {
-        _videoCamera = [[CvVideoCamera alloc] initWithParentView:self.view];
+        _videoCamera = [[VideoCamera alloc] initWithParentView:self.imageView];
         _videoCamera.delegate = self;
         _videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
         _videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
-        //竖屏
-        _videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-        _videoCamera.defaultFPS = 30;
-        _videoCamera.grayscaleMode = NO;
     }
     return _videoCamera;
-}
-
--(VideoCamera *)bkVideoCamera {
-    if (_bkVideoCamera == nil) {
-        _bkVideoCamera = [[VideoCamera alloc] initWithParentView:self.view];
-        _bkVideoCamera.delegate = self;
-        _bkVideoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
-        _bkVideoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
-    }
-    return _bkVideoCamera;
 }
 
 -(UIView *)faceView {
@@ -88,55 +97,20 @@
         _faceView.layer.masksToBounds = YES;
         _faceView.layer.borderColor = [UIColor yellowColor].CGColor;
         _faceView.layer.borderWidth = 2;
-        [self.view addSubview:_faceView];
+        [self.imageView addSubview:_faceView];
     }
     return _faceView;
 }
 
-//-(void)processImage:(cv::Mat &)image {
-//    if (_frameCount == 60) {
-//        dispatch_async(_queue, ^{
-//            [self parseFaces:[self.faceDetector rectDetectForImage:image]];
-//        });
-//        _frameCount = 1;
-//    } else {
-//        _frameCount ++;
-//    }
-//}
-//
-//- (void)parseFaces:(const std::vector<cv::Rect> &)faces {
-//    if (faces.size() != 1) {
-//        [self noFaceToDisplay];
-//        return;
-//    }
-//
-//    // We only care about the first face
-//    cv::Rect face = faces[0];
-//
-//    // Learn it
-//
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//        [self highlightFace:face];
-//    });
-//}
-//
-//
-//- (void)noFaceToDisplay {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//        self.faceView.hidden = YES;
-//    });
-//}
-//
-//- (void)highlightFace:(cv::Rect)face {
-//    CGRect faceRect;
-//    faceRect.origin.x = face.x;
-//    faceRect.origin.y = face.y;
-//    faceRect.size.width = face.width;
-//    faceRect.size.height = face.height;
-//
-//    self.faceView.hidden = NO;
-//    self.faceView.frame = faceRect;
-//}
+-(UILabel *)label {
+    if (_label == nil) {
+        _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 400, 200)];
+        _label.font = [UIFont systemFontOfSize:15];
+        [self.view addSubview: _label];
+    }
+    return _label;
+}
+
 
 -(void)processCIImage:(CIImage *)image {
     NSDictionary *featuresParam = @{CIDetectorSmile: @YES,
@@ -144,48 +118,35 @@
 
     // 获取识别结果
     NSArray *resultArr = [self.detector featuresInImage:image options:featuresParam];
-//    NSLog(@"%f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 
     if (resultArr.count == 0) {
         return;
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        CGSize viewSize = self.view.frame.size;
-        CGSize imageSize = image.extent.size;
-        CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, -1);
-        transform = CGAffineTransformTranslate(transform, 0, -imageSize.height);
-
-
-        CGFloat scaleX = viewSize.width / imageSize.width;
-        CGFloat scaleY = viewSize.height / imageSize.height;
-        CGFloat scale = MIN(scaleX, scaleY);
-
-
-        CGFloat dx = (viewSize.width - imageSize.width * scaleX) / 2;
-        CGFloat dy = (viewSize.height - imageSize.height * scaleY) / 2;
-
-//        faceBounds.applying(CGAffineTransform(scaleX: scale, y: scale))
-//        faceBounds.origin.x += dx
-//        faceBounds.origin.y += dy
 
         for (CIFaceFeature *feature in resultArr) {
-            CGRect faceRect = CGRectApplyAffineTransform(CGRectApplyAffineTransform(feature.bounds, transform), CGAffineTransformMakeScale(scale, scale));
-            faceRect.origin.x += dx;
-            faceRect.origin.y += dy;
+            // (Bottom right if mirroring is turned on)
+            CGRect faceRect = [feature bounds];
+            
+            // flip preview width and height
+            CGFloat temp = faceRect.size.width;
+            faceRect.size.width = faceRect.size.height;
+            faceRect.size.height = temp;
+            temp = faceRect.origin.x;
+            faceRect.origin.x = faceRect.origin.y;
+            faceRect.origin.y = temp;
+            // scale coordinates so they fit in the preview box, which may be scaled
+            CGFloat widthScaleBy = self.view.frame.size.width / clap.size.height;
+            CGFloat heightScaleBy = self.view.frame.size.height / clap.size.width;
+            faceRect.size.width *= widthScaleBy;
+            faceRect.size.height *= heightScaleBy;
+            faceRect.origin.x *= widthScaleBy;
+            faceRect.origin.y *= heightScaleBy;
 
-            self.faceView.frame = faceRect;
-
-            NSLog(@"%f, %f, %f, %f", faceRect.origin.x, faceRect.origin.y, faceRect.size.width, faceRect.size.height);
+            self.label.text = [NSString stringWithFormat:@"%.2f, %.2f, %.2f, %.2f", feature.bounds.origin.x, feature.bounds.origin.y, feature.bounds.size.width, feature.bounds.size.height];
         }
     });
-
-
-//    if (resultArr.count == 0) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            self.faceView.hidden = YES;
-//        });
-//    }
 }
 
 

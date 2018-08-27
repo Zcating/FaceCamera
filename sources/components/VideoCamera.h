@@ -26,6 +26,8 @@
 
 - (void)stop;
 
+-(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize;
+
 @end
 
 @protocol VideoCameraDelegate

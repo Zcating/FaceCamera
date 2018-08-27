@@ -63,7 +63,8 @@
         }
     
         [view.layer addSublayer:self.previewLayer];
-        self.previewLayer.frame = view.frame;
+        self.previewLayer.frame = CGRectMake(0, 0, view.frame.size.width, view.frame.size.height);
+        
     }
     return self;
 }
@@ -71,7 +72,7 @@
 - (AVCaptureVideoPreviewLayer *)previewLayer {
     if (_previewLayer == nil) {
         _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
-        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     }
     return _previewLayer;
 }
@@ -124,6 +125,7 @@
     //        handler(buffer);
     //    }
     if (self.delegate) {
+        
         CVBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
         [self.delegate processCIImage:[CIImage imageWithCVPixelBuffer:imageBuffer]];
     }
@@ -131,8 +133,56 @@
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    
 }
 
+
+-(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize {
+     //originIsTopLeft == false
+    
+//    CGRect apertureSize = CMVideoFormatDescriptionGetCleanAperture(fdesc, false);
+//    CGRect apertureSize = CGRectZero;
+    return [self videoPreviewBoxForGravity:_previewLayer.videoGravity frameSize:frameSize apertureSize:CGRectZero.size];
+}
+
+-(CGRect)videoPreviewBoxForGravity:(NSString *)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
+    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
+    CGFloat viewRatio = frameSize.width / frameSize.height;
+    
+    CGSize size = CGSizeZero;
+    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
+        if (viewRatio > apertureRatio) {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        } else {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+        if (viewRatio > apertureRatio) {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        } else {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
+        size.width = frameSize.width;
+        size.height = frameSize.height;
+    }
+    
+    CGRect videoBox;
+    videoBox.size = size;
+    if (size.width < frameSize.width)
+        videoBox.origin.x = (frameSize.width - size.width) / 2;
+    else
+        videoBox.origin.x = (size.width - frameSize.width) / 2;
+    
+    if ( size.height < frameSize.height )
+        videoBox.origin.y = (frameSize.height - size.height) / 2;
+    else
+        videoBox.origin.y = (size.height - frameSize.height) / 2;
+    
+    return videoBox;
+}
 
 @end
