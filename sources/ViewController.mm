@@ -34,7 +34,7 @@ VideoCameraDelegate
 
 @property (nonatomic, strong) UILabel *label;
 
-@property (weak, nonatomic) IBOutlet UIView *imageView;
+@property (weak, nonatomic) IBOutlet UIView *videoView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *faceImageView;
 
@@ -47,17 +47,15 @@ VideoCameraDelegate
     
     _queue = dispatch_queue_create("video.queue", 0);
     
-    CIContext *content = [CIContext contextWithOptions:nil];
-    
     // 配置识别质量
-    NSDictionary *param = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
+    NSDictionary *param = @{
+      CIDetectorAccuracy: CIDetectorAccuracyHigh
+    };
     
     // 创建人脸识别器
-    self.detector = [CIDetector detectorOfType:CIDetectorTypeFace context:content options:param];
+    self.detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:param];
     
     [self.videoCamera start];
-    
-//    self.imageView.image = [UIImage imageNamed:@"myself.jpg"];
     
 }
 
@@ -82,7 +80,7 @@ VideoCameraDelegate
 
 -(VideoCamera *)videoCamera {
     if (_videoCamera == nil) {
-        _videoCamera = [[VideoCamera alloc] initWithParentView:self.imageView];
+        _videoCamera = [[VideoCamera alloc] initWithParentView:self.videoView];
         _videoCamera.delegate = self;
         _videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
         _videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
@@ -97,7 +95,7 @@ VideoCameraDelegate
         _faceView.layer.masksToBounds = YES;
         _faceView.layer.borderColor = [UIColor yellowColor].CGColor;
         _faceView.layer.borderWidth = 2;
-        [self.imageView addSubview:_faceView];
+        [self.videoView addSubview:_faceView];
     }
     return _faceView;
 }
@@ -111,23 +109,44 @@ VideoCameraDelegate
     return _label;
 }
 
+/* The intended display orientation of the image. If present, the value
+ * of this key is a CFNumberRef with the same value as defined by the
+ * TIFF and Exif specifications.  That is:
+ *   1  =  0th row is at the top, and 0th column is on the left.
+ *   2  =  0th row is at the top, and 0th column is on the right.
+ *   3  =  0th row is at the bottom, and 0th column is on the right.
+ *   4  =  0th row is at the bottom, and 0th column is on the left.
+ *   5  =  0th row is on the left, and 0th column is the top.
+ *   6  =  0th row is on the right, and 0th column is the top.
+ *   7  =  0th row is on the right, and 0th column is the bottom.
+ *   8  =  0th row is on the left, and 0th column is the bottom.
+ * If not present, a value of 1 is assumed. */
 
 -(void)processCIImage:(CIImage *)image {
-    NSDictionary *featuresParam = @{CIDetectorSmile: @YES,
-                                    CIDetectorEyeBlink: @YES};
-
+    NSDictionary *featuresParam = @{
+        CIDetectorSmile: @YES,
+        CIDetectorEyeBlink: @YES,
+        CIDetectorImageOrientation: @6
+    };
     // 获取识别结果
     NSArray *resultArr = [self.detector featuresInImage:image options:featuresParam];
 
-    if (resultArr.count == 0) {
-        return;
-    }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-
+        if (resultArr.count == 0) {
+            self.faceView.hidden = YES;
+            return;
+        }
+        self.faceView.hidden = NO;
+        CGSize imageSize = image.extent.size;
+        CGRect previewBox = [self videoPreviewBoxForFrameSize:self.videoView.frame.size apertureSize:imageSize];
+        
+        CGFloat widthScaleBy = previewBox.size.width / imageSize.height;
+        CGFloat heightScaleBy = previewBox.size.height / imageSize.width;
+        
         for (CIFaceFeature *feature in resultArr) {
             // (Bottom right if mirroring is turned on)
-            CGRect faceRect = [feature bounds];
+            CGRect faceRect = feature.bounds;
             
             // flip preview width and height
             CGFloat temp = faceRect.size.width;
@@ -137,17 +156,63 @@ VideoCameraDelegate
             faceRect.origin.x = faceRect.origin.y;
             faceRect.origin.y = temp;
             // scale coordinates so they fit in the preview box, which may be scaled
-            CGFloat widthScaleBy = self.view.frame.size.width / clap.size.height;
-            CGFloat heightScaleBy = self.view.frame.size.height / clap.size.width;
             faceRect.size.width *= widthScaleBy;
             faceRect.size.height *= heightScaleBy;
             faceRect.origin.x *= widthScaleBy;
             faceRect.origin.y *= heightScaleBy;
-
-            self.label.text = [NSString stringWithFormat:@"%.2f, %.2f, %.2f, %.2f", feature.bounds.origin.x, feature.bounds.origin.y, feature.bounds.size.width, feature.bounds.size.height];
+            faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
+//            faceRect = CGRectOffset(faceRect, previewBox.origin.x, previewBox.origin.y);
+            
+            
+            NSLog(@"%.2f, %.2f, %.2f, %.2f", faceRect.origin.x, faceRect.origin.y, faceRect.size.width, faceRect.size.height);
+            
+            self.label.text = [NSString stringWithFormat:@"%.2f, %.2f, %.2f, %.2f", faceRect.origin.x, faceRect.origin.y, faceRect.size.width, faceRect.size.height];
+            
+            self.faceView.frame = faceRect;
         }
     });
 }
 
+
+-(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
+    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
+    CGFloat viewRatio = frameSize.width / frameSize.height;
+    
+    CGSize size = CGSizeZero;
+//    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
+        if (viewRatio > apertureRatio) {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        } else {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        }
+//    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+//        if (viewRatio > apertureRatio) {
+//            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+//            size.height = frameSize.height;
+//        } else {
+//            size.width = frameSize.width;
+//            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+//        }
+//    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
+//        size.width = frameSize.width;
+//        size.height = frameSize.height;
+//    }
+    
+    CGRect videoBox;
+    videoBox.size = size;
+    if (size.width < frameSize.width)
+        videoBox.origin.x = (frameSize.width - size.width) / 2;
+    else
+        videoBox.origin.x = (size.width - frameSize.width) / 2;
+    
+    if ( size.height < frameSize.height )
+        videoBox.origin.y = (frameSize.height - size.height) / 2;
+    else
+        videoBox.origin.y = (size.height - frameSize.height) / 2;
+    
+    return videoBox;
+}
 
 @end

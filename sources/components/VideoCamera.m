@@ -42,8 +42,10 @@
         self.frontCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.lastObject error:nil];
         self.backCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.firstObject error:nil];
         
-        self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-        self.videoOutput.videoSettings = @{(NSString *)kCVPixelBufferPixelFormatTypeKey:@(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)};
+        self.videoOutput = [AVCaptureVideoDataOutput new];
+        self.videoOutput.videoSettings = @{
+            (NSString*)kCVPixelBufferPixelFormatTypeKey: @(kCMPixelFormat_32BGRA)
+        };
         self.videoOutput.alwaysDiscardsLateVideoFrames = YES;
         [self.videoOutput setSampleBufferDelegate:self queue:_videoQueue];
         
@@ -125,9 +127,13 @@
     //        handler(buffer);
     //    }
     if (self.delegate) {
-        
-        CVBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-        [self.delegate processCIImage:[CIImage imageWithCVPixelBuffer:imageBuffer]];
+        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
+        CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
+        if (attachments) {
+            CFRelease(attachments);
+        }
+        [self.delegate processCIImage:ciImage];
     }
 //    [self.receiver source:self videoCaptureData:imageBuffer];
 }
@@ -136,53 +142,7 @@
 }
 
 
--(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize {
-     //originIsTopLeft == false
-    
-//    CGRect apertureSize = CMVideoFormatDescriptionGetCleanAperture(fdesc, false);
-//    CGRect apertureSize = CGRectZero;
-    return [self videoPreviewBoxForGravity:_previewLayer.videoGravity frameSize:frameSize apertureSize:CGRectZero.size];
-}
 
--(CGRect)videoPreviewBoxForGravity:(NSString *)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
-    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
-    CGFloat viewRatio = frameSize.width / frameSize.height;
-    
-    CGSize size = CGSizeZero;
-    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
-        if (viewRatio > apertureRatio) {
-            size.width = frameSize.width;
-            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-        } else {
-            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
-            size.height = frameSize.height;
-        }
-    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-        if (viewRatio > apertureRatio) {
-            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
-            size.height = frameSize.height;
-        } else {
-            size.width = frameSize.width;
-            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-        }
-    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
-        size.width = frameSize.width;
-        size.height = frameSize.height;
-    }
-    
-    CGRect videoBox;
-    videoBox.size = size;
-    if (size.width < frameSize.width)
-        videoBox.origin.x = (frameSize.width - size.width) / 2;
-    else
-        videoBox.origin.x = (size.width - frameSize.width) / 2;
-    
-    if ( size.height < frameSize.height )
-        videoBox.origin.y = (frameSize.height - size.height) / 2;
-    else
-        videoBox.origin.y = (size.height - frameSize.height) / 2;
-    
-    return videoBox;
-}
+
 
 @end
