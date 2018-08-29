@@ -48,12 +48,9 @@ VideoCameraDelegate
     _queue = dispatch_queue_create("video.queue", 0);
     
     // 配置识别质量
-    NSDictionary *param = @{
-      CIDetectorAccuracy: CIDetectorAccuracyHigh
-    };
+    NSDictionary *param = ;
     
     // 创建人脸识别器
-    self.detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:param];
     
     [self.videoCamera start];
     
@@ -202,15 +199,13 @@ VideoCameraDelegate
     
     CGRect videoBox;
     videoBox.size = size;
-    if (size.width < frameSize.width)
+    if (size.width < frameSize.width) {
         videoBox.origin.x = (frameSize.width - size.width) / 2;
-    else
-        videoBox.origin.x = (size.width - frameSize.width) / 2;
-    
-    if ( size.height < frameSize.height )
         videoBox.origin.y = (frameSize.height - size.height) / 2;
-    else
+    } else {
+        videoBox.origin.x = (size.width - frameSize.width) / 2;
         videoBox.origin.y = (size.height - frameSize.height) / 2;
+    }
     
     return videoBox;
 }

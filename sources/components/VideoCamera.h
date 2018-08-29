@@ -30,8 +30,11 @@
 
 @end
 
-@protocol VideoCameraDelegate
+@protocol VideoCameraDelegate <NSObject>
 
+@optional
 -(void)processCIImage:(CIImage *)image;
+
+-(void)processForFaces:(NSArray *)faces;
 
 @end
