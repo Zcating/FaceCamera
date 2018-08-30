@@ -8,9 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FaceView : UIView
+#import "VideoCamera.h"
+
+@interface FaceView : UIView <VideoCameraDelegate>
 
 @property (nonatomic, strong) CIDetector *detector;
 
+@property (nonatomic, strong) VideoCamera *camera;
+
+@property (nonatomic, strong) CALayer *faceLayer;
+
+@property (nonatomic, strong) NSMutableArray<CALayer *> *faceLayers;
+
+@property (nonatomic, strong) UIView *faceContentView;
+
+-(void)start;
 
 @end
