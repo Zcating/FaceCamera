@@ -22,6 +22,8 @@
 
 @property (nonatomic, strong) UIView *faceContentView;
 
--(void)start;
+-(void)startCapture;
+
+-(UIImage *)takeOnePhoto;
 
 @end

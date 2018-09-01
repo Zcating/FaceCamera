@@ -10,19 +10,17 @@
 
 @implementation FaceView
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 
 -(instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        CIContext *content = [CIContext contextWithOptions:nil];
-        
         // 配置识别质量
-        NSDictionary *param = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
+        NSDictionary *parameters = @{
+            CIDetectorAccuracy: CIDetectorAccuracyHigh
+        };
         
         // 创建人脸识别器
-        self.detector = [CIDetector detectorOfType:CIDetectorTypeFace context:content options:param];
+        self.detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:parameters];
         
     }
     return self;
@@ -43,18 +41,12 @@
     return _camera;
 }
 
-//-(CALayer *)faceLayer {
-//    if (_faceLayer == nil) {
-//        _faceLayer =
+//-(NSMutableArray<CALayer *> *)faceLayers {
+//    if (_faceLayers == nil) {
+//        _faceLayers = [[NSMutableArray alloc] initWithCapacity:10];
 //    }
+//    return _faceLayers;
 //}
-
--(NSMutableArray<CALayer *> *)faceLayers {
-    if (_faceLayers == nil) {
-        _faceLayers = [[NSMutableArray alloc] initWithCapacity:10];
-    }
-    return _faceLayers;
-}
 
 -(UIView *)faceContentView {
     if (_faceContentView == nil) {
@@ -68,9 +60,21 @@
     return _faceContentView;
 }
 
--(void)start {
+-(void)startCapture {
     [self.camera start];
 }
+
+- (UIImage *)takeOnePhoto {
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
+    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+
+
+// MARK: - Video Delegate
 
 -(void)processCIImage:(CIImage *)image {
     NSDictionary *featuresParam = @{
@@ -115,6 +119,7 @@
             
             self.faceContentView.frame = faceRect;
          
+            
 #ifdef FaceCameraDebug
             self.label.text = [NSString stringWithFormat:@"%.2f, %.2f, %.2f, %.2f", faceRect.origin.x, faceRect.origin.y, faceRect.size.width, faceRect.size.height];
 #endif

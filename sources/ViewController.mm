@@ -22,6 +22,7 @@
 //>
 
 @property (weak, nonatomic) IBOutlet FaceView *videoView;
+@property (weak, nonatomic) IBOutlet UIView *shutterView;
 
 
 @end
@@ -30,7 +31,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    [self.videoView startCapture];
 }
 
 
@@ -51,6 +53,7 @@
 //    }
 //    return _videoCamera;
 //}
+
 
 
 @end
