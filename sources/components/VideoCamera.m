@@ -148,11 +148,6 @@
     if ([self.delegate respondsToSelector:@selector(processCIImage:)]) {
         [self.delegate processCIImage:image];
     }
-    if ([self.delegate respondsToSelector:@selector(processForFaces:)]) {
-        NSArray* faces = [self getFaces];
-        [self.delegate processForFaces:faces];
-    }
-//    [self.receiver source:self videoCaptureData:imageBuffer];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
@@ -161,49 +156,11 @@
 
 -(NSArray *)getFaces {
     NSArray *array = [NSArray new];
+    
+    
+    
     return array;
 }
-
--(CGRect)videoPreviewBoxForApertureSize:(CGSize)apertureSize {
-    NSString *gravity = self.previewLayer.videoGravity;
-    CGSize frameSize = self.previewLayer.frame.size;
-    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
-    CGFloat viewRatio = frameSize.width / frameSize.height;
-    
-    CGSize size = CGSizeZero;
-        if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
-    if (viewRatio > apertureRatio) {
-        size.width = frameSize.width;
-        size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-    } else {
-        size.width = apertureSize.height * (frameSize.height / apertureSize.width);
-        size.height = frameSize.height;
-    }
-        } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-            if (viewRatio > apertureRatio) {
-                size.width = apertureSize.height * (frameSize.height / apertureSize.width);
-                size.height = frameSize.height;
-            } else {
-                size.width = frameSize.width;
-                size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-            }
-        } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
-            size.width = frameSize.width;
-            size.height = frameSize.height;
-        }
-
-    CGRect videoBox;
-    videoBox.size = size;
-    if (size.width < frameSize.width) {
-        videoBox.origin.x = (frameSize.width - size.width) / 2;
-        videoBox.origin.y = (frameSize.height - size.height) / 2;
-    } else {
-        videoBox.origin.x = (size.width - frameSize.width) / 2;
-        videoBox.origin.y = (size.height - frameSize.height) / 2;
-    }
-    return videoBox;
-}
-
 
 
 @end

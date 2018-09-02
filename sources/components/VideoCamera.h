@@ -26,7 +26,7 @@
 
 - (void)stop;
 
--(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize;
+//-(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize;
 
 @end
 

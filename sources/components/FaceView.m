@@ -78,10 +78,11 @@
 
 -(void)processCIImage:(CIImage *)image {
     NSDictionary *featuresParam = @{
-                                    CIDetectorSmile: @YES,
-                                    CIDetectorEyeBlink: @YES,
-                                    CIDetectorImageOrientation: @6
-                                    };
+        CIDetectorSmile: @YES,
+        CIDetectorEyeBlink: @YES,
+        CIDetectorImageOrientation: @6
+    };
+    
     // 获取识别结果
     NSArray *resultArr = [self.detector featuresInImage:image options:featuresParam];
     
@@ -92,8 +93,9 @@
             return;
         }
         self.faceContentView.hidden = NO;
+        AVLayerVideoGravity gravity = self.camera.previewLayer.videoGravity;
         CGSize imageSize = image.extent.size;
-        CGRect previewBox = [self videoPreviewBoxForFrameSize:self.frame.size apertureSize:imageSize];
+        CGRect previewBox = [self previewBoxForGravity:gravity frameSize:self.frame.size apertureSize:imageSize];
         
         CGFloat widthScaleBy = previewBox.size.width / imageSize.height;
         CGFloat heightScaleBy = previewBox.size.height / imageSize.width;
@@ -115,15 +117,12 @@
             faceRect.origin.x *= widthScaleBy;
             faceRect.origin.y *= heightScaleBy;
             faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
-            //            faceRect = CGRectOffset(faceRect, previewBox.origin.x, previewBox.origin.y);
             
             self.faceContentView.frame = faceRect;
          
-            
 #ifdef FaceCameraDebug
             self.label.text = [NSString stringWithFormat:@"%.2f, %.2f, %.2f, %.2f", faceRect.origin.x, faceRect.origin.y, faceRect.size.width, faceRect.size.height];
 #endif
-
         }
     });
 }
@@ -143,19 +142,31 @@
  *   8  =  0th row is on the left, and 0th column is the bottom.
  * If not present, a value of 1 is assumed. */
 
--(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
+-(CGRect)previewBoxForGravity:(AVLayerVideoGravity)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
     CGFloat apertureRatio = apertureSize.height / apertureSize.width;
     CGFloat viewRatio = frameSize.width / frameSize.height;
     
     CGSize size = CGSizeZero;
-    if (viewRatio > apertureRatio) {
+    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
+        if (viewRatio > apertureRatio) {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        } else {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+        if (viewRatio > apertureRatio) {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        } else {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
         size.width = frameSize.width;
-        size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-    } else {
-        size.width = apertureSize.height * (frameSize.height / apertureSize.width);
         size.height = frameSize.height;
     }
-    
     CGRect videoBox;
     videoBox.size = size;
     if (size.width < frameSize.width) {
