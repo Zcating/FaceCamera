@@ -6,7 +6,7 @@
 //  Copyright © 2018 zcat. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "FCMainViewController.h"
 
 #import <opencv2/videoio/cap_ios.h>
 #import <AVFoundation/AVFoundation.h>
@@ -16,7 +16,7 @@
 
 #import "FaceView.h"
 
-@interface ViewController ()
+@interface FCMainViewController ()
 //CvVideoCameraDelegate,
 //VideoCameraDelegate
 //>
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation ViewController
+@implementation FCMainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

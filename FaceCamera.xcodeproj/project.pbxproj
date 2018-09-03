@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1E52129B02C00265D61 /* AppDelegate.m */; };
-		CB83E1E92129B02D00265D61 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1E82129B02D00265D61 /* ViewController.mm */; };
+		CB83E1E92129B02D00265D61 /* FCMainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB83E1E82129B02D00265D61 /* FCMainViewController.mm */; };
 		CB83E1EC2129B02D00265D61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB83E1EA2129B02D00265D61 /* Main.storyboard */; };
 		CB83E1EE2129B03100265D61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB83E1ED2129B03100265D61 /* Assets.xcassets */; };
 		CB83E1F12129B03100265D61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB83E1EF2129B03100265D61 /* LaunchScreen.storyboard */; };
@@ -39,6 +39,7 @@
 		CB83E2412132A9B200265D61 /* lena.png in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2402132A9B200265D61 /* lena.png */; };
 		CB83E2432132AB5C00265D61 /* myself.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2422132AB5B00265D61 /* myself.jpg */; };
 		CB83E2472132BCAC00265D61 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E2462132BCAC00265D61 /* FaceView.m */; };
+		CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +56,8 @@
 		CB83E1E12129B02C00265D61 /* FaceCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB83E1E42129B02C00265D61 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CB83E1E52129B02C00265D61 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		CB83E1E72129B02D00265D61 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		CB83E1E82129B02D00265D61 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		CB83E1E72129B02D00265D61 /* FCMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMainViewController.h; sourceTree = "<group>"; };
+		CB83E1E82129B02D00265D61 /* FCMainViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FCMainViewController.mm; sourceTree = "<group>"; };
 		CB83E1EB2129B02D00265D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CB83E1ED2129B03100265D61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CB83E1F02129B03100265D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -94,6 +95,8 @@
 		CB83E2422132AB5B00265D61 /* myself.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = myself.jpg; sourceTree = "<group>"; };
 		CB83E2452132BCAC00265D61 /* FaceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceView.h; sourceTree = "<group>"; };
 		CB83E2462132BCAC00265D61 /* FaceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaceView.m; sourceTree = "<group>"; };
+		CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
+		CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,8 +148,8 @@
 				CB83E20B212A5FFB00265D61 /* static */,
 				CB83E1E42129B02C00265D61 /* AppDelegate.h */,
 				CB83E1E52129B02C00265D61 /* AppDelegate.m */,
-				CB83E1E72129B02D00265D61 /* ViewController.h */,
-				CB83E1E82129B02D00265D61 /* ViewController.mm */,
+				CB83E1E72129B02D00265D61 /* FCMainViewController.h */,
+				CB83E1E82129B02D00265D61 /* FCMainViewController.mm */,
 				CB83E1EA2129B02D00265D61 /* Main.storyboard */,
 				CB83E1ED2129B03100265D61 /* Assets.xcassets */,
 				CB83E1EF2129B03100265D61 /* LaunchScreen.storyboard */,
@@ -227,14 +230,24 @@
 		CB83E23C212C415800265D61 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				CBCDD3F3213D6C1C000F5BD9 /* view */,
 				CB83E20C212A61CF00265D61 /* FaceDetector.h */,
 				CB83E20D212A61CF00265D61 /* FaceDetector.mm */,
 				CB83E23D212C418A00265D61 /* VideoCamera.h */,
 				CB83E23E212C418A00265D61 /* VideoCamera.m */,
-				CB83E2452132BCAC00265D61 /* FaceView.h */,
-				CB83E2462132BCAC00265D61 /* FaceView.m */,
 			);
 			path = components;
+			sourceTree = "<group>";
+		};
+		CBCDD3F3213D6C1C000F5BD9 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				CB83E2452132BCAC00265D61 /* FaceView.h */,
+				CB83E2462132BCAC00265D61 /* FaceView.m */,
+				CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */,
+				CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -357,8 +370,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB83E20E212A61CF00265D61 /* FaceDetector.mm in Sources */,
-				CB83E1E92129B02D00265D61 /* ViewController.mm in Sources */,
+				CB83E1E92129B02D00265D61 /* FCMainViewController.mm in Sources */,
 				CB83E1F42129B03100265D61 /* main.m in Sources */,
+				CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */,
 				CB83E2472132BCAC00265D61 /* FaceView.m in Sources */,
 				CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */,
 				CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */,
