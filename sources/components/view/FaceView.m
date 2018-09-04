@@ -11,14 +11,6 @@
 @implementation FaceView
 
 
--(instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (void)drawRect:(CGRect)rect {
     [self addSubview:self.faceContentView];
 
@@ -62,13 +54,6 @@
     [self.camera start];
 }
 
-- (UIImage *)takeOnePhoto {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
 
 
 
@@ -144,8 +129,7 @@
 
 -(CGRect)previewBoxForGravity:(AVLayerVideoGravity)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
     CGFloat apertureRatio = apertureSize.height / apertureSize.width;
-    CGFloat viewRatio = frameSize.width / frameSize.height;
-    CGFloat scaleRatio =  apertureRatio / viewRatio;
+    CGFloat viewRatio = ScreenWidth / ScreenHeight;
     
     CGSize size = CGSizeZero;
     if (viewRatio > apertureRatio) {
@@ -165,7 +149,6 @@
         videoBox.origin.x = (size.width - frameSize.width) / 2;
         videoBox.origin.y = (size.height - frameSize.height) / 2;
     }
-    videoBox.origin.y -= apertureSize.height - frameSize.height * scaleRatio;
     return videoBox;
 }
 

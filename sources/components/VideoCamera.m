@@ -9,7 +9,7 @@
 #import "VideoCamera.h"
 
 
-@interface VideoCamera()<AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface VideoCamera()<AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate> {
     dispatch_queue_t _videoQueue;
 }
 
@@ -26,6 +26,13 @@
 @property (nonatomic, strong) AVCaptureConnection *videoConnection;
 
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput;
+
+
+
+//@property (nonatomic, strong) AVCaptureStillImageOutput *imageOutput;
+@property (nonatomic, strong) AVCapturePhotoOutput *photoOutput API_AVAILABLE(ios(10.0));
+
+
 
 @property (nonatomic, strong) CIDetector *detector;
 
@@ -80,16 +87,16 @@
     return _previewLayer;
 }
 
--(CIDetector *)detector {
-    if (_detector == nil) {
-        NSDictionary * options = @{
-            CIDetectorAccuracy: CIDetectorAccuracyHigh
-        };
-        _detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:options];
+- (AVCapturePhotoOutput *)photoOutput API_AVAILABLE(ios(10.0)) {
+    if (_photoOutput == nil) {
+        _photoOutput = [AVCapturePhotoOutput new];
+        AVCapturePhotoSettings *setting = [AVCapturePhotoSettings photoSettings];
         
+        [_photoOutput capturePhotoWithSettings:setting delegate:self];
     }
-    return _detector;
+    return _photoOutput;
 }
+
 
 - (void)setDefaultAVCaptureSessionPreset:(AVCaptureSessionPreset)sessionPreset {
     if ([self.session isRunning]) {
@@ -153,14 +160,8 @@
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
 }
 
-
--(NSArray *)getFaces {
-    NSArray *array = [NSArray new];
+-(void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(NSError *)error {
     
-    
-    
-    return array;
 }
-
 
 @end

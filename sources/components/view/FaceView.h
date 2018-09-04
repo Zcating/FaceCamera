@@ -24,6 +24,5 @@
 
 -(void)startCapture;
 
--(UIImage *)takeOnePhoto;
 
 @end

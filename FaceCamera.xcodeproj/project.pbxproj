@@ -123,10 +123,10 @@
 		CB83E1D82129B02C00265D61 = {
 			isa = PBXGroup;
 			children = (
-				CB83E217212A8EC100265D61 /* resources */,
 				CB83E1E32129B02C00265D61 /* sources */,
 				CB83E1FC2129B03100265D61 /* tests */,
 				CB83E2082129B0AE00265D61 /* libs */,
+				CB83E217212A8EC100265D61 /* resources */,
 				CB83E1E22129B02C00265D61 /* Products */,
 				CB83E212212A861F00265D61 /* Frameworks */,
 			);
