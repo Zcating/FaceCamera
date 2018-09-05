@@ -16,6 +16,23 @@
 
 }
 
+#if UseOpenCV == 1
+
+-(CvVideoCamera *)camera {
+    if (_camera == nil) {
+        _camera = [[CvVideoCamera alloc] initWithParentView:self];
+        _camera.delegate = self;
+        _camera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
+        _camera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
+        _camera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
+        _camera.defaultFPS = 120;
+        _camera.useAVCaptureVideoPreviewLayer = YES;
+        _camera.captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    }
+    return _camera;
+}
+
+#else
 
 -(VideoCamera *)camera {
     if (_camera == nil) {
@@ -27,6 +44,7 @@
     return _camera;
 }
 
+#endif
 
 -(CIDetector *)detector {
     if (_detector == nil) {
@@ -59,6 +77,43 @@
 
 // MARK: - Video Delegate
 
+#if UseOpenCV == 1
+
+-(void)processImage:(cv::Mat &)image {
+    NSDictionary *featuresParam = @{
+        CIDetectorSmile: @YES,
+        CIDetectorEyeBlink: @YES,
+        CIDetectorImageOrientation: @5
+    };
+    
+    // 获取识别结果
+    CIImage *ciImage = [MatToUIImage(image) CIImage];
+    NSArray *resultArr = [self.detector featuresInImage:ciImage options:featuresParam];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (resultArr.count == 0) {
+            self.faceContentView.hidden = YES;
+            return;
+        }
+        CGSize imageSize = ciImage.extent.size;
+        CGRect previewBox = [self previewBoxForFrameSize:self.frame.size apertureSize:imageSize];
+        
+        for (CIFaceFeature *feature in resultArr) {
+            CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame apertureSize:imageSize];
+            
+            cv::Point topLeft(faceRect.origin.x, faceRect.origin.y);
+
+            cv::Point botRight = topLeft + cv::Point(faceRect.size.width, faceRect.size.height);
+
+            // 四方形的画法
+            cv::Scalar magenta = cv::Scalar(255, 0, 255);
+
+            cv::rectangle(image, topLeft, botRight, magenta, 4, 8, 0);
+        }
+    });
+}
+
+
 
 /* The intended display orientation of the image. If present, the value
  * of this key is a CFNumberRef with the same value as defined by the
@@ -72,6 +127,8 @@
  *   7  =  0th row is on the right, and 0th column is the bottom.
  *   8  =  0th row is on the left, and 0th column is the bottom.
  * If not present, a value of 1 is assumed. */
+
+#else
 
 -(void)processCIImage:(CIImage *)image {
     NSDictionary *featuresParam = @{
@@ -89,7 +146,7 @@
             return;
         }
         self.faceContentView.hidden = NO;
-        AVLayerVideoGravity gravity = self.camera.previewLayer.videoGravity;
+//        AVLayerVideoGravity gravity = self.camera.previewLayer.videoGravity;
         CGSize imageSize = image.extent.size;
         CGRect previewBox = [self previewBoxForGravity:gravity frameSize:self.frame.size apertureSize:imageSize];
         
@@ -126,8 +183,9 @@
     });
 }
 
+#endif
 
--(CGRect)previewBoxForGravity:(AVLayerVideoGravity)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
+-(CGRect)previewBoxForFrameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
     CGFloat apertureRatio = apertureSize.height / apertureSize.width;
     CGFloat viewRatio = ScreenWidth / ScreenHeight;
     
@@ -150,6 +208,31 @@
         videoBox.origin.y = (size.height - frameSize.height) / 2;
     }
     return videoBox;
+}
+
+
+-(CGRect)faceRectForFeatureRect:(CGRect)featureRect PreviewBox:(CGRect)previewBox frameSize:(CGRect)frameSize apertureSize:(CGSize)imageSize {
+    
+    CGFloat widthScaleBy = previewBox.size.width / imageSize.height;
+    CGFloat heightScaleBy = previewBox.size.height / imageSize.width;
+    
+    CGRect faceRect = featureRect;
+    
+    // flip preview width and height
+    CGFloat temp = faceRect.size.width;
+    faceRect.size.width = faceRect.size.height;
+    faceRect.size.height = temp;
+    temp = faceRect.origin.x;
+    faceRect.origin.x = faceRect.origin.y;
+    faceRect.origin.y = temp;
+    
+    // scale coordinates so they fit in the preview box, which may be scaled
+    faceRect.size.width *= widthScaleBy;
+    faceRect.size.height *= heightScaleBy;
+    faceRect.origin.x *= widthScaleBy;
+    faceRect.origin.y *= heightScaleBy;
+    
+    return faceRect;
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import "FCMainViewController.h"
 
-#import <opencv2/videoio/cap_ios.h>
 #import <AVFoundation/AVFoundation.h>
 
 //#import "FaceDetector.h"
@@ -39,10 +38,10 @@
 
 
     [self.shutterView pressShutter:^{
-        UIImage *image = [self takeOnePhoto];
-        self.imageView.image = image;
+//        UIImage *image = [self takeOnePhoto];
+//        self.imageView.image = image;
     
-        self.imageView.frame = CGRectMake(0, 0, image.size.width * 0.2, image.size.height * 0.2);
+//        self.imageView.frame = CGRectMake(0, 0, image.size.width * 0.2, image.size.height * 0.2);
         
 //        NSData *pngData = UIImagePNGRepresentation(image);
 //
@@ -71,13 +70,7 @@
     return _imageView;
 }
 
-- (UIImage *)takeOnePhoto {
-    UIGraphicsBeginImageContextWithOptions(self.videoView.bounds.size, NO, [UIScreen mainScreen].scale);
-    [self.videoView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
+
 
 
 @end

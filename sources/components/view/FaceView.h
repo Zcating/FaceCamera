@@ -8,17 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+#import <opencv2/videoio/cap_ios.h>
+
 #import "VideoCamera.h"
 
-@interface FaceView : UIView <VideoCameraDelegate>
+@interface FaceView : UIView <VideoCameraDelegate, CvVideoCameraDelegate>
 
 @property (nonatomic, strong) CIDetector *detector;
 
+#if UseOpenCV == 1
+
+@property (nonatomic, strong) CvVideoCamera * camera;
+
+#else
 @property (nonatomic, strong) VideoCamera *camera;
 
 @property (nonatomic, strong) CALayer *faceLayer;
 
-@property (nonatomic, strong) NSMutableArray<CALayer *> *faceLayers;
+//@property (nonatomic, strong) NSMutableArray<CALayer *> *faceLayers;
+#endif
 
 @property (nonatomic, strong) UIView *faceContentView;
 

@@ -29,11 +29,6 @@
 
 
 
-//@property (nonatomic, strong) AVCaptureStillImageOutput *imageOutput;
-@property (nonatomic, strong) AVCapturePhotoOutput *photoOutput API_AVAILABLE(ios(10.0));
-
-
-
 @property (nonatomic, strong) CIDetector *detector;
 
 @end
@@ -87,15 +82,6 @@
     return _previewLayer;
 }
 
-- (AVCapturePhotoOutput *)photoOutput API_AVAILABLE(ios(10.0)) {
-    if (_photoOutput == nil) {
-        _photoOutput = [AVCapturePhotoOutput new];
-        AVCapturePhotoSettings *setting = [AVCapturePhotoSettings photoSettings];
-        
-        [_photoOutput capturePhotoWithSettings:setting delegate:self];
-    }
-    return _photoOutput;
-}
 
 
 - (void)setDefaultAVCaptureSessionPreset:(AVCaptureSessionPreset)sessionPreset {
@@ -157,11 +143,5 @@
     }
 }
 
-- (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-}
-
--(void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(NSError *)error {
-    
-}
 
 @end

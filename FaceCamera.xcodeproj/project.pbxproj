@@ -38,7 +38,7 @@
 		CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E23E212C418A00265D61 /* VideoCamera.m */; };
 		CB83E2412132A9B200265D61 /* lena.png in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2402132A9B200265D61 /* lena.png */; };
 		CB83E2432132AB5C00265D61 /* myself.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2422132AB5B00265D61 /* myself.jpg */; };
-		CB83E2472132BCAC00265D61 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E2462132BCAC00265D61 /* FaceView.m */; };
+		CB83E2472132BCAC00265D61 /* FaceView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB83E2462132BCAC00265D61 /* FaceView.mm */; };
 		CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */; };
 /* End PBXBuildFile section */
 
@@ -94,7 +94,7 @@
 		CB83E2402132A9B200265D61 /* lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lena.png; sourceTree = "<group>"; };
 		CB83E2422132AB5B00265D61 /* myself.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = myself.jpg; sourceTree = "<group>"; };
 		CB83E2452132BCAC00265D61 /* FaceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceView.h; sourceTree = "<group>"; };
-		CB83E2462132BCAC00265D61 /* FaceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaceView.m; sourceTree = "<group>"; };
+		CB83E2462132BCAC00265D61 /* FaceView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FaceView.mm; sourceTree = "<group>"; };
 		CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
 		CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,7 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				CB83E2452132BCAC00265D61 /* FaceView.h */,
-				CB83E2462132BCAC00265D61 /* FaceView.m */,
+				CB83E2462132BCAC00265D61 /* FaceView.mm */,
 				CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */,
 				CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */,
 			);
@@ -373,7 +373,7 @@
 				CB83E1E92129B02D00265D61 /* FCMainViewController.mm in Sources */,
 				CB83E1F42129B03100265D61 /* main.m in Sources */,
 				CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */,
-				CB83E2472132BCAC00265D61 /* FaceView.m in Sources */,
+				CB83E2472132BCAC00265D61 /* FaceView.mm in Sources */,
 				CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */,
 				CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */,
 			);
