@@ -80,35 +80,39 @@
 #if UseOpenCV == 1
 
 -(void)processImage:(cv::Mat &)image {
-    NSDictionary *featuresParam = @{
+    NSDictionary *featureParameters = @{
         CIDetectorSmile: @YES,
         CIDetectorEyeBlink: @YES,
         CIDetectorImageOrientation: @5
     };
     
-    // 获取识别结果
-    CIImage *ciImage = [MatToUIImage(image) CIImage];
-    NSArray *resultArr = [self.detector featuresInImage:ciImage options:featuresParam];
+    UIImage *uiImage = MatToUIImage(image);
+    CIImage *ciImage = [uiImage CIImage];
+    
+    NSArray *resultArr = [self.detector featuresInImage:ciImage options:featureParameters];
+   
+    NSLog(@"%@", resultArr);
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (resultArr.count == 0) {
-            self.faceContentView.hidden = YES;
+//            self.faceContentView.hidden = YES;
             return;
         }
         CGSize imageSize = ciImage.extent.size;
         CGRect previewBox = [self previewBoxForFrameSize:self.frame.size apertureSize:imageSize];
         
         for (CIFaceFeature *feature in resultArr) {
-            CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame apertureSize:imageSize];
+            CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame imageSize:imageSize];
             
             cv::Point topLeft(faceRect.origin.x, faceRect.origin.y);
 
             cv::Point botRight = topLeft + cv::Point(faceRect.size.width, faceRect.size.height);
 
-            // 四方形的画法
             cv::Scalar magenta = cv::Scalar(255, 0, 255);
 
             cv::rectangle(image, topLeft, botRight, magenta, 4, 8, 0);
+
+            NSLog(@"%@", NSStringFromCGRect(faceRect));
         }
     });
 }
@@ -130,15 +134,16 @@
 
 #else
 
+
 -(void)processCIImage:(CIImage *)image {
-    NSDictionary *featuresParam = @{
+    NSDictionary *featureParameters = @{
         CIDetectorSmile: @YES,
         CIDetectorEyeBlink: @YES,
         CIDetectorImageOrientation: @5
     };
     
-    // 获取识别结果
-    NSArray *resultArr = [self.detector featuresInImage:image options:featuresParam];
+    // get detected result.
+    NSArray *resultArr = [self.detector featuresInImage:image options:featureParameters];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (resultArr.count == 0) {
@@ -148,37 +153,12 @@
         self.faceContentView.hidden = NO;
 //        AVLayerVideoGravity gravity = self.camera.previewLayer.videoGravity;
         CGSize imageSize = image.extent.size;
-        CGRect previewBox = [self previewBoxForGravity:gravity frameSize:self.frame.size apertureSize:imageSize];
-        
-        CGFloat widthScaleBy = previewBox.size.width / imageSize.height;
-        CGFloat heightScaleBy = previewBox.size.height / imageSize.width;
+        CGRect previewBox = [self previewBoxForFrameSize:self.frame.size apertureSize:imageSize];
         
         for (CIFaceFeature *feature in resultArr) {
-            // (Bottom right if mirroring is turned on)
-            CGRect faceRect = feature.bounds;
-            
-            // flip preview width and height
-            CGFloat temp = faceRect.size.width;
-            faceRect.size.width = faceRect.size.height;
-            faceRect.size.height = temp;
-            temp = faceRect.origin.x;
-            faceRect.origin.x = faceRect.origin.y;
-            faceRect.origin.y = temp;
-            
-            // scale coordinates so they fit in the preview box, which may be scaled
-            faceRect.size.width *= widthScaleBy;
-            faceRect.size.height *= heightScaleBy;
-            faceRect.origin.x *= widthScaleBy;
-            faceRect.origin.y *= heightScaleBy;
-            
-            faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
-            
+            CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame imageSize:imageSize];
             
             self.faceContentView.frame = faceRect;
-         
-//#ifdef FaceCameraDebug
-//            self.label.text = [NSString stringWithFormat:@"%.2f, %.2f, %.2f, %.2f", faceRect.origin.x, faceRect.origin.y, faceRect.size.width, faceRect.size.height];
-//#endif
         }
     });
 }
@@ -207,11 +187,12 @@
         videoBox.origin.x = (size.width - frameSize.width) / 2;
         videoBox.origin.y = (size.height - frameSize.height) / 2;
     }
+    NSLog(@"%@", NSStringFromCGRect(videoBox));
     return videoBox;
 }
 
 
--(CGRect)faceRectForFeatureRect:(CGRect)featureRect PreviewBox:(CGRect)previewBox frameSize:(CGRect)frameSize apertureSize:(CGSize)imageSize {
+-(CGRect)faceRectForFeatureRect:(CGRect)featureRect PreviewBox:(CGRect)previewBox frameSize:(CGRect)frameSize imageSize:(CGSize)imageSize {
     
     CGFloat widthScaleBy = previewBox.size.width / imageSize.height;
     CGFloat heightScaleBy = previewBox.size.height / imageSize.width;
@@ -231,6 +212,8 @@
     faceRect.size.height *= heightScaleBy;
     faceRect.origin.x *= widthScaleBy;
     faceRect.origin.y *= heightScaleBy;
+    
+    faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
     
     return faceRect;
 }
