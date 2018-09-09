@@ -9,7 +9,7 @@
 
 @interface FaceDetector : NSObject
 
-
++(instancetype)shared;
 
 -(std::vector<cv::Rect>)rectDetectForImage:(cv::Mat &)faceImage;
 

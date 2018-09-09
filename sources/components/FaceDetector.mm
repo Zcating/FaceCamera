@@ -21,6 +21,15 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
 
 @implementation FaceDetector
 
++ (instancetype)shared {
+    static FaceDetector *detector;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        detector = [[FaceDetector alloc] init];
+    });
+    return detector;
+}
+
 - (instancetype) init {
     self = [super init];
     if (self) {
@@ -35,7 +44,7 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
 - (std::vector<cv::Rect>)rectDetectForImage:(cv::Mat &)image {
     // 检测人脸并储存
     std::vector<cv::Rect>faces;
-    if (image.empty() ) {
+    if (image.empty()) {
         return faces;
     }
     _faceDetector.detectMultiScale(image, faces, 1.1, 2, kHaarOptions, cv::Size(60, 60));

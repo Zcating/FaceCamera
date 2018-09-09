@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) CvVideoCamera * camera;
 
+//@property (nonatomic, strong) 
+
 #else
 @property (nonatomic, strong) VideoCamera *camera;
 

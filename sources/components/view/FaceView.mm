@@ -7,6 +7,7 @@
 //
 
 #import "FaceView.h"
+#import "FaceDetector.h"
 
 @implementation FaceView
 
@@ -80,44 +81,30 @@
 #if UseOpenCV == 1
 
 -(void)processImage:(cv::Mat &)image {
-    NSDictionary *featureParameters = @{
-        CIDetectorSmile: @YES,
-        CIDetectorEyeBlink: @YES,
-        CIDetectorImageOrientation: @5
-    };
-    
-    UIImage *uiImage = MatToUIImage(image);
-    CIImage *ciImage = [uiImage CIImage];
-    
-    NSArray *resultArr = [self.detector featuresInImage:ciImage options:featureParameters];
-   
-    NSLog(@"%@", resultArr);
-    
+    std::vector<cv::Rect> rects = [[FaceDetector shared] rectDetectForImage:image];
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (resultArr.count == 0) {
-//            self.faceContentView.hidden = YES;
-            return;
+        if (rects.size() == 0) {
+            self.faceContentView.hidden = YES;
         }
-        CGSize imageSize = ciImage.extent.size;
-        CGRect previewBox = [self previewBoxForFrameSize:self.frame.size apertureSize:imageSize];
         
-        for (CIFaceFeature *feature in resultArr) {
-            CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame imageSize:imageSize];
+        for (cv::Rect rect : rects) {
             
-            cv::Point topLeft(faceRect.origin.x, faceRect.origin.y);
+//            CGRect r = CGRectMake(rect.x, rect.y, rect.width, rect.height);
+//            NSLog(@"%@", NSStringFromCGRect(r));
 
-            cv::Point botRight = topLeft + cv::Point(faceRect.size.width, faceRect.size.height);
-
-            cv::Scalar magenta = cv::Scalar(255, 0, 255);
-
-            cv::rectangle(image, topLeft, botRight, magenta, 4, 8, 0);
-
-            NSLog(@"%@", NSStringFromCGRect(faceRect));
+//            self.faceContentView.hidden = NO;
+//            self.faceContentView.frame = r;
+            
+            //        cv::Scalar magenta = cv::Scalar(255, 0, 0, 255);
+            //        cv::rectangle(image, rect.tl(), rect.br(), magenta, 11, 8, 0);
         }
     });
 }
 
 
+
+
+#else
 
 /* The intended display orientation of the image. If present, the value
  * of this key is a CFNumberRef with the same value as defined by the
@@ -132,32 +119,28 @@
  *   8  =  0th row is on the left, and 0th column is the bottom.
  * If not present, a value of 1 is assumed. */
 
-#else
-
-
 -(void)processCIImage:(CIImage *)image {
     NSDictionary *featureParameters = @{
         CIDetectorSmile: @YES,
         CIDetectorEyeBlink: @YES,
         CIDetectorImageOrientation: @5
     };
-    
+
     // get detected result.
     NSArray *resultArr = [self.detector featuresInImage:image options:featureParameters];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         if (resultArr.count == 0) {
             self.faceContentView.hidden = YES;
             return;
         }
         self.faceContentView.hidden = NO;
-//        AVLayerVideoGravity gravity = self.camera.previewLayer.videoGravity;
         CGSize imageSize = image.extent.size;
         CGRect previewBox = [self previewBoxForFrameSize:self.frame.size apertureSize:imageSize];
-        
+
         for (CIFaceFeature *feature in resultArr) {
             CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame imageSize:imageSize];
-            
+
             self.faceContentView.frame = faceRect;
         }
     });
