@@ -52,6 +52,7 @@
 //        [pngData writeToFile:fileString atomically:NO];
     }];
     
+    self.videoView.delegate = self;
     [self.videoView startCapture];
 
 }
@@ -62,9 +63,13 @@
 }
 
 
+-(void)processUIImage:(UIImage *)image {
+    self.imageView.image = image;
+}
+
 -(UIImageView *)imageView {
     if (_imageView == nil) {
-        _imageView = [[UIImageView alloc] init];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         [self.view addSubview:_imageView];
     }
     return _imageView;

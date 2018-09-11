@@ -8,9 +8,9 @@
 
 #import "FaceDetector.h"
 
-NSString * const kFaceCascadeFilename = @"haarcascade_frontalface_alt2";
+NSString * const kFaceCascadeFilename = @"haarcascade_frontalface_alt";
 
-const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
+const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT;
 
 @interface FaceDetector() {
     cv::CascadeClassifier _faceDetector;
