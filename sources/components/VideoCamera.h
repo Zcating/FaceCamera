@@ -18,6 +18,8 @@
 
 @property (nonatomic, weak) id<VideoCameraDelegate> delegate;
 
+
+
 //- (void)startCaptureWithHandler:(CaptureDataBlock)handler;
 
 - (instancetype)initWithParentView:(UIView *)view;

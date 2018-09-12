@@ -14,15 +14,9 @@
 
 - (void)drawRect:(CGRect)rect {
     [self addSubview:self.faceContentView];
-    [self addSubview:self.imageView];
+//    [self addSubview:self.imageView];
 }
 
--(UIImageView *)imageView {
-    if (_imageView == nil) {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-    }
-    return _imageView;
-}
 
 -(UIView *)faceContentView {
     if (_faceContentView == nil) {
@@ -58,7 +52,7 @@
         _camera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
         _camera.defaultFPS = 60;
         _camera.captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-        _camera.grayscaleMode = YES;
+        
     }
     return _camera;
 }
@@ -130,10 +124,9 @@
 
             CGRect r = CGRectMake(rect.x, rect.y, rect.width, rect.height);
             NSLog(@"%@", NSStringFromCGRect(r));
-//
+
 //            self.faceContentView.hidden = NO;
 //            self.faceContentView.frame = r;
-//
 
             cv::Scalar magenta = cv::Scalar(255, 0, 0, 255);
             cv::rectangle(image, rect.tl(), rect.br(), magenta, 11, 8, 0);

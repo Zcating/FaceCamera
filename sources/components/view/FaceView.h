@@ -12,7 +12,10 @@
 
 #import "VideoCamera.h"
 
-@interface FaceView : UIImageView <VideoCameraDelegate, CvVideoCameraDelegate>
+@interface FaceView : UIImageView <
+VideoCameraDelegate
+//CvVideoCameraDelegate
+>
 
 @property (nonatomic, strong) CIDetector *detector;
 
@@ -20,9 +23,6 @@
 
 @property (nonatomic, strong) CvVideoCamera * camera;
 
-@property (nonatomic, strong) UIImageView *imageView;
-
-@property (nonatomic, weak)id delegate;
 
 #else
 @property (nonatomic, strong) VideoCamera *camera;
