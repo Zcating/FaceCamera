@@ -11,6 +11,14 @@
 
 +(instancetype)shared;
 
+#if UseOpenCV == 1
+
 -(std::vector<cv::Rect>)rectDetectForImage:(cv::Mat &)faceImage;
+
+#else
+
+-(NSArray *)rectsDetectedForImage:(CIImage *)image;
+
+#endif
 
 @end

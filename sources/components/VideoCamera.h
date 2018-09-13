@@ -18,6 +18,8 @@
 
 @property (nonatomic, weak) id<VideoCameraDelegate> delegate;
 
+@property (nonatomic, strong) UIImage *pasterImage;
+
 
 
 //- (void)startCaptureWithHandler:(CaptureDataBlock)handler;

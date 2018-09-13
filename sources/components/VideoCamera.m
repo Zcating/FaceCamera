@@ -9,11 +9,33 @@
 #import "VideoCamera.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
-
+#import <Photos/Photos.h>
 
 static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCaptureStillImageIsCapturingStillImageContext";
 
-@interface VideoCamera()<AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate> {
+static CGContextRef CreateCGBitmapContextForSize(CGSize size) {
+    
+    CGContextRef    context             = NULL;
+    CGColorSpaceRef colorSpace          = CGColorSpaceCreateDeviceRGB();
+    int             bitmapBytesPerRow   =  (size.width * 4);
+    
+    
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+    context = CGBitmapContextCreate (NULL,
+                                     size.width,
+                                     size.height,
+                                     8,
+                                     bitmapBytesPerRow,
+                                     colorSpace,
+                                     kCGImageAlphaPremultipliedLast);
+    CGContextSetAllowsAntialiasing(context, NO);
+    CGColorSpaceRelease(colorSpace);
+    
+    return context;
+}
+
+
+@interface VideoCamera()<AVCaptureVideoDataOutputSampleBufferDelegate> {
     dispatch_queue_t _videoQueue;
     AVCaptureDevicePosition _devicePosition;
 }
@@ -31,7 +53,6 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 @property (nonatomic, strong) AVCaptureConnection *videoConnection;
 
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput;
-
 
 @property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
 
@@ -101,6 +122,18 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     return _stillImageOutput;
 }
 
+-(CIDetector *)detector {
+    if (_detector == nil) {
+        // configure the accuracy quality.
+        NSDictionary *parameters = @{
+            CIDetectorAccuracy: CIDetectorAccuracyHigh
+        };
+        
+        _detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:parameters];
+    }
+    return _detector;
+}
+
 - (void)setDefaultAVCaptureSessionPreset:(AVCaptureSessionPreset)sessionPreset {
     if ([self.session isRunning]) {
         [self.session beginConfiguration];
@@ -159,45 +192,40 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     [self.stillImageOutput setOutputSettings:settings];
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef  _Nullable imageDataSampleBuffer, NSError * _Nullable error) {
+        
         if (error) {
             NSLog(@"error: %@", error);
             return;
         }
-        
-        // Got an image.
-        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
-        
-        NSDictionary *attachments = CFBridgingRelease(CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate));
-        
-        CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:attachments];
+        CIImage *ciImage = [self generateCIImageFrom:imageDataSampleBuffer];
         
         NSDictionary *imageOptions = nil;
+        
         NSNumber *orientation = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
+        
         if (orientation) {
-            imageOptions = [NSDictionary dictionaryWithObject:orientation forKey:CIDetectorImageOrientation];
+            imageOptions = @{
+                CIDetectorImageOrientation:orientation
+            };
         }
         
         
         dispatch_sync(self->_videoQueue, ^(void) {
             
-            NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
-            CGImageRef srcImage = NULL;
-            OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
-            //                        check(!err);
+            NSArray *features = [self.detector featuresInImage:ciImage options:imageOptions];
+            CIContext *context = [CIContext context];
+            CGImageRef srcImage = [context createCGImage:ciImage fromRect:ciImage.extent];
             
-            CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features inCGImage:srcImage withOrientation:curDeviceOrientation frontFacing:isUsingFrontFacingCamera];
-            if (srcImage)
+            CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features inCGImage:srcImage];
+            
+            [self saveCGImage:cgImageResult];
+            
+            if (srcImage) {
                 CFRelease(srcImage);
-            
-            CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
-                                                                        imageDataSampleBuffer,
-                                                                        kCMAttachmentMode_ShouldPropagate);
-            [self writeCGImageToCameraRoll:cgImageResult withMetadata:(id)attachments];
-            if (attachments)
-                CFRelease(attachments);
-            if (cgImageResult)
+            }
+            if (cgImageResult) {
                 CFRelease(cgImageResult);
-            
+            }
         });
     }];
 }
@@ -205,58 +233,160 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 // MARK: - Private Function
 
 
-- (BOOL)writeCGImageToCameraRoll:(CGImageRef)cgImage withMetadata:(NSDictionary *)metadata {
-    CFMutableDataRef destinationData = CFDataCreateMutable(kCFAllocatorDefault, 0);
-    CGImageDestinationRef destination = CGImageDestinationCreateWithData(destinationData, CFSTR("public.jpeg"), 1, NULL);
+- (void)saveCGImage:(CGImageRef)cgImage {
+
+//    ALAssetsLibrary *library = [ALAssetsLibrary new];
+//    [library writeImageDataToSavedPhotosAlbum:(__bridge id)destinationData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
+//        if (destinationData) {
+//            CFRelease(destinationData);
+//        }
+//    }];
     
-    BOOL success = (destination != NULL);
-    //    require(success, bail);
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:tmpURL];
+    }   completionHandler:^(BOOL success, NSError *error) {
+            //cleanup the tmp file after import, if needed
+    }];
     
-    const float JPEGCompQuality = 0.85f; // JPEGHigherQuality
-    CFMutableDictionaryRef optionsDict = NULL;
-    CFNumberRef qualityNum = NULL;
-    
-    qualityNum = CFNumberCreate(0, kCFNumberFloatType, &JPEGCompQuality);
-    if ( qualityNum ) {
-        optionsDict = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        if ( optionsDict )
-            CFDictionarySetValue(optionsDict, kCGImageDestinationLossyCompressionQuality, qualityNum);
-        CFRelease( qualityNum );
-    }
-    
-    CGImageDestinationAddImage( destination, cgImage, optionsDict );
-    success = CGImageDestinationFinalize( destination );
-    
-    ALAssetsLibrary *library = [ALAssetsLibrary new];
-    [library writeImageDataToSavedPhotosAlbum:(id)destinationData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
-        if (destinationData) {
-            CFRelease(destinationData);
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        UIImage *uiImage = [UIImage imageWithCGImage:cgImage];
+        PHAssetChangeRequest* createAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:uiImage];
+        
+        PHObjectPlaceholder *placeholder = [createAssetRequest placeholderForCreatedAsset];
+        
+        NSLog(@"photo identifier: %@", placeholder.localIdentifier);
+        
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            NSLog(@"success");
+        } else {
+            NSLog(@"%@", error);
         }
     }];
     
 }
 
-- (CGImageRef)newSquareOverlayedImageForFeatures:(NSArray *)features inCGImage:(CGImageRef)backgroundImage withOrientation:(UIDeviceOrientation)orientation
+- (CGImageRef)newSquareOverlayedImageForFeatures:(NSArray *)features inCGImage:(CGImageRef)backgroundImage
 {
-    CGImageRef returnImage = NULL;
-    CGRect backgroundImageRect = CGRectMake(0., 0., CGImageGetWidth(backgroundImage), CGImageGetHeight(backgroundImage));
-    CGContextRef bitmapContext = CreateCGBitmapContextForSize(backgroundImageRect.size);
-    CGContextClearRect(bitmapContext, backgroundImageRect);
-    CGContextDrawImage(bitmapContext, backgroundImageRect, backgroundImage);
-    CGFloat rotationDegrees = 0.;
+    CGImageRef      returnImage         = NULL;
+    CGRect          backgroundImageRect = CGRectMake(0., 0., CGImageGetWidth(backgroundImage), CGImageGetHeight(backgroundImage));
+    CGColorSpaceRef colorSpace          = CGColorSpaceCreateDeviceRGB();
+    int             bitmapBytesPerRow   =  (backgroundImageRect.size.width * 4);
+    CGContextRef    bitmapContext       = CGBitmapContextCreate (NULL,
+                                           backgroundImageRect.size.width,
+                                           backgroundImageRect.size.height,
+                                           8,
+                                           bitmapBytesPerRow,
+                                           colorSpace,
+                                           kCGImageAlphaPremultipliedLast);
     
-    UIImage *rotatedSquareImage = [square imageRotatedByDegrees:rotationDegrees];
+    CGContextSetAllowsAntialiasing(bitmapContext, NO);
+    
+    CGContextClearRect(bitmapContext, backgroundImageRect);
+    
+    CGContextDrawImage(bitmapContext, backgroundImageRect, backgroundImage);
+
     
     // features found by the face detector
-    for ( CIFaceFeature *ff in features ) {
-        CGRect faceRect = [ff bounds];
-        CGContextDrawImage(bitmapContext, faceRect, [rotatedSquareImage CGImage]);
+    for (CIFaceFeature *feature in features) {
+        CGRect faceRect = [feature bounds];
+        CGContextDrawImage(bitmapContext, faceRect, self.pasterImage.CGImage);
     }
     returnImage = CGBitmapContextCreateImage(bitmapContext);
+
     CGContextRelease (bitmapContext);
+    CGColorSpaceRelease(colorSpace);
     
     return returnImage;
 }
+
+
+- (CIImage *)generateCIImageFrom:(CMSampleBufferRef)sampleBuffer {
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
+    CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
+    if (attachments) {
+        CFRelease(attachments);
+    }
+    return image;
+}
+
+// 人脸检测
+-(NSArray *)faceRectsFrom:(CIImage *)image {
+    NSDictionary *featureParameters = @{
+                                        CIDetectorSmile: @YES,
+                                        CIDetectorEyeBlink: @YES,
+                                        CIDetectorImageOrientation: @5
+                                        };
+    NSArray *resultArr = [self.detector featuresInImage:image options:featureParameters];
+    if (resultArr.count == 0) {
+        return resultArr;
+    }
+    CGSize imageSize = image.extent.size;
+    CGSize viewSize = self.previewLayer.frame.size;
+    CGRect previewBox = [self previewBoxForFrameSize:viewSize apertureSize:imageSize];
+    
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:2];
+    for (CIFaceFeature *feature in resultArr) {
+        CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox imageSize:imageSize];
+        [array addObject:[NSValue valueWithCGRect:faceRect]];
+    }
+    return array;
+}
+
+-(CGRect)previewBoxForFrameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize {
+    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
+    CGFloat viewRatio = ScreenWidth / ScreenHeight;
+    
+    CGSize size = CGSizeZero;
+    if (viewRatio > apertureRatio) {
+        size.width = frameSize.width;
+        size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+    } else {
+        size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+        size.height = frameSize.height;
+    }
+    
+    CGRect videoBox;
+    videoBox.size = size;
+    if (size.width < frameSize.width) {
+        videoBox.origin.x = (frameSize.width - size.width) / 2;
+        videoBox.origin.y = (frameSize.height - size.height) / 2;
+    } else {
+        videoBox.origin.x = (size.width - frameSize.width) / 2;
+        videoBox.origin.y = (size.height - frameSize.height) / 2;
+    }
+    NSLog(@"%@", NSStringFromCGRect(videoBox));
+    return videoBox;
+}
+
+
+-(CGRect)faceRectForFeatureRect:(CGRect)featureRect PreviewBox:(CGRect)previewBox imageSize:(CGSize)imageSize {
+    
+    CGFloat widthScaleBy = previewBox.size.width / imageSize.height;
+    CGFloat heightScaleBy = previewBox.size.height / imageSize.width;
+    
+    CGRect faceRect = featureRect;
+    
+        // flip preview width and height
+    CGFloat temp = faceRect.size.width;
+    faceRect.size.width = faceRect.size.height;
+    faceRect.size.height = temp;
+    temp = faceRect.origin.x;
+    faceRect.origin.x = faceRect.origin.y;
+    faceRect.origin.y = temp;
+    
+        // scale coordinates so they fit in the preview box, which may be scaled
+    faceRect.size.width *= widthScaleBy;
+    faceRect.size.height *= heightScaleBy;
+    faceRect.origin.x *= widthScaleBy;
+    faceRect.origin.y *= heightScaleBy;
+    
+    faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
+    
+    return faceRect;
+}
+
 
 // MARK: - Video Delegate
 
@@ -266,17 +396,17 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     //        CVBufferRef buffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     //        handler(buffer);
     //    }
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
-    CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
-    if (attachments) {
-        CFRelease(attachments);
+    CIImage *image = [self generateCIImageFrom:sampleBuffer];
+    
+    
+    if ([self.delegate respondsToSelector:@selector(processForFaces:)]) {
+        [self.delegate processForFaces: [self faceRectsFrom:image]];
     }
     
     if ([self.delegate respondsToSelector:@selector(processCIImage:)]) {
         [self.delegate processCIImage:image];
     }
+    
 }
-
 
 @end
