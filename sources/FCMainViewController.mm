@@ -40,9 +40,9 @@
     [self.shutterView pressShutter:^{
 //        UIImage *image = [self takeOnePhoto];
 //        self.imageView.image = image;
-    
+//
 //        self.imageView.frame = CGRectMake(0, 0, image.size.width * 0.2, image.size.height * 0.2);
-        
+//
 //        NSData *pngData = UIImagePNGRepresentation(image);
 //
 //        NSString *documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, NO)[0];

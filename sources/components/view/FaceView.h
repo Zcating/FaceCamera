@@ -12,7 +12,7 @@
 
 #import "VideoCamera.h"
 
-@interface FaceView : UIImageView <
+@interface FaceView : UIView <
 VideoCameraDelegate
 //CvVideoCameraDelegate
 >
@@ -27,7 +27,7 @@ VideoCameraDelegate
 #else
 @property (nonatomic, strong) VideoCamera *camera;
 
-@property (nonatomic, strong) CALayer *faceLayer;
+//@property (nonatomic, strong) CALayer *faceLayer;
 
 //@property (nonatomic, strong) NSMutableArray<CALayer *> *faceLayers;
 #endif

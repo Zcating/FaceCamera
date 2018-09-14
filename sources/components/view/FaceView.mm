@@ -34,8 +34,8 @@
     if (_detector == nil) {
         // configure the accuracy quality.
         NSDictionary *parameters = @{
-                                     CIDetectorAccuracy: CIDetectorAccuracyHigh
-                                     };
+            CIDetectorAccuracy: CIDetectorAccuracyHigh
+        };
         _detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:parameters];
     }
     return _detector;
@@ -139,44 +139,21 @@
 
 #else
 
-/* The intended display orientation of the image. If present, the value
- * of this key is a CFNumberRef with the same value as defined by the
- * TIFF and Exif specifications.  That is:
- *   1  =  0th row is at the top, and 0th column is on the left.
- *   2  =  0th row is at the top, and 0th column is on the right.
- *   3  =  0th row is at the bottom, and 0th column is on the right.
- *   4  =  0th row is at the bottom, and 0th column is on the left.
- *   5  =  0th row is on the left, and 0th column is the top.
- *   6  =  0th row is on the right, and 0th column is the top.
- *   7  =  0th row is on the right, and 0th column is the bottom.
- *   8  =  0th row is on the left, and 0th column is the bottom.
- * If not present, a value of 1 is assumed. */
 
--(void)processCIImage:(CIImage *)image {
-    NSDictionary *featureParameters = @{
-        CIDetectorSmile: @YES,
-        CIDetectorEyeBlink: @YES,
-        CIDetectorImageOrientation: @5
-    };
-
-    // get detected result.
-    NSArray *resultArr = [self.detector featuresInImage:image options:featureParameters];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (resultArr.count == 0) {
-            self.faceContentView.hidden = YES;
-            return;
-        }
-        self.faceContentView.hidden = NO;
-        CGSize imageSize = image.extent.size;
-        CGRect previewBox = [self previewBoxForFrameSize:self.frame.size apertureSize:imageSize];
-
-        for (CIFaceFeature *feature in resultArr) {
-            CGRect faceRect = [self faceRectForFeatureRect:feature.bounds PreviewBox:previewBox frameSize:self.frame imageSize:imageSize];
-
-            self.faceContentView.frame = faceRect;
-        }
-    });
+-(void)processForFaces:(NSArray *)faces {
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        if (faces.count == 0) {
+//            self.faceContentView.hidden = YES;
+//            return;
+//        }
+//        NSLog(@"%@", self.faceContentView);
+//        self.faceContentView.hidden = NO;
+//
+//        for (NSValue *face in faces) {
+//            CGRect rect = face.CGRectValue;
+//            self.faceContentView.frame = rect;
+//        }
+//    });
 }
 
 #endif
