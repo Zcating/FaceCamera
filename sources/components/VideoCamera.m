@@ -435,7 +435,6 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     CIImage *image = [self generateCIImageFrom:sampleBuffer];
 
     if ([self.delegate respondsToSelector:@selector(processForFaces:)]) {
-
         [self.delegate processForFaces: [self faceRectsFrom:image]];
     }
     
