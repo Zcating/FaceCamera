@@ -11,14 +11,9 @@
 
 +(instancetype)shared;
 
-#if UseOpenCV == 1
+-(void)detectOn:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects;
 
--(std::vector<cv::Rect>)rectDetectForImage:(cv::Mat &)faceImage;
+-(void)faceLandmarkDetectOn:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects;
 
-#else
-
--(NSArray *)rectsDetectedForImage:(CIImage *)image;
-
-#endif
 
 @end

@@ -114,24 +114,24 @@
 //            self.faceContentView.frame = faceRect;
 //        }
 //    });
-    std::vector<cv::Rect> rects = [[FaceDetector shared] rectDetectForImage:image];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (rects.size() == 0) {
-            self.faceContentView.hidden = YES;
-        }
-
-        for (cv::Rect rect : rects) {
-
-            CGRect r = CGRectMake(rect.x, rect.y, rect.width, rect.height);
-            NSLog(@"%@", NSStringFromCGRect(r));
-
-//            self.faceContentView.hidden = NO;
-//            self.faceContentView.frame = r;
-
-            cv::Scalar magenta = cv::Scalar(255, 0, 0, 255);
-            cv::rectangle(image, rect.tl(), rect.br(), magenta, 11, 8, 0);
-        }
-    });
+//    std::vector<cv::Rect> rects = [[FaceDetector shared] rectDetectForImage:image];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        if (rects.size() == 0) {
+//            self.faceContentView.hidden = YES;
+//        }
+//
+//        for (cv::Rect rect : rects) {
+//
+//            CGRect r = CGRectMake(rect.x, rect.y, rect.width, rect.height);
+//            NSLog(@"%@", NSStringFromCGRect(r));
+//
+////            self.faceContentView.hidden = NO;
+////            self.faceContentView.frame = r;
+//
+//            cv::Scalar magenta = cv::Scalar(255, 0, 0, 255);
+//            cv::rectangle(image, rect.tl(), rect.br(), magenta, 11, 8, 0);
+//        }
+//    });
 }
 
 

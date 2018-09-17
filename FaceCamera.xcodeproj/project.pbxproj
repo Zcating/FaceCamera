@@ -34,7 +34,6 @@
 		CB83E238212A8EC100265D61 /* haarcascade_smile.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E227212A8EC100265D61 /* haarcascade_smile.xml */; };
 		CB83E239212A8EC100265D61 /* haarcascade_fullbody.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E228212A8EC100265D61 /* haarcascade_fullbody.xml */; };
 		CB83E23A212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml in Resources */ = {isa = PBXBuildFile; fileRef = CB83E229212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml */; };
-		CB83E23B212A8ED700265D61 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E2092129B0AE00265D61 /* opencv2.framework */; };
 		CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E23E212C418A00265D61 /* VideoCamera.m */; };
 		CB83E2412132A9B200265D61 /* lena.png in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2402132A9B200265D61 /* lena.png */; };
 		CB83E2432132AB5C00265D61 /* myself.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2422132AB5B00265D61 /* myself.jpg */; };
@@ -43,6 +42,7 @@
 		CB9CA76E214B5BF900E687B9 /* whiskers.png in Resources */ = {isa = PBXBuildFile; fileRef = CB9CA76D214B5BF900E687B9 /* whiskers.png */; };
 		CB9CB550214C94DB00E687B9 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */; };
 		CB9CB68A214C94DC00E687B9 /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB54F214C94DA00E687B9 /* libdlib.a */; };
+		CB9CB690214FAC2A00E687B9 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E2092129B0AE00265D61 /* opencv2.framework */; };
 		CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +103,7 @@
 		CB9CA76D214B5BF900E687B9 /* whiskers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiskers.png; sourceTree = "<group>"; };
 		CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
 		CB9CB54F214C94DA00E687B9 /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libdlib.a; sourceTree = "<group>"; };
+		CB9CB68B214F753200E687B9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
 		CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,7 +116,7 @@
 				CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */,
 				CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */,
 				CB9CB68A214C94DC00E687B9 /* libdlib.a in Frameworks */,
-				CB83E23B212A8ED700265D61 /* opencv2.framework in Frameworks */,
+				CB9CB690214FAC2A00E687B9 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +182,7 @@
 		CB83E2082129B0AE00265D61 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				CB9CB025214C94D000E687B9 /* dlib */,
+				CB9CB025214C94D000E687B9 /* dlib.framework */,
 				CB83E2092129B0AE00265D61 /* opencv2.framework */,
 			);
 			path = libs;
@@ -197,6 +198,7 @@
 		CB83E212212A861F00265D61 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB9CB68B214F753200E687B9 /* Accelerate.framework */,
 				CB83E215212A864E00265D61 /* CoreMedia.framework */,
 				CB83E213212A861F00265D61 /* AVFoundation.framework */,
 			);
@@ -251,13 +253,13 @@
 			path = components;
 			sourceTree = "<group>";
 		};
-		CB9CB025214C94D000E687B9 /* dlib */ = {
+		CB9CB025214C94D000E687B9 /* dlib.framework */ = {
 			isa = PBXGroup;
 			children = (
 				CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */,
 				CB9CB54F214C94DA00E687B9 /* libdlib.a */,
 			);
-			path = dlib;
+			path = dlib.framework;
 			sourceTree = "<group>";
 		};
 		CBCDD3F3213D6C1C000F5BD9 /* view */ = {
@@ -564,7 +566,14 @@
 					"$(PROJECT_DIR)/libs",
 				);
 				GCC_PREFIX_HEADER = sources/FaceCamera.pch;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/dlib/dlib";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DLIB_JPEG_SUPPORT,
+					DLIB_NO_GUI_SUPPORT,
+					NDEBUG,
+					DLIB_USE_BLAS,
+					DLIB_USE_LAPACK,
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/dlib.framework";
 				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -573,7 +582,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libs/dlib",
+					"$(PROJECT_DIR)/libs/dlib.framework/",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.zcating.FaceCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -594,7 +603,14 @@
 					"$(PROJECT_DIR)/libs",
 				);
 				GCC_PREFIX_HEADER = sources/FaceCamera.pch;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/dlib/dlib";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DLIB_JPEG_SUPPORT,
+					DLIB_NO_GUI_SUPPORT,
+					NDEBUG,
+					DLIB_USE_BLAS,
+					DLIB_USE_LAPACK,
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/dlib.framework";
 				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -603,7 +619,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libs/dlib",
+					"$(PROJECT_DIR)/libs/dlib.framework/",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.zcating.FaceCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
