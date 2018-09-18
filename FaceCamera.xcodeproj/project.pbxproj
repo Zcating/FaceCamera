@@ -43,6 +43,8 @@
 		CB9CB550214C94DB00E687B9 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */; };
 		CB9CB68A214C94DC00E687B9 /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB54F214C94DA00E687B9 /* libdlib.a */; };
 		CB9CB690214FAC2A00E687B9 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E2092129B0AE00265D61 /* opencv2.framework */; };
+		CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
+		CB9CB69521509ED800E687B9 /* FaceLandmarkDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */; };
 		CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +106,8 @@
 		CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
 		CB9CB54F214C94DA00E687B9 /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libdlib.a; sourceTree = "<group>"; };
 		CB9CB68B214F753200E687B9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FaceLandmarkDetector.cpp; sourceTree = "<group>"; };
+		CB9CB69421509ED800E687B9 /* FaceLandmarkDetector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FaceLandmarkDetector.hpp; sourceTree = "<group>"; };
 		CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
 		CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */,
 				CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */,
 				CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */,
 				CB9CB68A214C94DC00E687B9 /* libdlib.a in Frameworks */,
@@ -244,6 +249,7 @@
 		CB83E23C212C415800265D61 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				CB9CB69221509EB000E687B9 /* cpp */,
 				CBCDD3F3213D6C1C000F5BD9 /* view */,
 				CB83E20C212A61CF00265D61 /* FaceDetector.h */,
 				CB83E20D212A61CF00265D61 /* FaceDetector.mm */,
@@ -260,6 +266,15 @@
 				CB9CB54F214C94DA00E687B9 /* libdlib.a */,
 			);
 			path = dlib.framework;
+			sourceTree = "<group>";
+		};
+		CB9CB69221509EB000E687B9 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */,
+				CB9CB69421509ED800E687B9 /* FaceLandmarkDetector.hpp */,
+			);
+			path = cpp;
 			sourceTree = "<group>";
 		};
 		CBCDD3F3213D6C1C000F5BD9 /* view */ = {
@@ -397,6 +412,7 @@
 			files = (
 				CB83E20E212A61CF00265D61 /* FaceDetector.mm in Sources */,
 				CB83E1E92129B02D00265D61 /* FCMainViewController.mm in Sources */,
+				CB9CB69521509ED800E687B9 /* FaceLandmarkDetector.cpp in Sources */,
 				CB83E1F42129B03100265D61 /* main.m in Sources */,
 				CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */,
 				CB83E2472132BCAC00265D61 /* FaceView.mm in Sources */,
@@ -560,6 +576,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UK6KA2LHR;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framworks",
@@ -597,6 +614,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UK6KA2LHR;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framworks",

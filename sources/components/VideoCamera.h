@@ -12,9 +12,9 @@
 
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *previewLayer;
 
-@property (nonatomic) AVCaptureDevicePosition defaultAVCaptureDevicePosition;
+@property (nonatomic) AVCaptureDevicePosition devicePosition;
 
-@property (nonatomic) AVCaptureSessionPreset defaultAVCaptureSessionPreset;
+@property (nonatomic) AVCaptureSessionPreset sessionPreset;
 
 @property (nonatomic, weak) id<VideoCameraDelegate> delegate;
 

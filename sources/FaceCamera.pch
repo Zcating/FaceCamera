@@ -12,11 +12,17 @@
 
 #endif
 
+
+#ifdef __cplusplus
+#import <dlib/image_processing.h>
+#import <dlib/image_io.h>
+#import <dlib/opencv.h>
+#endif
+
 #ifdef __cplusplus
 #import <opencv2/opencv.hpp>
 #import <opencv2/core/core.hpp>
-#import <opencv2/imgcodecs/ios.h>
-#import <opencv2/videoio/cap_ios.h>
+//#import <opencv2/shape/>
 #endif
 
 
@@ -32,9 +38,5 @@
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
 
-#ifdef __cplusplus
-//#include <dlib/image_processing.h>
-//#include <dlib/image_io.h>
-#endif
 
 

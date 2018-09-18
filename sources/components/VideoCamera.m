@@ -59,54 +59,76 @@ AVCaptureMetadataOutputObjectsDelegate
 - (instancetype)initWithParentView:(UIView *)view {
     self = [super init];
     if (self) {
-        _metadataQueue = dispatch_queue_create("face.camera.metadata.queue", NULL);
         // Camera
-        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-        self.frontCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.lastObject error:nil];
-        self.backCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.firstObject error:nil];
+        [self initCamera];
         
-        
-        self.session = [[AVCaptureSession alloc] init];
+        // data output
+        [self initVideoDataOutput];
+
         //
-        if ([self.session canAddOutput:self.videoOutput]) {
-            [self.session addOutput:self.videoOutput];
-        }
+        [self initPhotoTaking];
+        
         //
-        if ([self.session canAddInput:self.backCameraInput]) {
-            [self.session addInput:self.backCameraInput];
-            self.currentInput = self.backCameraInput;
-        }
-        //
-        if ([self.session canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-            self.session.sessionPreset = AVCaptureSessionPreset1280x720;
-        }
-        if ([self.session canAddOutput:self.stillImageOutput]) {
-            [self.session addOutput:self.stillImageOutput];
-        }
-        
-        AVCaptureMetadataOutput *metadataOutput = [AVCaptureMetadataOutput new];
-        
-        [metadataOutput setMetadataObjectsDelegate:self queue:_metadataQueue];
-        if ([self.session canAddOutput:metadataOutput]) {
-            [self.session addOutput:metadataOutput];
-            metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
-        }
-        
-        
-        
-//        [view.layer addSublayer:self.previewLayer];
-//        self.previewLayer.frame = CGRectMake(0, 0, view.frame.size.width, view.frame.size.height);
-        
+        [self initMetadataOutput];
+
         [view.layer addSublayer:self.displayLayer];
         self.displayLayer.frame = view.bounds;
-//        self.displayLayer.position = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
-//        self.displayLayer.transform =
-        
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
+    
     return self;
 }
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+-(void)initCamera {
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    self.frontCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.lastObject error:nil];
+    self.backCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.firstObject error:nil];
+    if ([self.session canAddInput:self.backCameraInput]) {
+        [self.session addInput:self.backCameraInput];
+        self.currentInput = self.backCameraInput;
+    }
+}
+
+-(void)initVideoDataOutput {
+    if ([self.session canAddOutput:self.videoOutput]) {
+        [self.session addOutput:self.videoOutput];
+    }
+}
+
+-(void)initPhotoTaking {
+    if ([self.session canAddOutput:self.stillImageOutput]) {
+        [self.session addOutput:self.stillImageOutput];
+    }
+}
+
+-(void)initMetadataOutput {
+    AVCaptureMetadataOutput *metadataOutput = [AVCaptureMetadataOutput new];
+    _metadataQueue = dispatch_queue_create("face.camera.metadata.queue", NULL);
+    [metadataOutput setMetadataObjectsDelegate:self queue:_metadataQueue];
+    if ([self.session canAddOutput:metadataOutput]) {
+        [self.session addOutput:metadataOutput];
+        metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+    }
+}
+
+
 // MARK: - getter & setter
+
+-(AVCaptureSession *)session {
+    if (_session == nil) {
+        _session = [AVCaptureSession new];
+        if ([_session canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
+            _session.sessionPreset = AVCaptureSessionPreset1280x720;
+        }
+    }
+    return _session;
+}
 
 -(AVCaptureVideoDataOutput *)videoOutput {
     if (_videoOutput == nil) {
@@ -116,20 +138,12 @@ AVCaptureMetadataOutputObjectsDelegate
         _videoOutput.videoSettings = @{
             (NSString*)kCVPixelBufferPixelFormatTypeKey: @(kCMPixelFormat_32BGRA)
         };
-        
         _videoOutput.alwaysDiscardsLateVideoFrames = YES;
         [_videoOutput setSampleBufferDelegate:self queue:_videoQueue];
     }
     return _videoOutput;
 }
 
-- (AVCaptureVideoPreviewLayer *)previewLayer {
-    if (_previewLayer == nil) {
-        _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
-        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    }
-    return _previewLayer;
-}
 
 -(AVCaptureStillImageOutput *)stillImageOutput {
     if (_stillImageOutput == nil) {
@@ -137,25 +151,6 @@ AVCaptureMetadataOutputObjectsDelegate
         [_stillImageOutput addObserver:self forKeyPath:@"capturingStillImage" options:NSKeyValueObservingOptionNew context:nil];
     }
     return _stillImageOutput;
-}
-
--(CIDetector *)detector {
-    if (_detector == nil) {
-        // configure the accuracy quality.
-        NSDictionary *parameters = @{
-            CIDetectorAccuracy: CIDetectorAccuracyHigh
-        };
-        
-        _detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:parameters];
-    }
-    return _detector;
-}
-
--(NSMutableArray *)faceLayers {
-    if (_faceLayers == nil) {
-        _faceLayers = [NSMutableArray arrayWithCapacity:8];
-    }
-    return _faceLayers;
 }
 
 -(AVSampleBufferDisplayLayer *)displayLayer {
@@ -167,8 +162,7 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-
-- (void)setDefaultAVCaptureSessionPreset:(AVCaptureSessionPreset)sessionPreset {
+- (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset{
     if ([self.session isRunning]) {
         [self.session beginConfiguration];
         self.session.sessionPreset = sessionPreset;
@@ -179,20 +173,21 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-- (AVCaptureDevicePosition)defaultAVCaptureDevicePosition {
+- (AVCaptureDevicePosition)devicePosition {
     return _devicePosition;
 }
 
--(void)setDefaultAVCaptureDevicePosition:(AVCaptureDevicePosition)defaultAVCaptureDevicePosition {
-    _devicePosition = defaultAVCaptureDevicePosition;
+-(void)setDevicePosition:(AVCaptureDevicePosition)devicePosition {
+    _devicePosition = devicePosition;
     if ([self.session isRunning]) {        
         [self.session beginConfiguration];
-        [self switchCamera: defaultAVCaptureDevicePosition];
+        [self switchCamera: devicePosition];
         [self.session commitConfiguration];
     } else {
-        [self switchCamera:defaultAVCaptureDevicePosition];
+        [self switchCamera:devicePosition];
     }
 }
+
 
 // MARK: - Public Function
 
@@ -259,19 +254,15 @@ AVCaptureMetadataOutputObjectsDelegate
 
 // MARK: - Private Function
 
--(void)videoMirrored:(AVCaptureDevicePosition)devicePosition {
-    AVCaptureSession* session = (AVCaptureSession *)self.session;
-    for (AVCaptureVideoDataOutput* output in session.outputs) {
-        for (AVCaptureConnection * av in output.connections) {
-            if (devicePosition == AVCaptureDevicePositionFront) {
-                if (av.supportsVideoMirroring) {
-                    av.videoMirrored = YES;
-                }
-            }
-        }
-    }
-}
 
+// Generate CIImage
+- (CIImage *)generateCIImageFrom:(CMSampleBufferRef)sampleBuffer {
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    NSDictionary *attachments = CFBridgingRelease(CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate));
+    CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:attachments];
+    
+    return image;
+}
 
 - (void)saveCGImage:(CGImageRef)cgImage {
 
@@ -303,7 +294,6 @@ AVCaptureMetadataOutputObjectsDelegate
             NSLog(@"%@", error);
         }
     }];
-    
 }
 
 - (UIImage *)renderForFeatures:(NSArray *)features withCIImage:(CIImage *)image {
@@ -342,14 +332,7 @@ AVCaptureMetadataOutputObjectsDelegate
     return uiImage;
 }
 
-// Generate CIImage
-- (CIImage *)generateCIImageFrom:(CMSampleBufferRef)sampleBuffer {
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    NSDictionary *attachments = CFBridgingRelease(CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate));
-    CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:attachments];
 
-    return image;
-}
 
 
 
@@ -366,8 +349,6 @@ AVCaptureMetadataOutputObjectsDelegate
                 [bounds addObject:[NSValue valueWithCGRect:face.bounds]];
             }
         }
-        NSLog(@"%@", bounds);
-        
         [[FaceDetector shared] faceLandmarkDetectOn:sampleBuffer inRects: bounds];
     }
     [self.displayLayer enqueueSampleBuffer:sampleBuffer];
@@ -386,7 +367,7 @@ AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     
     connection.videoOrientation = AVCaptureVideoOrientationPortrait;
-    if(self.defaultAVCaptureDevicePosition == AVCaptureDevicePositionFront) {
+    if(self.devicePosition == AVCaptureDevicePositionFront) {
         if(connection.supportsVideoMirroring) {
             [connection setVideoMirrored:YES];
         }
@@ -397,36 +378,5 @@ AVCaptureMetadataOutputObjectsDelegate
     self.metadataObjects = metadataObjects;
 }
 
-
-//-(void) test:(CMSampleBufferRef)sampleBuffer {
-//    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-//    size_t width = CVPixelBufferGetWidth(pixelBuffer);
-//    size_t height = CVPixelBufferGetHeight(pixelBuffer);
-//    size_t row = CVPixelBufferGetBytesPerRow(pixelBuffer);
-//    size_t bytesPerPixel = row/width;
-//
-//    unsigned char *buffer = CVPixelBufferGetBaseAddress(pixelBuffer);
-//
-//    UIGraphicsBeginImageContext(CGSizeMake(width, height));
-//
-//    CGContextRef c = UIGraphicsGetCurrentContext();
-//
-//    unsigned char* data = CGBitmapContextGetData(c);
-//    if (data != NULL) {
-//        size_t maxY = height;
-//        for(int y = 0; y < maxY; y++) {
-//            for(int x = 0; x < height; x++) {
-//                size_t offset = bytesPerPixel * ((width * y) + x);
-//                data[offset] = buffer[offset];     // R
-//                data[offset + 1] = buffer[offset + 1]; // G
-//                data[offset + 2] = buffer[offset + 2]; // B
-//                data[offset + 3] = buffer[offset + 3]; // A
-//            }
-//        }
-//    }
-//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-//
-//    UIGraphicsEndImageContext();
-//}
 
 @end

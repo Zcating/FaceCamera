@@ -63,8 +63,8 @@
     if (_camera == nil) {
         _camera = [[VideoCamera alloc] initWithParentView:self];
         _camera.delegate = self;
-        _camera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
-        _camera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
+        _camera.devicePosition = AVCaptureDevicePositionFront;
+        _camera.sessionPreset = AVCaptureSessionPresetHigh;
     }
     return _camera;
 }
