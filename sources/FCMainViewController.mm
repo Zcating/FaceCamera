@@ -11,23 +11,26 @@
 #import <AVFoundation/AVFoundation.h>
 
 //#import "FaceDetector.h"
-//#import "VideoCamera.h"
+#import "VideoCamera.h"
 
-#import "FaceView.h"
+//#import "FaceView.h"
 #import "ShutterView.h"
 
-@interface FCMainViewController ()
+@interface FCMainViewController () <
 //CvVideoCameraDelegate,
-//VideoCameraDelegate
-//>
+VideoCameraDelegate
+>
 
-@property (weak, nonatomic) IBOutlet FaceView *videoView;
+@property (weak, nonatomic) IBOutlet UIView *videoView;
 
 
 @property (weak, nonatomic) IBOutlet ShutterView *shutterView;
 
 
 @property (strong, nonatomic) UIImageView *imageView;
+
+
+@property (strong, nonatomic) VideoCamera *camera;
 
 @end
 
@@ -52,7 +55,7 @@
 //        [pngData writeToFile:fileString atomically:NO];
     }];
     
-    [self.videoView startCapture];
+    [self.camera start];
 
 }
 
@@ -61,6 +64,16 @@
     [super didReceiveMemoryWarning];
 }
 
+
+-(VideoCamera *)camera {
+    if (_camera == nil) {
+        _camera = [[VideoCamera alloc] initWithParentView:self.videoView];
+        _camera.delegate = self;
+        _camera.devicePosition = AVCaptureDevicePositionFront;
+        _camera.sessionPreset = AVCaptureSessionPresetHigh;
+    }
+    return _camera;
+}
 
 -(UIImageView *)imageView {
     if (_imageView == nil) {

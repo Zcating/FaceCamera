@@ -22,15 +22,11 @@
 
 
 
-//- (void)startCaptureWithHandler:(CaptureDataBlock)handler;
-
 - (instancetype)initWithParentView:(UIView *)view;
 
 - (void)start;
 
 - (void)stop;
-
-//-(CGRect)videoPreviewBoxForFrameSize:(CGSize)frameSize;
 
 @end
 

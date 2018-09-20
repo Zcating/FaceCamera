@@ -21,7 +21,7 @@ using namespace cv;
 @interface FaceDetector() {
     cv::CascadeClassifier _faceDetector;
 
-    fc::FaceLandmarkDetector *landmarkDetector;
+    std::shared_ptr<fc::FaceLandmarkDetector> landmarkDetector;
 }
 
 @end
@@ -43,12 +43,14 @@ using namespace cv;
         NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
         std::string modelFileNameCString = [modelFileName UTF8String];
         
-//        Ptr<cv::face::Facemark> facemark = FacemarkLBF::create();
-        landmarkDetector = new fc::FaceLandmarkDetector(modelFileNameCString);
+        landmarkDetector = std::make_shared<fc::FaceLandmarkDetector>(modelFileNameCString);
     }
     return self;
 }
 
+-(void)dealloc {
+    
+}
 
 
 -(void)faceLandmarkDetectOn:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects landmarkResult:(void(^)(long index, CGPoint point))landmarkResult {
@@ -82,16 +84,6 @@ using namespace cv;
             }
         }
     });
-
-//    dlib::full_object_detection shape = shapePredictor(dPixelBuffer, faceRect);
-//    for (long index = 0; index < shape.num_parts(); index++) {
-//        dlib::point dpoint = shape.part(index);
-//        draw_solid_circle(dPixelBuffer, dpoint, 3, dlib::rgb_pixel(0, 255, 255));
-//
-//        cv::Point point((int)dpoint.x(), (int)dpoint.y());
-//        std::string indexString = [[NSString stringWithFormat:@"%ld", index] UTF8String];
-//        putText(pixelBuffer, indexString, point, cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 255, 0), 1);
-//    }
 
     CVPixelBufferLockBaseAddress(imageBuffer, 0);
 

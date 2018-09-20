@@ -352,16 +352,6 @@ AVCaptureMetadataOutputObjectsDelegate
         [[FaceDetector shared] faceLandmarkDetectOn:sampleBuffer inRects: bounds];
     }
     [self.displayLayer enqueueSampleBuffer:sampleBuffer];
-    
-//    CIImage *image = [self generateCIImageFrom:sampleBuffer];
-
-    if ([self.delegate respondsToSelector:@selector(processForFaces:)]) {
-//        [self.delegate processForFaces: [self faceRectsFrom:image]];
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(processCIImage:)]) {
-//        [self.delegate processCIImage:image];
-    }
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {

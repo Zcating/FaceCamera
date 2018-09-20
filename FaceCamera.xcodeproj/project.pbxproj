@@ -37,7 +37,6 @@
 		CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CB83E23E212C418A00265D61 /* VideoCamera.m */; };
 		CB83E2412132A9B200265D61 /* lena.png in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2402132A9B200265D61 /* lena.png */; };
 		CB83E2432132AB5C00265D61 /* myself.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB83E2422132AB5B00265D61 /* myself.jpg */; };
-		CB83E2472132BCAC00265D61 /* FaceView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB83E2462132BCAC00265D61 /* FaceView.mm */; };
 		CB9CA76A214B4DDB00E687B9 /* rect.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9CA769214B4DDA00E687B9 /* rect.jpg */; };
 		CB9CA76E214B5BF900E687B9 /* whiskers.png in Resources */ = {isa = PBXBuildFile; fileRef = CB9CA76D214B5BF900E687B9 /* whiskers.png */; };
 		CB9CB550214C94DB00E687B9 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */; };
@@ -99,8 +98,6 @@
 		CB83E23E212C418A00265D61 /* VideoCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCamera.m; sourceTree = "<group>"; };
 		CB83E2402132A9B200265D61 /* lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lena.png; sourceTree = "<group>"; };
 		CB83E2422132AB5B00265D61 /* myself.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = myself.jpg; sourceTree = "<group>"; };
-		CB83E2452132BCAC00265D61 /* FaceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceView.h; sourceTree = "<group>"; };
-		CB83E2462132BCAC00265D61 /* FaceView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FaceView.mm; sourceTree = "<group>"; };
 		CB9CA769214B4DDA00E687B9 /* rect.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rect.jpg; sourceTree = "<group>"; };
 		CB9CA76D214B5BF900E687B9 /* whiskers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiskers.png; sourceTree = "<group>"; };
 		CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
@@ -280,8 +277,6 @@
 		CBCDD3F3213D6C1C000F5BD9 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				CB83E2452132BCAC00265D61 /* FaceView.h */,
-				CB83E2462132BCAC00265D61 /* FaceView.mm */,
 				CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */,
 				CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */,
 			);
@@ -415,7 +410,6 @@
 				CB9CB69521509ED800E687B9 /* FaceLandmarkDetector.cpp in Sources */,
 				CB83E1F42129B03100265D61 /* main.m in Sources */,
 				CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */,
-				CB83E2472132BCAC00265D61 /* FaceView.mm in Sources */,
 				CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */,
 				CB83E23F212C418A00265D61 /* VideoCamera.m in Sources */,
 			);
