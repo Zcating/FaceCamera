@@ -14,13 +14,19 @@
 #import <dlib/image_processing.h>
 #import <dlib/image_io.h>
 
+#import <opencv2/face.hpp>
+
 namespace fc {
     
     class FaceLandmarkDetector {
         dlib::shape_predictor shapePredictor;
         FaceLandmarkDetector(){};
+        cv::Ptr<cv::Facemark> facemark;
+        
     public:
         FaceLandmarkDetector(std::string);
+        
+        
         
         void detectLandmark(dlib::cv_image<dlib::rgb_alpha_pixel> image, std::vector<dlib::rectangle> faceRects, std::function<void(dlib::full_object_detection&)> faceLandmarkCallback);
         
