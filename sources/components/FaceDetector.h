@@ -13,7 +13,7 @@
 
 -(void)detectOn:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects;
 
--(void)faceLandmarkDetectOn:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects;
+-(void)faceLandmarkDetectOn:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects landmarkResult:(void(^)(long index, CGPoint point))landmarkResult;
 
 
 @end

@@ -40,10 +40,19 @@ using namespace cv;
 - (instancetype) init {
     self = [super init];
     if (self) {
-        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
+        landmarkDetector = std::make_shared<fc::FaceLandmarkDetector>();
+        
+//        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
+//        std::string modelFileNameCString = [modelFileName UTF8String];
+//
+//        landmarkDetector->use(DlibModule, modelFileName);
+        
+        
+        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"lbfmodel" ofType:@"yml"];
         std::string modelFileNameCString = [modelFileName UTF8String];
         
-        landmarkDetector = std::make_shared<fc::FaceLandmarkDetector>(modelFileNameCString);
+        landmarkDetector->use(fc::FaceLandmarkDetector::OpencvModel, modelFileNameCString);
+        
     }
     return self;
 }
@@ -66,28 +75,44 @@ using namespace cv;
     
     cv::Mat pixelBuffer((int)height, (int)width, CV_8UC4, baseBuffer, bytesPerRow);
     
-    dlib::cv_image<dlib::rgb_alpha_pixel> dPixelBuffer(pixelBuffer);
+//    dlib::cv_image<dlib::rgb_alpha_pixel> dPixelBuffer(pixelBuffer);
     
     CVPixelBufferUnlockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
 
-    std::vector<dlib::rectangle> faceRects;
+//    std::vector<dlib::rectangle> faceRects;
+//    for (NSValue *value in rects) {
+//        faceRects.push_back([self convertCGRect:value]);
+//    }
+//    landmarkDetector->detectLandmark(dPixelBuffer, faceRects, [&](dlib::full_object_detection& detection) {
+//        for (long index = 0; index < detection.num_parts(); index++) {
+//            dlib::point point = detection.part(index);
+//            if (landmarkResult != nil) {
+//                CGPoint cgPoint = CGPointMake(point.x(), point.y());
+//                landmarkResult(index, cgPoint);
+//            }
+//        }
+//    });
+
+    std::vector<cv::Rect> faceRects;
     for (NSValue *value in rects) {
-        faceRects.push_back([self convertCGRect:value]);
+        CGRect rectValue = value.CGRectValue;
+        cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
+        faceRects.push_back(faceRect);
     }
     
-    landmarkDetector->detectLandmark(dPixelBuffer, faceRects, [&](dlib::full_object_detection& detection) {
-        for (long index = 0; index < detection.num_parts(); index++) {
-            dlib::point point = detection.part(index);
-            if (landmarkResult != nil) {
-                CGPoint cgPoint = CGPointMake(point.x(), point.y());
-                landmarkResult(index, cgPoint);
-            }
+    landmarkDetector->detectLandmark(pixelBuffer, faceRects, [&](std::vector<cv::Point2f> shape){
+        for(unsigned long index = 0; index < shape.size(); index++) {
+            cv::circle(pixelBuffer, shape[index], 5, cv::Scalar(0,0,255), cv::FILLED);
         }
+//        if (landmarkResult != nil) {
+//            CGPoint cgPoint = CGPointMake(point.x(), point.y());
+//            landmarkResult(index, cgPoint);
+//        }
     });
-
+    
     CVPixelBufferLockBaseAddress(imageBuffer, 0);
 
-    pixelBuffer = dlib::toMat(dPixelBuffer);
+//    pixelBuffer = dlib::toMat(dPixelBuffer);
     
     width = CVPixelBufferGetWidth(imageBuffer);
     height = CVPixelBufferGetHeight(imageBuffer);

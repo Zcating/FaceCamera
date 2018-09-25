@@ -349,7 +349,9 @@ AVCaptureMetadataOutputObjectsDelegate
                 [bounds addObject:[NSValue valueWithCGRect:face.bounds]];
             }
         }
-        [[FaceDetector shared] faceLandmarkDetectOn:sampleBuffer inRects: bounds];
+        [[FaceDetector shared] faceLandmarkDetectOn:sampleBuffer inRects: bounds landmarkResult:^(long index, CGPoint point) {
+            
+        }];
     }
     [self.displayLayer enqueueSampleBuffer:sampleBuffer];
 }

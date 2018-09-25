@@ -20,17 +20,24 @@ namespace fc {
     
     class FaceLandmarkDetector {
         dlib::shape_predictor shapePredictor;
-        FaceLandmarkDetector(){};
-        cv::Ptr<cv::Facemark> facemark;
+        cv::Ptr<cv::face::Facemark> facemark;
         
     public:
-        FaceLandmarkDetector(std::string);
+        enum DetectorModel {
+            DlibModel,
+            OpencvModel,
+        };
         
+        FaceLandmarkDetector(){};
         
+        void use(DetectorModel, std::string);
         
         void detectLandmark(dlib::cv_image<dlib::rgb_alpha_pixel> image, std::vector<dlib::rectangle> faceRects, std::function<void(dlib::full_object_detection&)> faceLandmarkCallback);
         
         void detectLandmark(dlib::cv_image<dlib::rgb_pixel> image, std::vector<dlib::rectangle> faceRects, std::function<void(dlib::full_object_detection&)> faceLandmarkCallback);
+        
+        
+        void detectLandmark(cv::Mat image, std::vector<cv::Rect> faceRects, std::function<void(std::vector<cv::Point2f>)> faceLandmarkResult);
     };
 }
 

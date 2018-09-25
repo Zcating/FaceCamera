@@ -45,6 +45,7 @@
 		CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
 		CB9CB69521509ED800E687B9 /* FaceLandmarkDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */; };
 		CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */; };
+		CBE830582159D55F0081B112 /* lbfmodel.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CBE830572159D55E0081B112 /* lbfmodel.yaml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		CB9CB69421509ED800E687B9 /* FaceLandmarkDetector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FaceLandmarkDetector.hpp; sourceTree = "<group>"; };
 		CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
 		CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
+		CBE830572159D55E0081B112 /* lbfmodel.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lbfmodel.yaml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 		CB83E217212A8EC100265D61 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				CBE830572159D55E0081B112 /* lbfmodel.yaml */,
 				CB9CA76D214B5BF900E687B9 /* whiskers.png */,
 				CB9CA769214B4DDA00E687B9 /* rect.jpg */,
 				CB83E2402132A9B200265D61 /* lena.png */,
@@ -384,6 +387,7 @@
 				CB9CA76E214B5BF900E687B9 /* whiskers.png in Resources */,
 				CB83E234212A8EC100265D61 /* haarcascade_frontalface_alt.xml in Resources */,
 				CB83E23A212A8EC100265D61 /* haarcascade_eye_tree_eyeglasses.xml in Resources */,
+				CBE830582159D55F0081B112 /* lbfmodel.yaml in Resources */,
 				CB83E239212A8EC100265D61 /* haarcascade_fullbody.xml in Resources */,
 				CB83E235212A8EC100265D61 /* haarcascade_lowerbody.xml in Resources */,
 				CB83E233212A8EC100265D61 /* haarcascade_righteye_2splits.xml in Resources */,
