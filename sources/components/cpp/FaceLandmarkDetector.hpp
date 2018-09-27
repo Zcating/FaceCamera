@@ -23,6 +23,7 @@ namespace fc {
         cv::Ptr<cv::face::Facemark> facemark;
         
     public:
+        typedef std::vector<std::vector<cv::Point>> Array2D;
         enum DetectorModel {
             DlibModel,
             OpencvModel,
@@ -38,6 +39,8 @@ namespace fc {
         
         
         void detectLandmark(cv::Mat image, std::vector<cv::Rect> faceRects, std::function<void(std::vector<cv::Point2f>)> faceLandmarkResult);
+
+        Array2D detectLandmark(cv::Mat image, std::vector<cv::Rect> faceRects);
     };
 }
 

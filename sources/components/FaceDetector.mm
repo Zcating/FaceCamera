@@ -48,7 +48,7 @@ using namespace cv;
 //        landmarkDetector->use(DlibModule, modelFileName);
         
         
-        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"lbfmodel" ofType:@"yml"];
+        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"lbfmodel" ofType:@"yaml"];
         std::string modelFileNameCString = [modelFileName UTF8String];
         
         landmarkDetector->use(fc::FaceLandmarkDetector::OpencvModel, modelFileNameCString);
@@ -96,19 +96,30 @@ using namespace cv;
     std::vector<cv::Rect> faceRects;
     for (NSValue *value in rects) {
         CGRect rectValue = value.CGRectValue;
+        CGFloat midX = rectValue.origin.x + rectValue.size.width / 2;
+        CGFloat midY = rectValue.origin.y + rectValue.size.height / 2;
+        CGFloat radius = rectValue.size.width > rectValue.size.height ? rectValue.size.width / 2 : rectValue.size.height / 2;
+        radius *= 1.5;
+//
+        CGFloat top = midX - radius;
+        CGFloat left = midY - radius;
+        CGFloat sideLength = radius * 2;
+//
+        cv::Rect faceRect1(top, left, sideLength, sideLength);
         cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
-        faceRects.push_back(faceRect);
+        
+        cv::rectangle(pixelBuffer, faceRect.tl(), faceRect.br(), cv::Scalar(0, 0, 255, 255));
+         cv::rectangle(pixelBuffer, faceRect1.tl(), faceRect1.br(), cv::Scalar(0,0, 255, 255));
+        
+        faceRects.push_back(faceRect1);
     }
     
-    landmarkDetector->detectLandmark(pixelBuffer, faceRects, [&](std::vector<cv::Point2f> shape){
-        for(unsigned long index = 0; index < shape.size(); index++) {
-            cv::circle(pixelBuffer, shape[index], 5, cv::Scalar(0,0,255), cv::FILLED);
-        }
+    landmarkDetector->detectLandmark(pixelBuffer, faceRects);
+
 //        if (landmarkResult != nil) {
 //            CGPoint cgPoint = CGPointMake(point.x(), point.y());
 //            landmarkResult(index, cgPoint);
 //        }
-    });
     
     CVPixelBufferLockBaseAddress(imageBuffer, 0);
 
@@ -118,7 +129,7 @@ using namespace cv;
     height = CVPixelBufferGetHeight(imageBuffer);
     baseBuffer = (char *)CVPixelBufferGetBaseAddress(imageBuffer);
 
-    int cn = pixelBuffer.channels();
+    int channels = pixelBuffer.channels();
     cv::Scalar_<uint8_t> rgbPixel;
     uint8_t* pixelPtr = (uint8_t *)pixelBuffer.data;
 
@@ -130,10 +141,10 @@ using namespace cv;
         {
             long bufferLocation = position * 4;
 
-            rgbPixel.val[0] = pixelPtr[i*pixelBuffer.cols*cn + j*cn + 0];
-            rgbPixel.val[1] = pixelPtr[i*pixelBuffer.cols*cn + j*cn + 1];
-            rgbPixel.val[2] = pixelPtr[i*pixelBuffer.cols*cn + j*cn + 2];
-            rgbPixel.val[3] = pixelPtr[i*pixelBuffer.cols*cn + j*cn + 3];
+            rgbPixel.val[0] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 0];
+            rgbPixel.val[1] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 1];
+            rgbPixel.val[2] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 2];
+            rgbPixel.val[3] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 3];
             
             baseBuffer[bufferLocation] = rgbPixel.val[0];
             baseBuffer[bufferLocation + 1] = rgbPixel.val[1];
