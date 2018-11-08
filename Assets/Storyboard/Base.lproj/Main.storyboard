@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="FCMainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="FCMainViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OSd-Ka-uab"/>
+                        <viewControllerLayoutGuide type="bottom" id="OGh-s6-9OH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="69L-YO-9nH" customClass="ShutterView">
+                                <rect key="frame" x="0.0" y="616" width="414" height="120"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="CpQ-UP-ijK"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="rect" keyPath="ShutterFrame">
+                                        <rect key="value" x="135" y="11" width="100" height="100"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ulM-Hr-bfc" customClass="FaceCameraView">
+                                <rect key="frame" x="0.0" y="100" width="414" height="414"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ulM-Hr-bfc" secondAttribute="height" multiplier="1:1" id="wtc-1Z-m9v"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XCQ-Od-Tgz">
+                                <rect key="frame" x="20" y="30" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="openSetting:" destination="BYZ-38-t0r" eventType="touchUpInside" id="J6z-uK-La4"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ogi-A1-FKs">
+                                <rect key="frame" x="88" y="30" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="openSwitch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6p4-5B-K1f"/>
+                                </connections>
+                            </button>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dz8-j7-2aV">
+                                <rect key="frame" x="28" y="74" width="358" height="100"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                <connections>
+                                    <segue destination="HD4-av-4Lt" kind="embed" identifier="TopContainViewSegue" id="KlE-a7-1Q4"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="XCQ-Od-Tgz" firstAttribute="top" secondItem="OSd-Ka-uab" secondAttribute="bottom" constant="10" id="AtA-UG-Lji"/>
+                            <constraint firstItem="69L-YO-9nH" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="C6v-jr-gw5"/>
+                            <constraint firstItem="ulM-Hr-bfc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="100" id="Es5-Og-1K0"/>
+                            <constraint firstItem="69L-YO-9nH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="KgI-Ja-bKo"/>
+                            <constraint firstItem="69L-YO-9nH" firstAttribute="bottom" secondItem="OGh-s6-9OH" secondAttribute="top" id="LKQ-sc-S5l"/>
+                            <constraint firstAttribute="trailing" secondItem="ulM-Hr-bfc" secondAttribute="trailing" id="aHJ-gF-qxG"/>
+                            <constraint firstItem="XCQ-Od-Tgz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="ro0-vm-zNL"/>
+                            <constraint firstItem="ulM-Hr-bfc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="unv-jh-Voc"/>
+                            <constraint firstItem="Ogi-A1-FKs" firstAttribute="top" secondItem="OSd-Ka-uab" secondAttribute="bottom" constant="10" id="wOe-4c-UAM"/>
+                            <constraint firstItem="Ogi-A1-FKs" firstAttribute="leading" secondItem="XCQ-Od-Tgz" secondAttribute="trailing" constant="22" id="wsO-R2-yCM"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="cameraView" destination="ulM-Hr-bfc" id="hoW-St-6kJ"/>
+                        <outlet property="shutterView" destination="69L-YO-9nH" id="gM7-dr-X3t"/>
+                        <outlet property="topContainerView" destination="Dz8-j7-2aV" id="JtW-s3-e1y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-519" y="-192"/>
+        </scene>
+        <!--Scissor View Controller-->
+        <scene sceneID="0UH-hh-Trw">
+            <objects>
+                <viewController storyboardIdentifier="ScissorViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HD4-av-4Lt" customClass="ScissorViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zyx-aa-PUJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="iEH-vF-L13"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2GJ-Ru-1hP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ByW-bn-tMq">
+                                <rect key="frame" x="16" y="10" width="46" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="lena.png"/>
+                                <connections>
+                                    <action selector="changeRatio_4To3:" destination="HD4-av-4Lt" eventType="touchUpInside" id="i5p-6c-UOu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugd-ad-Riy">
+                                <rect key="frame" x="83" y="10" width="46" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="lena.png"/>
+                                <connections>
+                                    <action selector="changeRatio_16To9:" destination="HD4-av-4Lt" eventType="touchUpInside" id="RiT-LD-iJ1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Fi-eK-MK1">
+                                <rect key="frame" x="164" y="10" width="46" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="lena.png"/>
+                                <connections>
+                                    <action selector="changeRatio_1To1:" destination="HD4-av-4Lt" eventType="touchUpInside" id="dO7-2F-KLU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Rn-Ut-O43">
+                                <rect key="frame" x="242" y="10" width="46" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="lena.png"/>
+                                <connections>
+                                    <action selector="changeRatio_Round:" destination="HD4-av-4Lt" eventType="touchUpInside" id="2e2-CM-BAo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <size key="freeformSize" width="375" height="100"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4DO-T0-VcP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="283" y="-373"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="lena.png" width="512" height="512"/>
+    </resources>
+</document>
