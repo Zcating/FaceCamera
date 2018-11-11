@@ -48,14 +48,15 @@ IB_DESIGNABLE
 
 
 - (void) processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
+    
+    if(self.delegate != nil && [self.delegate respondsToSelector:@selector(processframe:faces:)]) {
+        [self.delegate processframe:frame faces:faces];
+    }
+    
     [self.displayLayer enqueueSampleBuffer:frame];
     
     if (self.displayLayer.status == AVQueuedSampleBufferRenderingStatusFailed) {
         [self.displayLayer flush];
-    }
-    
-    if(self.delegate != nil && [self.delegate respondsToSelector:@selector(processframe:faces:)]) {
-        [self.delegate processframe:frame faces:faces];
     }
 }
 
@@ -80,8 +81,8 @@ IB_DESIGNABLE
 }
 
 - (void)setFrame:(CGRect)frame {
-    [super setFrame:frame];
     self.displayLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+    [super setFrame:frame];
 }
 
 @end

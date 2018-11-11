@@ -43,12 +43,14 @@
 		CB9CB550214C94DB00E687B9 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = CB9CB026214C94D000E687B9 /* shape_predictor_68_face_landmarks.dat */; };
 		CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
 		CB9CB69521509ED800E687B9 /* FaceLandmarkDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */; };
+		CB9FB129219518F300C4B71C /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9FB1272195181300C4B71C /* BaseViewController.m */; };
 		CBA70C7F2192CA5000D4FCC0 /* ScissorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA70C7D2192CA5000D4FCC0 /* ScissorViewController.m */; };
 		CBA70C832192CF4900D4FCC0 /* ScissorSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA70C822192CF4900D4FCC0 /* ScissorSwitch.m */; };
 		CBB21227218309C100F2F469 /* FCApplicationAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB21226218309C100F2F469 /* FCApplicationAssembly.m */; };
 		CBB2122B2183170700F2F469 /* CoreAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB2122A2183170700F2F469 /* CoreAssembly.m */; };
 		CBB2122E2183182700F2F469 /* FaceCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB2122D2183182700F2F469 /* FaceCameraView.m */; };
-		CBB212312184034E00F2F469 /* NativeFaceDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBB212302184034E00F2F469 /* NativeFaceDetector.mm */; };
+		CBB212312184034E00F2F469 /* LandmarkDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBB212302184034E00F2F469 /* LandmarkDetector.mm */; };
+		CBBB8C2C2196E23B004F6505 /* FCCoreVisualService.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBBB8C2B2196E23B004F6505 /* FCCoreVisualService.mm */; };
 		CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */; };
 		CBE830582159D55F0081B112 /* lbfmodel.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CBE830572159D55E0081B112 /* lbfmodel.yaml */; };
 		F7E455E2432614F305791F2F /* Pods_FaceCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072BAF81947993B782CE3247 /* Pods_FaceCamera.framework */; };
@@ -116,6 +118,8 @@
 		CB9CB68B214F753200E687B9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FaceLandmarkDetector.cpp; sourceTree = "<group>"; };
 		CB9CB69421509ED800E687B9 /* FaceLandmarkDetector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FaceLandmarkDetector.hpp; sourceTree = "<group>"; };
+		CB9FB1262195181300C4B71C /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		CB9FB1272195181300C4B71C /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		CBA70C7C2192CA5000D4FCC0 /* ScissorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScissorViewController.h; sourceTree = "<group>"; };
 		CBA70C7D2192CA5000D4FCC0 /* ScissorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScissorViewController.m; sourceTree = "<group>"; };
 		CBA70C812192CF4900D4FCC0 /* ScissorSwitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScissorSwitch.h; sourceTree = "<group>"; };
@@ -126,8 +130,10 @@
 		CBB2122A2183170700F2F469 /* CoreAssembly.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreAssembly.m; sourceTree = "<group>"; };
 		CBB2122C2183182700F2F469 /* FaceCameraView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceCameraView.h; sourceTree = "<group>"; };
 		CBB2122D2183182700F2F469 /* FaceCameraView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaceCameraView.m; sourceTree = "<group>"; };
-		CBB2122F2184034E00F2F469 /* NativeFaceDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeFaceDetector.h; sourceTree = "<group>"; };
-		CBB212302184034E00F2F469 /* NativeFaceDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NativeFaceDetector.mm; sourceTree = "<group>"; };
+		CBB2122F2184034E00F2F469 /* LandmarkDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LandmarkDetector.h; sourceTree = "<group>"; };
+		CBB212302184034E00F2F469 /* LandmarkDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LandmarkDetector.mm; sourceTree = "<group>"; };
+		CBBB8C2A2196E23B004F6505 /* FCCoreVisualService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCCoreVisualService.h; sourceTree = "<group>"; };
+		CBBB8C2B2196E23B004F6505 /* FCCoreVisualService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FCCoreVisualService.mm; sourceTree = "<group>"; };
 		CBCDD3F4213D6C43000F5BD9 /* ShutterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
 		CBCDD3F5213D6C43000F5BD9 /* ShutterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 		CBE830572159D55E0081B112 /* lbfmodel.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lbfmodel.yaml; sourceTree = "<group>"; };
@@ -162,6 +168,7 @@
 		CB30CA622191783D0012D84A /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				CBBB8C292196E164004F6505 /* Image */,
 				CBB212332184159600F2F469 /* Detector */,
 			);
 			path = Service;
@@ -312,6 +319,8 @@
 				CB83E1E82129B02D00265D61 /* FCMainViewController.mm */,
 				CBA70C7C2192CA5000D4FCC0 /* ScissorViewController.h */,
 				CBA70C7D2192CA5000D4FCC0 /* ScissorViewController.m */,
+				CB9FB1262195181300C4B71C /* BaseViewController.h */,
+				CB9FB1272195181300C4B71C /* BaseViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -331,12 +340,21 @@
 			isa = PBXGroup;
 			children = (
 				CB83E20C212A61CF00265D61 /* FaceDetector.h */,
-				CBB2122F2184034E00F2F469 /* NativeFaceDetector.h */,
-				CBB212302184034E00F2F469 /* NativeFaceDetector.mm */,
+				CBB2122F2184034E00F2F469 /* LandmarkDetector.h */,
+				CBB212302184034E00F2F469 /* LandmarkDetector.mm */,
 				CB9CB69421509ED800E687B9 /* FaceLandmarkDetector.hpp */,
 				CB9CB69321509ED800E687B9 /* FaceLandmarkDetector.cpp */,
 			);
 			path = Detector;
+			sourceTree = "<group>";
+		};
+		CBBB8C292196E164004F6505 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				CBBB8C2A2196E23B004F6505 /* FCCoreVisualService.h */,
+				CBBB8C2B2196E23B004F6505 /* FCCoreVisualService.mm */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		CBCDD3F3213D6C1C000F5BD9 /* view */ = {
@@ -492,14 +510,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FaceCamera/Pods-FaceCamera-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-				"${BUILT_PRODUCTS_DIR}/Typhoon/Typhoon.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Typhoon.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -560,12 +576,14 @@
 				CBA70C7F2192CA5000D4FCC0 /* ScissorViewController.m in Sources */,
 				CBA70C832192CF4900D4FCC0 /* ScissorSwitch.m in Sources */,
 				CBB2122B2183170700F2F469 /* CoreAssembly.m in Sources */,
+				CBBB8C2C2196E23B004F6505 /* FCCoreVisualService.mm in Sources */,
 				CB83E1E92129B02D00265D61 /* FCMainViewController.mm in Sources */,
-				CBB212312184034E00F2F469 /* NativeFaceDetector.mm in Sources */,
+				CBB212312184034E00F2F469 /* LandmarkDetector.mm in Sources */,
 				CB9CB69521509ED800E687B9 /* FaceLandmarkDetector.cpp in Sources */,
 				CB83E1F42129B03100265D61 /* main.m in Sources */,
 				CBB21227218309C100F2F469 /* FCApplicationAssembly.m in Sources */,
 				CBCDD3F6213D6C43000F5BD9 /* ShutterView.m in Sources */,
+				CB9FB129219518F300C4B71C /* BaseViewController.m in Sources */,
 				CB83E1E62129B02C00265D61 /* AppDelegate.m in Sources */,
 				CB83E23F212C418A00265D61 /* FaceCamera.m in Sources */,
 				CBB2122E2183182700F2F469 /* FaceCameraView.m in Sources */,

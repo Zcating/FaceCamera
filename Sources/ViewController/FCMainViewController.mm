@@ -14,14 +14,16 @@
 
 #import "ScissorViewController.h"
 
+#import "FCCoreVisualService.h"
 
 #import <Masonry/Masonry.h>
 
 
-
 @interface FCMainViewController () <
 FaceCameraDelegate
->
+> {
+
+}
 
 
 @property (weak, nonatomic) IBOutlet FaceCameraView *cameraView;
@@ -33,6 +35,8 @@ FaceCameraDelegate
 @property (weak, nonatomic) IBOutlet UIView *topContainerView;
 
 
+@property (strong, nonatomic) FCCoreVisualService *coreVisualService;
+
 @end
 
 @implementation FCMainViewController
@@ -40,7 +44,13 @@ FaceCameraDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    self.scissorSwitch.hidden = YES;
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
+//    _landmarkDetector = std::make_shared<fc::FaceLandmarkDetector>();
+//    std::string modelFileNameCString = [path UTF8String];
+//    _landmarkDetector->use(modelFileNameCString);
+    
+    self.coreVisualService = [FCCoreVisualService new];
+    
     
     self.cameraView.delegate = self;
     [self.cameraView start];
@@ -49,10 +59,31 @@ FaceCameraDelegate
         
     }];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(start) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    ScissorViewController *viewController = [self findChildViewController:NSStringFromClass([ScissorViewController class])];
+    
+    NSLog(@"viewContoller %@", viewController);
+    
+    
+    __weak typeof(self) weakSelf = self;
+    viewController.block = ^(double ratio) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        double width = CGRectGetWidth(strongSelf.cameraView.frame);
+        CGRect afterFrame = CGRectMake(0, 0, width, width * ratio);
+        [UIView animateWithDuration:0.2 animations:^{
+            strongSelf.cameraView.frame = afterFrame;
+            if (ratio == 1) {
+                strongSelf.cameraView.center = strongSelf.view.center;
+            }
+        }];
+    };
 }
+
 
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -106,75 +137,11 @@ FaceCameraDelegate
 }
 
 
-
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
     if (faces == nil) {
         return;
     }
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-
-    CVPixelBufferLockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
-
-    size_t width = CVPixelBufferGetWidth(imageBuffer);
-    size_t height = CVPixelBufferGetHeight(imageBuffer);
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-    char *baseBuffer = (char *)CVPixelBufferGetBaseAddress(imageBuffer);
-
-    cv::Mat pixelBuffer((int)height, (int)width, CV_8UC4, baseBuffer, bytesPerRow);
-
-
-    CVPixelBufferUnlockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
-
-    std::vector<cv::Rect> faceRects;
-    for (NSValue *value in faces) {
-        CGRect rectValue = value.CGRectValue;
-        CGFloat midX = rectValue.origin.x + rectValue.size.width / 2;
-        CGFloat midY = rectValue.origin.y + rectValue.size.height / 2;
-        CGFloat radius = rectValue.size.width > rectValue.size.height ? rectValue.size.width / 2 : rectValue.size.height / 2;
-        radius *= 1.5;
-            //
-        CGFloat top = midX - radius;
-        CGFloat left = midY - radius;
-        CGFloat sideLength = radius * 2;
-            //
-        cv::Rect faceRect1(top, left, sideLength, sideLength);
-        cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
-
-        cv::rectangle(pixelBuffer, faceRect.tl(), faceRect.br(), cv::Scalar(0, 0, 255, 255), 2);
-
-        faceRects.push_back(faceRect1);
-    }
-    
-    CVPixelBufferLockBaseAddress(imageBuffer, 0);
-
-        //    pixelBuffer = dlib::toMat(dPixelBuffer);
-
-    width = CVPixelBufferGetWidth(imageBuffer);
-    height = CVPixelBufferGetHeight(imageBuffer);
-    baseBuffer = (char *)CVPixelBufferGetBaseAddress(imageBuffer);
-
-    int channels = pixelBuffer.channels();
-    uint8_t* pixelPtr = (uint8_t *)pixelBuffer.data;
-
-    // traslate to sample buffer.
-    long position = 0;
-    for(int i = 0; i < pixelBuffer.rows; i++) {
-        for(int j = 0; j < pixelBuffer.cols; j++) {
-            long bufferLocation = position * 4;
-            // red
-            baseBuffer[bufferLocation]  = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 0];
-            // green
-            baseBuffer[bufferLocation + 1] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 1];
-            // blue
-            baseBuffer[bufferLocation + 2] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 2];
-            // alpha
-            baseBuffer[bufferLocation + 3] = pixelPtr[i * pixelBuffer.cols * channels + j * channels + 3];
-            
-            position++;
-        }
-    }
-
-    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+    [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces];
 }
 
 

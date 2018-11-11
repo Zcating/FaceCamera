@@ -31,5 +31,5 @@
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
 
-
+#define FC_DEBUG
 

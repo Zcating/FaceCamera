@@ -116,9 +116,11 @@ AVCaptureMetadataOutputObjectsDelegate
     [self.session startRunning];
 }
 
+
 - (void)stop {
     [self.session stopRunning];
 }
+
 
 - (void)switchCamera:(AVCaptureDevicePosition)devicePosition {
     if (devicePosition == AVCaptureDevicePositionFront) {
@@ -307,8 +309,8 @@ AVCaptureMetadataOutputObjectsDelegate
 -(AVCaptureSession *)session {
     if (_session == nil) {
         _session = [AVCaptureSession new];
-        if ([_session canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-            _session.sessionPreset = AVCaptureSessionPreset1280x720;
+        if ([_session canSetSessionPreset:AVCaptureSessionPresetHigh]) {
+            _session.sessionPreset = AVCaptureSessionPresetHigh;
         }
     }
     return _session;
@@ -327,8 +329,8 @@ AVCaptureMetadataOutputObjectsDelegate
         
         _videoOutput = [AVCaptureVideoDataOutput new];
         _videoOutput.videoSettings = @{
-                                       (NSString*)kCVPixelBufferPixelFormatTypeKey: @(kCMPixelFormat_32BGRA)
-                                       };
+            (NSString*)kCVPixelBufferPixelFormatTypeKey: @(kCMPixelFormat_32BGRA)
+        };
         _videoOutput.alwaysDiscardsLateVideoFrames = YES;
         [_videoOutput setSampleBufferDelegate:self queue:_videoQueue];
     }
@@ -357,6 +359,7 @@ AVCaptureMetadataOutputObjectsDelegate
         self.session.sessionPreset = sessionPreset;
     }
 }
+
 
 
 - (AVCaptureDevicePosition)devicePosition {

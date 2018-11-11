@@ -9,7 +9,7 @@ target 'FaceCamera' do
   use_frameworks!
 
   # Pods for FaceCamera
-  pod 'Typhoon'
+#  pod 'Typhoon'
   pod 'Masonry'
 
   target 'FaceCameraTests' do

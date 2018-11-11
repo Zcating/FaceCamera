@@ -1,16 +1,16 @@
+////
+////  FCApplicationAssembly.m
+////  FaceCamera
+////
+////  Created by  zcating on 2018/10/26.
+////  Copyright © 2018 zcat. All rights reserved.
+////
 //
-//  FCApplicationAssembly.m
-//  FaceCamera
+//#import "FCApplicationAssembly.h"
 //
-//  Created by  zcating on 2018/10/26.
-//  Copyright © 2018 zcat. All rights reserved.
+//#import "AppDelegate.h"
 //
-
-#import "FCApplicationAssembly.h"
-
-#import "AppDelegate.h"
-
-@implementation FCApplicationAssembly
-
-
-@end
+//@implementation FCApplicationAssembly
+//
+//
+//@end
