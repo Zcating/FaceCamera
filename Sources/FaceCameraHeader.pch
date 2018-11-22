@@ -7,6 +7,8 @@
 //
 
 
+#define ALL_HEADER
+
 #ifdef __cplusplus
 //#include <>
 #import <dlib/image_processing.h>
@@ -17,6 +19,9 @@
 #import <opencv2/core/core.hpp>
 //#import <opencv2/shape/>
 #endif
+
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
 
 
 
