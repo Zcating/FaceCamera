@@ -11,6 +11,7 @@ target 'FaceCamera' do
   # Pods for FaceCamera
 #  pod 'Typhoon'
   pod 'Masonry'
+#  pod 'GPUImage'
 
   target 'FaceCameraTests' do
     inherit! :search_paths

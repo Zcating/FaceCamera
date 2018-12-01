@@ -10,22 +10,23 @@
 #define ALL_HEADER
 
 #ifdef __cplusplus
-//#include <>
+
 #import <dlib/image_processing.h>
 #import <dlib/image_io.h>
 #import <dlib/opencv.h>
 
 #import <opencv2/opencv.hpp>
 #import <opencv2/core/core.hpp>
+
+//#include <>
+
 //#import <opencv2/shape/>
 #endif
-
-#include <OpenGLES/ES3/gl.h>
-#include <OpenGLES/ES3/glext.h>
 
 
 
 #ifdef __OBJC__
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>

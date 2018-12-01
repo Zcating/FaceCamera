@@ -6,6 +6,9 @@
 //  Copyright © 2018 zcat. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+
 @protocol FaceCameraDelegate;
 
 typedef NS_ENUM(NSUInteger, FCRatioType) {

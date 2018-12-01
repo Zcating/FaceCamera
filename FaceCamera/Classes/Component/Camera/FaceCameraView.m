@@ -8,18 +8,18 @@
 
 #import "FaceCameraView.h"
 
+//#import "MaskGLView.h"
+
 #import "FaceCamera.h"
 
 
-IB_DESIGNABLE
-@interface FaceCameraView()<FaceCameraDelegate> {
-    FaceCamera *_faceCamera;
-}
+@interface FaceCameraView()<FaceCameraDelegate>
 
 @property (nonatomic, strong) AVSampleBufferDisplayLayer *displayLayer;
 
-@property (nonatomic, strong, readonly) FaceCamera *faceCamera;
+@property (nonatomic, strong) FaceCamera *faceCamera;
 
+//@property (nonatomic, strong) MaskGLView *glView;
 
 @end
 
@@ -42,26 +42,23 @@ IB_DESIGNABLE
 }
 
 
-- (void)changeRatio:(FCRatioType)ratio {
-    
-}
 
 
-- (void) processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
+- (void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
     
     if(self.delegate != nil && [self.delegate respondsToSelector:@selector(processframe:faces:)]) {
         [self.delegate processframe:frame faces:faces];
     }
     
-    [self.displayLayer enqueueSampleBuffer:frame];
-    
     if (self.displayLayer.status == AVQueuedSampleBufferRenderingStatusFailed) {
         [self.displayLayer flush];
     }
+
+    [self.displayLayer enqueueSampleBuffer:frame];
 }
 
 
--(AVSampleBufferDisplayLayer *)displayLayer {
+- (AVSampleBufferDisplayLayer *)displayLayer {
     if (_displayLayer == nil) {
         _displayLayer = [AVSampleBufferDisplayLayer layer];
         _displayLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
@@ -75,7 +72,7 @@ IB_DESIGNABLE
     if (_faceCamera == nil) {
         _faceCamera = [[FaceCamera alloc] initWithDelegate:self];
         _faceCamera.devicePosition = AVCaptureDevicePositionFront;
-        _faceCamera.sessionPreset = AVCaptureSessionPresetHigh;
+        _faceCamera.sessionPreset = AVCaptureSessionPreset1280x720;
     }
     return _faceCamera;
 }

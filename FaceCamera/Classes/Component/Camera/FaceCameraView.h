@@ -13,7 +13,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-IB_DESIGNABLE
 @interface FaceCameraView : UIView
 
 @property (nonatomic, weak) id<FaceCameraDelegate> delegate;
@@ -21,8 +20,6 @@ IB_DESIGNABLE
 -(void)start;
 
 -(void)stop;
-
--(void)changeRatio:(FCRatioType)ratio;
 
 @end
 

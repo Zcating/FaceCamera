@@ -10,8 +10,6 @@
 #define FaceUtil_hpp
 
 #include <opencv2/opencv.hpp>
-#include "FaceRenderer.hpp"
-#include "Shader.hpp"
 
 
 namespace fc {
@@ -21,12 +19,10 @@ namespace fc {
         cv::Mat image;
         cv::Rect rect;
         std::vector<cv::Point> landmarks;
-        std::shared_ptr<FaceRenderer> renderer;
-        
+
         
     public:
-        FaceCore(int width, int height, const char* vshPath, const char* fshPath) {
-//            renderer = std::make_shared<FaceRenderer>(Shader(vshPath, fshPath), width, height);
+        FaceCore(int width, int height) {
         };
         
         ~FaceCore() {};
@@ -41,8 +37,6 @@ namespace fc {
         FaceCore& delaunaryTriangles();
         
         FaceCore& drawLip();
-        
-        FaceCore& drawMouthWithOpenGL();
     };
 }
 
