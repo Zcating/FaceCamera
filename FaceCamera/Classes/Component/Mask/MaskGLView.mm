@@ -34,36 +34,36 @@ inline static double Angle(const cv::Point_<double>& point1, const cv::Point_<do
     MaskMap _maskMap;
     
     
-    float _prevDistOf36and45;
-    float _prevAngleOf36and45;
+    float _previousDistOf36and45;
+    float _previousAngleOf36and45;
     
-    float _prevDistOf68and36;
-    float _prevAngleOf68and36;
+    float _previousDistOf68and36;
+    float _previousAngleOf68and36;
     
-    float _prevDistOf69and36;
-    float _prevAngleOf69and36;
-    
-    
-    float _prevDistOf70and36;
-    float _prevAngleOf70and36;
-    
-    float _prevDistOf71and36;
-    float _prevAngleOf71and36;
-    
-    float _prevDistOf72and36;
-    float _prevAngleOf72and36;
+    float _previousDistOf69and36;
+    float _previousAngleOf69and36;
     
     
-    float _prevDistOf73and36;
-    float _prevAngleOf73and36;
+    float _previousDistOf70and36;
+    float _previousAngleOf70and36;
+    
+    float _previousDistOf71and36;
+    float _previousAngleOf71and36;
+    
+    float _previousDistOf72and36;
+    float _previousAngleOf72and36;
     
     
-    float _prevDistOf74and36;
-    float _prevAngleOf74and36;
+    float _previousDistOf73and36;
+    float _previousAngleOf73and36;
     
     
-    float _prevDistOf75and36;
-    float _prevAngleOf75and36;
+    float _previousDistOf74and36;
+    float _previousAngleOf74and36;
+    
+    
+    float _previousDistOf75and36;
+    float _previousAngleOf75and36;
     
     
         //
@@ -261,25 +261,22 @@ GLubyte faceShapeTriangles[] = {
 }
 
 
-- (id)initWithFrame:(CGRect)frame imageName:(NSString *)textureName landmarkArray:(NSMutableArray *)landmarkArray{
+- (id)initWithFrame:(CGRect)frame imageName:(NSString *)textureName landmarkArray:(NSMutableArray *)landmarkArray {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLayer];
         [self setupContext];
         [self setupVBOs:textureName withLandmaskArray:landmarkArray];
         [self setupDisplayLink];
-        
-            //        [self initReferenceMaskData];
     }
     return self;
 }
 
 
 
-    // MARK: - Private
+// MARK: - Private
 
 
-    //
 - (void)setupLayer {
     _eaglLayer = (CAEAGLLayer*) self.layer;
     _eaglLayer.opaque = NO;
@@ -360,38 +357,38 @@ GLubyte faceShapeTriangles[] = {
     _maskMap.prevPoint45 = cv::Point_<double>(data5.position[0],data5.position[1]);
     
     
-    _prevDistOf36and45 = Distance(_maskMap.prevPoint45, _maskMap.prevPoint36);
-    _prevAngleOf36and45 = Angle(_maskMap.prevPoint45, _maskMap.prevPoint36);
+    _previousDistOf36and45 = Distance(_maskMap.prevPoint45, _maskMap.prevPoint36);
+    _previousAngleOf36and45 = Angle(_maskMap.prevPoint45, _maskMap.prevPoint36);
     
-    _prevDistOf68and36 = Distance(_maskMap.point68, _maskMap.prevPoint36);
-    _prevAngleOf68and36 = Angle(_maskMap.point68, _maskMap.prevPoint36);
+    _previousDistOf68and36 = Distance(_maskMap.point68, _maskMap.prevPoint36);
+    _previousAngleOf68and36 = Angle(_maskMap.point68, _maskMap.prevPoint36);
     
-    _prevDistOf72and36 = Distance(_maskMap.point72, _maskMap.prevPoint36);
-    _prevAngleOf72and36 = Angle(_maskMap.point72, _maskMap.prevPoint36);
+    _previousDistOf72and36 = Distance(_maskMap.point72, _maskMap.prevPoint36);
+    _previousAngleOf72and36 = Angle(_maskMap.point72, _maskMap.prevPoint36);
     
-    _prevDistOf74and36 = Distance(_maskMap.point74, _maskMap.prevPoint36);
-    _prevAngleOf74and36 = Angle(_maskMap.point74, _maskMap.prevPoint36);
-    
-    
-    _prevDistOf70and36 = Distance(_maskMap.point70, _maskMap.prevPoint36);
-    _prevAngleOf70and36 = Angle(_maskMap.point70, _maskMap.prevPoint36);
+    _previousDistOf74and36 = Distance(_maskMap.point74, _maskMap.prevPoint36);
+    _previousAngleOf74and36 = Angle(_maskMap.point74, _maskMap.prevPoint36);
     
     
-    _prevDistOf69and36 = Distance(_maskMap.point69, _maskMap.prevPoint36);
-    _prevAngleOf69and36 = Angle(_maskMap.point69, _maskMap.prevPoint36);
+    _previousDistOf70and36 = Distance(_maskMap.point70, _maskMap.prevPoint36);
+    _previousAngleOf70and36 = Angle(_maskMap.point70, _maskMap.prevPoint36);
     
     
-    _prevDistOf71and36 = Distance(_maskMap.point71, _maskMap.prevPoint36);
-    _prevAngleOf71and36 = Angle(_maskMap.point71, _maskMap.prevPoint36);
+    _previousDistOf69and36 = Distance(_maskMap.point69, _maskMap.prevPoint36);
+    _previousAngleOf69and36 = Angle(_maskMap.point69, _maskMap.prevPoint36);
+    
+    
+    _previousDistOf71and36 = Distance(_maskMap.point71, _maskMap.prevPoint36);
+    _previousAngleOf71and36 = Angle(_maskMap.point71, _maskMap.prevPoint36);
     
     
     
-    _prevDistOf73and36 = Distance(_maskMap.point73, _maskMap.prevPoint36);
-    _prevAngleOf73and36 = Angle(_maskMap.point73, _maskMap.prevPoint36);
+    _previousDistOf73and36 = Distance(_maskMap.point73, _maskMap.prevPoint36);
+    _previousAngleOf73and36 = Angle(_maskMap.point73, _maskMap.prevPoint36);
     
     
-    _prevDistOf75and36 = Distance(_maskMap.point75, _maskMap.prevPoint36);
-    _prevAngleOf75and36 = Angle(_maskMap.point75, _maskMap.prevPoint36);
+    _previousDistOf75and36 = Distance(_maskMap.point75, _maskMap.prevPoint36);
+    _previousAngleOf75and36 = Angle(_maskMap.point75, _maskMap.prevPoint36);
 
 }
 
@@ -401,7 +398,7 @@ GLubyte faceShapeTriangles[] = {
     float curDistOf36And45 = Distance(_maskMap.curPoint45, _maskMap.curPoint36);
     float curAngleOf36And45 = Angle(_maskMap.curPoint45, _maskMap.curPoint36);
     
-    float angleDif =  _prevAngleOf36and45 - curAngleOf36And45;
+    float angleDif =  _previousAngleOf36and45 - curAngleOf36And45;
     
     
     LandmarkInfo landmarkInfo;
@@ -411,55 +408,55 @@ GLubyte faceShapeTriangles[] = {
     landmarkInfo.curDistOf36And45 = curDistOf36And45;
     
     // 68
-    landmarkInfo.angleOfIndexAnd36 = M_PI - _prevAngleOf68and36;
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf68and36;
+    landmarkInfo.angleOfIndexAnd36 = M_PI - _previousAngleOf68and36;
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf68and36;
     [self updateLandmarkPoint:68 UpdateWith:landmarkInfo];
 
     // 69
-    landmarkInfo.angleOfIndexAnd36 = M_PI + abs( _prevAngleOf69and36);
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf69and36;
+    landmarkInfo.angleOfIndexAnd36 = M_PI + abs( _previousAngleOf69and36);
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf69and36;
     [self updateLandmarkPoint:69 UpdateWith:landmarkInfo];
     
     // 72
-    landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _prevAngleOf72and36);
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf72and36;
+    landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _previousAngleOf72and36);
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf72and36;
     [self updateLandmarkPoint:72 UpdateWith:landmarkInfo];
     
     
     // 74
-    landmarkInfo.angleOfIndexAnd36 = -_prevAngleOf74and36 ;
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf74and36;
+    landmarkInfo.angleOfIndexAnd36 = -_previousAngleOf74and36 ;
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf74and36;
     [self updateLandmarkPoint:74 UpdateWith:landmarkInfo];
     
     // 70
-    landmarkInfo.angleOfIndexAnd36 = M_PI + abs( _prevAngleOf70and36);
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf70and36;
+    landmarkInfo.angleOfIndexAnd36 = M_PI + abs( _previousAngleOf70and36);
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf70and36;
     [self updateLandmarkPoint:70 UpdateWith:landmarkInfo];
 
     
     
     // 71
-    landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _prevAngleOf71and36);
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf71and36;
+    landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _previousAngleOf71and36);
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf71and36;
     [self updateLandmarkPoint:71 UpdateWith:landmarkInfo];
     
     // 73
-    landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _prevAngleOf73and36);
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf73and36;
+    landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _previousAngleOf73and36);
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf73and36;
     [self updateLandmarkPoint:73 UpdateWith:landmarkInfo];
     
     // 75
-    landmarkInfo.angleOfIndexAnd36 =  -_prevAngleOf75and36;
-    landmarkInfo.distOfIndexAnd36 = _prevDistOf75and36;
+    landmarkInfo.angleOfIndexAnd36 =  -_previousAngleOf75and36;
+    landmarkInfo.distOfIndexAnd36 = _previousDistOf75and36;
     [self updateLandmarkPoint:75 UpdateWith:landmarkInfo];
     
 }
 
--(void)updateLandmarkPoint:(int)index UpdateWith:(LandmarkInfo) landmarkInfo{
+-(void)updateLandmarkPoint:(int)index UpdateWith:(LandmarkInfo) landmarkInfo {
     
-    float distOfIndexAnd36 = (landmarkInfo.curDistOf36And45 / _prevDistOf36and45) * landmarkInfo.distOfIndexAnd36;
-    float xOffset = distOfIndexAnd36 * cos( landmarkInfo.angleOfIndexAnd36 + landmarkInfo.angleChanged);
-    float yOffset = distOfIndexAnd36 * sin( landmarkInfo.angleOfIndexAnd36 + landmarkInfo.angleChanged);
+    float distOfIndexAnd36 = (landmarkInfo.curDistOf36And45 / _previousDistOf36and45) * landmarkInfo.distOfIndexAnd36;
+    float xOffset = distOfIndexAnd36 * std::cos(landmarkInfo.angleOfIndexAnd36 + landmarkInfo.angleChanged);
+    float yOffset = distOfIndexAnd36 * std::sin(landmarkInfo.angleOfIndexAnd36 + landmarkInfo.angleChanged);
     
     cv::Point_<double> newPoint(_maskMap.curPoint36.x + xOffset, _maskMap.curPoint36.y - yOffset);
     
@@ -471,9 +468,11 @@ GLubyte faceShapeTriangles[] = {
 
 
 
-    // MARK: - Public
+// MARK: - Public
 
-
+- (void)noFaceDetect {
+    
+}
 - (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape faceIndex:(long)faceIndex {
     
     CGRect rect = [[UIScreen mainScreen] bounds];
@@ -535,7 +534,6 @@ GLubyte faceShapeTriangles[] = {
     
     UIImage *image = [UIImage imageNamed:imageName];
     CGImageRef texRef = [image CGImage];
-        //texture upside down: options:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:GLKTextureLoaderOriginBottomLeft]
     GLKTextureInfo* textureInfo =[GLKTextureLoader textureWithCGImage:texRef options:nil error:NULL];
     
     _baseEffect.texture2d0.name = textureInfo.name;
