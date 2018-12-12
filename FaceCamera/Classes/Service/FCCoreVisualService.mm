@@ -15,7 +15,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 
 @interface FCCoreVisualService () {
     dlib::shape_predictor _shapePredictor;
-    std::shared_ptr<fc::FaceCore> _faceCore;
+//    std::shared_ptr<fc::FaceCore> _faceCore;
 }
 
 @end
@@ -36,13 +36,13 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     NSString *path = [bundle pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
     dlib::deserialize([path UTF8String]) >> _shapePredictor;
 
-    _faceCore = std::make_shared<fc::FaceCore>(1080, 1920);
+//    _faceCore = std::make_shared<fc::FaceCore>(1080, 1920);
     
 }
 
 
 
-- (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces {
+- (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces forLandmarkBlock:(LandmarkBlock)landmarkBlock {
     
     // get all pixels in the frame.
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -61,35 +61,31 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     
     CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
     
-    
-    for (NSValue *value in faces) {
+    [faces enumerateObjectsUsingBlock:^(NSValue * _Nonnull value, NSUInteger index, BOOL * _Nonnull stop) {
         CGRect rectValue = value.CGRectValue;
-        //
+            //
         cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
-
+        
         auto landmarks = _shapePredictor(dlib::cv_image<dlib::rgb_alpha_pixel>(image), ConvertCVRect(faceRect));
         
 #ifdef FC_DEBUG
-//        cv::rectangle(image, faceRect.tl(), faceRect.br(), cv::Scalar(0, 0, 255, 255), 2);
+        cv::rectangle(image, faceRect.tl(), faceRect.br(), cv::Scalar(0, 0, 255, 255), 2);
         
-//        for (auto index = 0; index < landmarks.num_parts(); index++) {
-//            auto p = landmarks.part(index);
-//            cv::Point point(static_cast<int>(p.x()), static_cast<int>(p.y()));
-//            cv::circle(image, point, 2, cv::Scalar(255, 255, 0, 0));
-//        }
-#endif
-        std::vector<cv::Point> cvLandmarks(landmarks.num_parts(), cv::Point(0, 0));
         for (auto index = 0; index < landmarks.num_parts(); index++) {
-            auto landmark = landmarks.part(index);
-            cv::Point& point = cvLandmarks[index];
-            point.x = static_cast<int>(landmark.x());
-            point.y = static_cast<int>(landmark.y());
+            auto p = landmarks.part(index);
+            cv::Point point(static_cast<int>(p.x()), static_cast<int>(p.y()));
+            cv::circle(image, point, 2, cv::Scalar(255, 255, 0, 0));
         }
-        
-        (*_faceCore).prepare(image, cvLandmarks, faceRect);
-        
-        
-    }
+#endif
+        std::vector<cv::Point_<double>> cvLandmarks(landmarks.num_parts(), cv::Point(0, 0));
+        for (auto index = 0; index < landmarks.num_parts(); index++) {
+            const auto& landmark = landmarks.part(index);
+            auto& point = cvLandmarks[index];
+            point.x = static_cast<double>(landmark.x());
+            point.y = static_cast<double>(landmark.y());
+        }
+        landmarkBlock(cvLandmarks, index);
+    }];
     
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
     
@@ -97,7 +93,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     height = CVPixelBufferGetHeight(pixelBuffer);
     baseBuffer = (char *)CVPixelBufferGetBaseAddress(pixelBuffer);
     
-    uint8_t* pixelPtr = (uint8_t *)image.data;
+    uint8_t *pixelPtr = (uint8_t *)image.data;
     
     // traslate to sample buffer.
     long size = image.rows * image.cols * image.channels();

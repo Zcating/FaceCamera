@@ -41,8 +41,15 @@
     [self.faceCamera stop];
 }
 
+-(void)takePhoto {
+    UIGraphicsBeginImageContext(self.bounds.size);
 
+    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 
+    UIGraphicsEndImageContext();
+//    return image;
+}
 
 - (void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
     

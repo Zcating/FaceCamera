@@ -13,6 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
+
 @interface FaceCameraView : UIView
 
 @property (nonatomic, weak) id<FaceCameraDelegate> delegate;
@@ -20,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)start;
 
 -(void)stop;
+
+-(void)takePhoto;
 
 @end
 

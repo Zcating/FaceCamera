@@ -10,9 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^LandmarkBlock)(const std::vector<cv::Point_<double>>& landmarks, long faceIndex);
+
 @interface FCCoreVisualService : NSObject
 
-- (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces;
+- (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces forLandmarkBlock:(LandmarkBlock)landmarkBlock;
 
 @end
 

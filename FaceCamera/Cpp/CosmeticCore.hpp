@@ -41,10 +41,10 @@ namespace fc {
     
     
     struct LandmarkInfo {
-        double curDistOf36and45;
-        double curAngleOf36and45;
-        double angleOfIndexand36;
-        double distOfIndexand36;
+        double distOf36And45;
+        double angleOf36And45;
+        double angleOfIndexAnd36;
+        double distOfIndexAnd36;
         double angleChanged;
     };
     
@@ -126,9 +126,9 @@ namespace fc {
         }
         
         void updateLandmark(int index, const LandmarkInfo &landmarkInfo) {
-            double curDistOfIndexand36 = (landmarkInfo.curDistOf36and45 / prevDistOf36and45) * landmarkInfo.distOfIndexand36;
-            double x_offset = curDistOfIndexand36 * cos(landmarkInfo.angleOfIndexand36 + landmarkInfo.angleChanged);
-            double y_offset = curDistOfIndexand36 * sin(landmarkInfo.angleOfIndexand36 + landmarkInfo.angleChanged);
+            double curdistOfIndexAnd36 = (landmarkInfo.distOf36And45 / prevDistOf36and45) * landmarkInfo.distOfIndexAnd36;
+            double x_offset = curdistOfIndexAnd36 * cos(landmarkInfo.angleOfIndexAnd36 + landmarkInfo.angleChanged);
+            double y_offset = curdistOfIndexAnd36 * sin(landmarkInfo.angleOfIndexAnd36 + landmarkInfo.angleChanged);
             
             auto newPoint = cv::Point_<double>(maskMap.curPoint36.x + x_offset, maskMap.curPoint36.y - y_offset);
             
@@ -142,55 +142,55 @@ namespace fc {
         ~CosmeticCore() {}
         
         void calculateMaskRect() {
-            double curDistOf36and45 = Distance(maskMap.curPoint45, maskMap.curPoint36);
-            double curAngleOf36and45 = Distance(maskMap.curPoint45, maskMap.curPoint36);
+            double distOf36And45 = Distance(maskMap.curPoint45, maskMap.curPoint36);
+            double angleOf36And45 = Distance(maskMap.curPoint45, maskMap.curPoint36);
             
-            double angleDif =  prevAngleOf36and45 - curAngleOf36and45;
+            double angleDif =  prevAngleOf36and45 - angleOf36And45;
             
             LandmarkInfo landmarkInfo;
             
             landmarkInfo.angleChanged = angleDif;
-            landmarkInfo.curAngleOf36and45 = curAngleOf36and45;
-            landmarkInfo.curDistOf36and45 = curDistOf36and45;
+            landmarkInfo.angleOf36And45 = angleOf36And45;
+            landmarkInfo.distOf36And45 = distOf36And45;
             
             // 68
-            landmarkInfo.angleOfIndexand36 = M_PI - prevAngleOf68and36;
-            landmarkInfo.distOfIndexand36 = prevDistOf68and36;
+            landmarkInfo.angleOfIndexAnd36 = M_PI - prevAngleOf68and36;
+            landmarkInfo.distOfIndexAnd36 = prevDistOf68and36;
             updateLandmark(68, landmarkInfo);
             
             // 69
-            landmarkInfo.angleOfIndexand36 = M_PI + abs(prevAngleOf69and36);
-            landmarkInfo.distOfIndexand36 = prevDistOf69and36;
+            landmarkInfo.angleOfIndexAnd36 = M_PI + abs(prevAngleOf69and36);
+            landmarkInfo.distOfIndexAnd36 = prevDistOf69and36;
             updateLandmark(69, landmarkInfo);
             
             // 70
-            landmarkInfo.angleOfIndexand36 = M_PI + abs(prevAngleOf70and36);
-            landmarkInfo.distOfIndexand36 = prevDistOf70and36;
+            landmarkInfo.angleOfIndexAnd36 = M_PI + abs(prevAngleOf70and36);
+            landmarkInfo.distOfIndexAnd36 = prevDistOf70and36;
             updateLandmark(70, landmarkInfo);
             
             // 71
-            landmarkInfo.angleOfIndexand36 = (M_PI * 2) - abs(prevAngleOf71and36);
-            landmarkInfo.distOfIndexand36 = prevDistOf71and36;
+            landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs(prevAngleOf71and36);
+            landmarkInfo.distOfIndexAnd36 = prevDistOf71and36;
             updateLandmark(71, landmarkInfo);
             
             // 72
-            landmarkInfo.angleOfIndexand36 = (M_PI * 2) - abs(prevAngleOf72and36);
-            landmarkInfo.distOfIndexand36 = prevDistOf72and36;
+            landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs(prevAngleOf72and36);
+            landmarkInfo.distOfIndexAnd36 = prevDistOf72and36;
             updateLandmark(72, landmarkInfo);
             
             // 73
-            landmarkInfo.angleOfIndexand36 = (M_PI * 2) - abs(prevAngleOf73and36);
-            landmarkInfo.distOfIndexand36 = prevDistOf73and36;
+            landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs(prevAngleOf73and36);
+            landmarkInfo.distOfIndexAnd36 = prevDistOf73and36;
             updateLandmark(73, landmarkInfo);
             
             // 74
-            landmarkInfo.angleOfIndexand36 = -prevAngleOf74and36 ;
-            landmarkInfo.distOfIndexand36 = prevDistOf74and36;
+            landmarkInfo.angleOfIndexAnd36 = -prevAngleOf74and36 ;
+            landmarkInfo.distOfIndexAnd36 = prevDistOf74and36;
             updateLandmark(74, landmarkInfo);
             
             // 75
-            landmarkInfo.angleOfIndexand36 =  -prevAngleOf75and36;
-            landmarkInfo.distOfIndexand36 = prevDistOf75and36;
+            landmarkInfo.angleOfIndexAnd36 =  -prevAngleOf75and36;
+            landmarkInfo.distOfIndexAnd36 = prevDistOf75and36;
             updateLandmark(75, landmarkInfo);
         }
 
