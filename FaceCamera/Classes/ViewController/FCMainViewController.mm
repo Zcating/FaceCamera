@@ -14,7 +14,7 @@
 
 #import "ShutterView.h"
 
-#import "ScissorViewController.h"
+#import "ScissorView.h"
 
 #import "FCCoreVisualService.h"
 
@@ -22,21 +22,22 @@
 
 
 @interface FCMainViewController () <
+ResolutionDelegate,
 FaceCameraDelegate
 > {
-
+    
 }
 
 
-@property (weak, nonatomic) IBOutlet FaceCameraView *cameraView;
+@property (strong, nonatomic) IBOutlet FaceCameraView *cameraView;
 
 @property (strong, nonatomic) MaskGLView *maskGLView;
 
+@property (strong, nonatomic) ScissorView *scissorView;
 
-@property (weak, nonatomic) IBOutlet ShutterView *shutterView;
+@property (strong, nonatomic) UIButton *cameraSwitcher;
 
-
-@property (weak, nonatomic) IBOutlet UIView *topContainerView;
+@property (strong, nonatomic) UIButton *resolutionSwitcher;
 
 
 @property (strong, nonatomic) FCCoreVisualService *coreVisualService;
@@ -48,46 +49,18 @@ FaceCameraDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+
+    [self.view addSubview:self.cameraView];
+    [self.view addSubview:self.cameraSwitcher];
+    [self.view addSubview:self.resolutionSwitcher];
+//    [self.view addSubview:self.scissorView];
     
-    self.coreVisualService = [FCCoreVisualService new];
-    
-    
-    self.cameraView.delegate = self;
-    [self.cameraView start];
-    
-    NSError *error = nil;
-    NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
-    NSData *jsonData = [NSData dataWithContentsOfURL:path];
-    NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
-    self.maskGLView = [[MaskGLView alloc] initWithFrame:self.view.frame imageName:@"leopard" landmarkArray:array];
-//    self.maskGLView.hidden = YES;
-//    self.maskGLView = [[MaskGLView alloc] initWithFrame:self.view.frame context:context];
     [self.cameraView addSubview:self.maskGLView];
-    
-    [self.shutterView pressShutter:^{
-        
-    }];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(start) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
-    ScissorViewController *viewController = [self findChildViewController:NSStringFromClass([ScissorViewController class])];
-
-    
-    __weak FCMainViewController *weakSelf = self;
-    viewController.block = ^(double ratio) {
-        __strong FCMainViewController *strongSelf = weakSelf;
-        double width = CGRectGetWidth(strongSelf.cameraView.frame);
-        CGRect afterFrame = CGRectMake(0, 0, width, width * ratio);
-        [UIView animateWithDuration:0.2 animations:^{
-            strongSelf.cameraView.frame = afterFrame;
-            if (ratio == 1) {
-                strongSelf.cameraView.center = strongSelf.view.center;
-            }
-        }];
-    };
 }
 
 
@@ -100,59 +73,125 @@ FaceCameraDelegate
     [super didReceiveMemoryWarning];
 }
 
-
 -(BOOL)prefersStatusBarHidden {
     return YES;
 }
 
 
-- (IBAction)openSwitch:(UIButton *)sender {
-    
-    if (self.topContainerView.hidden) {
-        CGRect originRect = self.topContainerView.frame;
-        CGRect beforeRect = self.topContainerView.frame;
-        beforeRect.origin.x = sender.center.x;
-        beforeRect.size.width = 0;
-        beforeRect.size.height = 0;
-        self.topContainerView.frame = beforeRect;
+// MARK: - DELEGATE
 
-        [UIView animateWithDuration:0.2 animations:^{
-            self.topContainerView.hidden = NO;
-            self.topContainerView.frame = originRect;
-        }];
-    } else {
-        CGRect originRect = self.topContainerView.frame;
-        CGRect afterRect = self.topContainerView.frame;
-        afterRect.origin.x = sender.center.x;
-        afterRect.size.width = 0;
-        afterRect.size.height = 0;
-        [UIView animateWithDuration:0.2 animations:^{
-            self.topContainerView.frame = afterRect;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.topContainerView.hidden = YES;
-                self.topContainerView.frame = originRect;
-            }
-        }];
-    }
+-(void)switchCamera:(UIButton *)sender {
+//    NSLog(@"shit");
+    sender.selected = !sender.selected;
+    [self.cameraView switchCamera];
 }
 
-
-- (IBAction)openSetting:(id)sender {
+-(void)openResolutionSelector:(UIButton *)sender {
     
 }
 
+//- (IBAction)openSetting:(id)sender {
+//    [UIView animateWithDuration:0.2 animations:^{
+//        self.scissorView.hidden = !self.scissorView.hidden;
+//    }];
+//}
+
+
+-(void)resolutionChangeTo:(double)ratio selectedImage:(nonnull UIImage *)image {
+    double width = CGRectGetWidth(self.cameraView.frame);
+    CGRect afterFrame = CGRectMake(0, 0, width, width * ratio);
+    [UIView animateWithDuration:0.2 animations:^{
+        self.cameraView.frame = afterFrame;
+        if (ratio == 1) {
+            self.cameraView.center = self.view.center;
+        }
+    }];
+}
 
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
     if (faces == nil) {
-//        self.maskGLView.hidden = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.maskGLView.hidden) {
+                self.maskGLView.hidden = YES;
+            }
+        });
         return;
     }
-//    self.maskGLView.hidden = NO;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.maskGLView.hidden) {
+            self.maskGLView.hidden = NO;
+        }
+    });
     [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
         [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
     }];
 }
 
+
+// MARK: - GETTER & SETTER
+
+-(FCCoreVisualService *)coreVisualService {
+    if (_coreVisualService == nil) {
+        _coreVisualService = [FCCoreVisualService new];
+    }
+    return _coreVisualService;
+}
+
+-(ScissorView *)scissorView {
+    if (_scissorView == nil) {
+        _scissorView = [[ScissorView alloc] init];
+    }
+    return _scissorView;
+}
+
+-(FaceCameraView *)cameraView {
+    if (_cameraView == nil) {
+        CGSize size = self.view.frame.size;
+        _cameraView = [[FaceCameraView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        _cameraView.delegate = self;
+    }
+    return _cameraView;
+}
+
+-(MaskGLView *)maskGLView {
+    if (_maskGLView == nil) {
+        NSError *error = nil;
+        NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
+        NSData *jsonData = [NSData dataWithContentsOfURL:path];
+        NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
+        
+        EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        [EAGLContext setCurrentContext:context];
+        
+        _maskGLView = [[MaskGLView alloc] initWithFrame:self.cameraView.frame context:context];
+        _maskGLView.hidden = YES;
+        [_maskGLView setupVBOs:@"leopard" withLandmarkArray:array];
+    }
+    return _maskGLView;
+}
+
+-(UIButton *)cameraSwitcher {
+    if (_cameraSwitcher == nil) {
+        _cameraSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
+        _cameraSwitcher.frame = CGRectMake(10, 20, 50, 50);
+        [_cameraSwitcher setImage:[UIImage imageNamed:@"btn_camera_switch_camera_light"] forState:UIControlStateNormal];
+        [_cameraSwitcher setImage:[UIImage imageNamed:@"btn_camera_switch_camera_dark"] forState:UIControlStateSelected];
+        [_cameraSwitcher addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cameraSwitcher;
+}
+
+-(UIButton *)resolutionSwitcher {
+    if (_resolutionSwitcher == nil) {
+        _resolutionSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
+        _resolutionSwitcher.frame = CGRectMake(70, 20, 50, 50);
+        [_resolutionSwitcher setImage:[UIImage imageNamed:@"btn_camera_ratio_916_light"] forState:UIControlStateNormal];
+        [_resolutionSwitcher setImage:[UIImage imageNamed:@"btn_camera_ratio_916_dark"] forState:UIControlStateSelected];
+        [_resolutionSwitcher addTarget:self action:@selector(openResolutionSelector:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _resolutionSwitcher;
+    
+}
 
 @end

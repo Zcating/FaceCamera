@@ -55,8 +55,7 @@ struct MaskMap {
 @interface MaskGLView : GLKView
 
 - (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape faceIndex:(long)faceIndex;
-- (void)setupVBOs:(NSString *)imageName withLandmaskArray:(NSMutableArray *)landmaskArray;
 
-- (id)initWithFrame:(CGRect)frame imageName:(NSString *)textureName landmarkArray:(NSMutableArray *)landmarkArray;
+- (void)setupVBOs:(NSString *)imageName withLandmarkArray:(NSArray *)landmaskArray;
 
 @end

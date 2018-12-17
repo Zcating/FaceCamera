@@ -51,6 +51,14 @@
 //    return image;
 }
 
+-(void)switchCamera {
+    if (self.faceCamera.devicePosition == AVCaptureDevicePositionBack) {
+        self.faceCamera.devicePosition = AVCaptureDevicePositionFront;
+    } else {
+        self.faceCamera.devicePosition = AVCaptureDevicePositionBack;
+    }
+}
+
 - (void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
     
     if(self.delegate != nil && [self.delegate respondsToSelector:@selector(processframe:faces:)]) {
@@ -64,6 +72,8 @@
     [self.displayLayer enqueueSampleBuffer:frame];
 }
 
+
+// MARK: Getter & Setter
 
 - (AVSampleBufferDisplayLayer *)displayLayer {
     if (_displayLayer == nil) {
@@ -86,6 +96,9 @@
 
 - (void)setFrame:(CGRect)frame {
     self.displayLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+    for (UIView *view in self.subviews) {
+        view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+    }
     [super setFrame:frame];
 }
 

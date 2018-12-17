@@ -18,9 +18,11 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 AVCaptureVideoDataOutputSampleBufferDelegate,
 AVCaptureMetadataOutputObjectsDelegate
 > {
+    dispatch_queue_t _concurrentQueue;
     dispatch_queue_t _videoQueue;
     dispatch_queue_t _metadataQueue;
     AVCaptureDevicePosition _devicePosition;
+    NSArray *_metadataObjects;
     
 }
 
@@ -69,10 +71,12 @@ AVCaptureMetadataOutputObjectsDelegate
         [self initVideoDataOutput];
         
         // photo taking.
-        [self initPhotoTaking];
+//        [self initPhotoTaking];
         
         // metadata output
         [self initMetadataOutput];
+        
+        [self initQueue];
     }
     return self;
 }
@@ -94,11 +98,11 @@ AVCaptureMetadataOutputObjectsDelegate
     }
 }
 
--(void)initPhotoTaking {
-    if ([self.session canAddOutput:self.stillImageOutput]) {
-        [self.session addOutput:self.stillImageOutput];
-    }
-}
+//-(void)initPhotoTaking {
+//    if ([self.session canAddOutput:self.stillImageOutput]) {
+//        [self.session addOutput:self.stillImageOutput];
+//    }
+//}
 
 -(void)initMetadataOutput {
     if ([self.session canAddOutput:self.metadataOuput]) {
@@ -107,6 +111,10 @@ AVCaptureMetadataOutputObjectsDelegate
         [self.metadataOuput setMetadataObjectsDelegate:self queue:_metadataQueue];
         [self.metadataOuput setMetadataObjectTypes:@[AVMetadataObjectTypeFace]];
     }
+}
+
+-(void)initQueue {
+    _concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 }
 
 
@@ -122,141 +130,7 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-- (void)switchCamera:(AVCaptureDevicePosition)devicePosition {
-    if (devicePosition == AVCaptureDevicePositionFront) {
-        [self.session removeInput:self.backCameraInput];
-        [self.session addInput:self.frontCameraInput];
-        self.currentInput = self.frontCameraInput;
-    } else {
-        [self.session removeInput:self.frontCameraInput];
-        [self.session addInput:self.backCameraInput];
-        self.currentInput = self.backCameraInput;
-    }
-}
-
-
-
-- (void)takePicture {
-    AVCaptureConnection *stillImageConnection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-    
-    NSDictionary *settings = @{
-        (id)kCVPixelBufferPixelFormatTypeKey: @(kCMPixelFormat_32BGRA)
-    };
-    
-    [self.stillImageOutput setOutputSettings:settings];
-    
-    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef  _Nullable imageDataSampleBuffer, NSError * _Nullable error) {
-        
-        if (error) {
-            NSLog(@"error: %@", error);
-            return;
-        }
-        CIImage *ciImage = [self generateCIImageFrom:imageDataSampleBuffer];
-        
-        NSDictionary *imageOptions = nil;
-        
-        NSNumber *orientation = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
-        
-        if (orientation) {
-            imageOptions = @{
-                CIDetectorImageOrientation:orientation
-            };
-        }
-    }];
-}
-
-
-- (void)addSessionOutput:(AVCaptureOutput *)output {
-    if ([self.session isRunning]) {
-        [self.session beginConfiguration];
-        [self.session addOutput:output];
-        [self.session commitConfiguration];
-    } else {
-        [self.session addOutput:output];
-    }
-}
-
 // MARK: - Private Function
-
-
-// Generate CIImage
-- (CIImage *)generateCIImageFrom:(CMSampleBufferRef)sampleBuffer {
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    NSDictionary *attachments = CFBridgingRelease(CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate));
-    CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:attachments];
-    
-    return image;
-}
-
-- (void)saveCGImage:(CGImageRef)cgImage {
-
-//    ALAssetsLibrary *library = [ALAssetsLibrary new];
-//    [library writeImageDataToSavedPhotosAlbum:(__bridge id)destinationData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
-//        if (destinationData) {
-//            CFRelease(destinationData);
-//        }
-//    }];
-    
-//    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-//        [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:tmpURL];
-//    }   completionHandler:^(BOOL success, NSError *error) {
-//            //cleanup the tmp file after import, if needed
-//    }];
-    
-    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        UIImage *uiImage = [UIImage imageWithCGImage:cgImage];
-        PHAssetChangeRequest* createAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:uiImage];
-        
-        PHObjectPlaceholder *placeholder = [createAssetRequest placeholderForCreatedAsset];
-        
-        NSLog(@"photo identifier: %@", placeholder.localIdentifier);
-        
-    } completionHandler:^(BOOL success, NSError * _Nullable error) {
-        if (success) {
-            NSLog(@"success");
-        } else {
-            NSLog(@"%@", error);
-        }
-    }];
-}
-
-- (UIImage *)renderForFeatures:(NSArray *)features withCIImage:(CIImage *)image {
-    
-    CIContext *context = [CIContext context];
-    CGImageRef sourceImage = [context createCGImage:image fromRect:image.extent];
-    
-    CGRect imageRect            = image.extent;
-    int bitmapBytesPerRow       =  (imageRect.size.width * 4);
-    CGColorSpaceRef colorSpace  = CGColorSpaceCreateDeviceRGB();
-    CGContextRef bitmapContext  = CGBitmapContextCreate (NULL,
-                                                         imageRect.size.width,
-                                                         imageRect.size.height,
-                                                         8,
-                                                         bitmapBytesPerRow,
-                                                         colorSpace,
-                                                         kCGImageAlphaPremultipliedLast);
-    
-    CGContextSetAllowsAntialiasing(bitmapContext, NO);
-    
-    CGContextClearRect(bitmapContext, imageRect);
-    
-    CGContextDrawImage(bitmapContext, imageRect, sourceImage);
-    
-    // features found by the face detector
-    for (CIFaceFeature *feature in features) {
-        CGRect faceRect = [feature bounds];
-        CGContextDrawImage(bitmapContext, faceRect, self.pasterImage.CGImage);
-    }
-    CGImageRef resultImage = CGBitmapContextCreateImage(bitmapContext);
-    UIImage *uiImage = [UIImage imageWithCGImage:resultImage];
-    CGContextRelease (bitmapContext);
-    CGColorSpaceRelease(colorSpace);
-    CGImageRelease(sourceImage);
-        
-    return uiImage;
-}
-
-
 
 
 
@@ -276,7 +150,6 @@ AVCaptureMetadataOutputObjectsDelegate
         for (AVMetadataObject *object in self.metadataObjects) {
             if([object isKindOfClass:[AVMetadataFaceObject class]]) {
                 AVMetadataObject *face = [output transformedMetadataObjectForMetadataObject:object connection:connection];
-                
                 [bounds addObject:[NSValue valueWithCGRect:face.bounds]];
             }
         }
@@ -352,9 +225,12 @@ AVCaptureMetadataOutputObjectsDelegate
 
 - (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset{
     if ([self.session isRunning]) {
+//        [self.session stopRunning];
         [self.session beginConfiguration];
         self.session.sessionPreset = sessionPreset;
         [self.session commitConfiguration];
+//        [self.session startRunning];
+        
     } else {
         self.session.sessionPreset = sessionPreset;
     }
@@ -366,16 +242,53 @@ AVCaptureMetadataOutputObjectsDelegate
     return _devicePosition;
 }
 
+
 -(void)setDevicePosition:(AVCaptureDevicePosition)devicePosition {
     _devicePosition = devicePosition;
     if ([self.session isRunning]) {
-        [self.session beginConfiguration];
-        [self switchCamera: devicePosition];
-        [self.session commitConfiguration];
+        dispatch_async(_concurrentQueue, ^{
+            [self.session stopRunning];
+            [self.session beginConfiguration];
+            [self.session removeInput:self.currentInput];
+            if (devicePosition == AVCaptureDevicePositionFront && [self.session canAddInput:self.frontCameraInput]) {
+                [self.session addInput:self.frontCameraInput];
+                self.currentInput = self.frontCameraInput;
+            } else if ([self.session canAddInput:self.backCameraInput]) {
+                [self.session addInput:self.backCameraInput];
+                self.currentInput = self.backCameraInput;
+            }
+            dispatch_barrier_async(self->_metadataQueue, ^{
+                self.metadataObjects = nil;
+            });
+            [self.session commitConfiguration];
+            [self.session startRunning];
+
+        });
     } else {
-        [self switchCamera:devicePosition];
+        [self.session removeInput:self.currentInput];
+        if (devicePosition == AVCaptureDevicePositionFront && [self.session canAddInput:self.frontCameraInput]) {
+            [self.session addInput:self.frontCameraInput];
+            self.currentInput = self.frontCameraInput;
+        } else if ([self.session canAddInput:self.backCameraInput]) {
+            [self.session addInput:self.backCameraInput];
+            self.currentInput = self.backCameraInput;
+        }
+        self.metadataObjects = nil;
     }
 }
 
+-(NSArray *)metadataObjects {
+    __block NSArray *objects = nil;
+//    dispatch_sync(_concurrentQueue, ^{
+        objects = self->_metadataObjects;
+//    });
+    return objects;
+}
+
+-(void)setMetadataObjects:(NSArray *)metadataObjects {
+//    dispatch_barrier_async(_concurrentQueue, ^{
+        self->_metadataObjects = metadataObjects;
+//    });
+}
 
 @end

@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BaseViewController.h"
 
 @class NativeFaceDetector;
 
-@interface FCMainViewController : BaseViewController
+@interface FCMainViewController : UIViewController
 
 
 @end

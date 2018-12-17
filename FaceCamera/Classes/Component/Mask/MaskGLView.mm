@@ -23,11 +23,8 @@ inline static double Angle(const cv::Point_<double>& point1, const cv::Point_<do
 }
 
 @interface MaskGLView() {
-        //
-    CAEAGLLayer* _eaglLayer;
-    EAGLContext* _context;
-    GLKBaseEffect* _baseEffect;
-        //
+
+    //
     GLuint _vertexBufferID;
     GLuint _indexBufferID;
     
@@ -72,25 +69,18 @@ inline static double Angle(const cv::Point_<double>& point1, const cv::Point_<do
 @property (nonatomic, strong) GLKBaseEffect *baseEffect;
 
 @end
-    //
+
+
 @implementation MaskGLView
-    //
-    //// define the face shape vertex bufferfor drawing
-    //
-int numVertices = 76;
-int sizeFaceShapeVertices = numVertices * sizeof(VertexData);
-float W = 512.0;
-float H = 512.0;
-
-
-float screenWidth = 300.0;
-float screenHeight = 300.0;
+//
+//// define the face shape vertex bufferfor drawing
+//
+int _numVertices = 76;
+int _sizeFaceShapeVertices = _numVertices * sizeof(VertexData);
 
 VertexData _landmarkVertices[76];
 
-
-
-GLubyte faceShapeTriangles[] = {
+GLubyte _delaunayTriangles[] = {
     
     68,69,0,
     68,0,17,
@@ -128,7 +118,7 @@ GLubyte faceShapeTriangles[] = {
     69,2,1,
     69,1,0,
     
-        //
+    //
     0,1,36,
     1,36,41,
     1,41,31,
@@ -148,7 +138,7 @@ GLubyte faceShapeTriangles[] = {
     9,10,56,
     10,55,56,
     
-        //
+    //
     10,11,55,
     11,54,55,
     11,12,54,
@@ -169,8 +159,8 @@ GLubyte faceShapeTriangles[] = {
     22,42,43,
     22,27,42,
     22,21,27,
-        //
     
+    //
     21,39,27,
     21,38,39,
     21,20,38,
@@ -193,9 +183,7 @@ GLubyte faceShapeTriangles[] = {
     46,47,35,
     47,42,35,
     
-    
-        //
-    
+    //
     42,29,35,
     42,28,29,
     28,29,39,
@@ -219,9 +207,7 @@ GLubyte faceShapeTriangles[] = {
     52,35,53,
     35,53,54,
     
-        //
-    
-    
+    //
     52,53,63,
     52,51,63,
     51,62,63,
@@ -246,13 +232,10 @@ GLubyte faceShapeTriangles[] = {
     56,65,66,
     56,66,57,
     
-    
-        //
-    
+    //
     66,57,58,
     66,67,58,
     67,59,58
-    
 };
 
 
@@ -261,67 +244,47 @@ GLubyte faceShapeTriangles[] = {
 }
 
 
-- (id)initWithFrame:(CGRect)frame imageName:(NSString *)textureName landmarkArray:(NSMutableArray *)landmarkArray {
-    self = [super initWithFrame:frame];
+- (id)initWithFrame:(CGRect)frame context:(EAGLContext *)context {
+    self = [super initWithFrame:frame context:context];
     if (self) {
         [self setupLayer];
         [self setupContext];
-        [self setupVBOs:textureName withLandmaskArray:landmarkArray];
         [self setupDisplayLink];
     }
     return self;
 }
 
 
-
 // MARK: - Private
 
-
 - (void)setupLayer {
-    _eaglLayer = (CAEAGLLayer*) self.layer;
-    _eaglLayer.opaque = NO;
-    _eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys: kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
+    CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
+    eaglLayer.opaque = NO;
+    eaglLayer.drawableProperties = @{kEAGLColorFormatRGBA8: kEAGLDrawablePropertyColorFormat};
 }
 
 - (void)setupContext {
-    
-    _baseEffect = [[GLKBaseEffect alloc] init];
-    _baseEffect.transform.projectionMatrix = GLKMatrix4MakeOrtho(0, self.frame.size.width, self.frame.size.height, 0, 0, 1); // which makes top left corner as 0,0 for opengl drawing
-    
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    [EAGLContext setCurrentContext:self.context];
-    
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 - (void)setupDisplayLink {
-    
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    
 }
 
 - (void)render:(CADisplayLink*)displayLink {
-    
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    glBufferData(GL_ARRAY_BUFFER, sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeFaceShapeVertices, _landmarkVertices);
-    
-    [_baseEffect prepareToDraw];
-    
-    glDrawElements(GL_TRIANGLES, sizeof(faceShapeTriangles) / sizeof(faceShapeTriangles[0]), GL_UNSIGNED_BYTE, 0);
-    
+    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
+    glDrawElements(GL_TRIANGLES, sizeof(_delaunayTriangles) / sizeof(_delaunayTriangles[0]), GL_UNSIGNED_BYTE, 0);
+
+    [self.baseEffect prepareToDraw];
     [self.context presentRenderbuffer:GL_RENDERBUFFER];
-    
 }
 
 -(void) initReferenceMaskData {
-    
-    
     VertexData& data = _landmarkVertices[68];
     _maskMap.point68 = cv::Point_<double>(data.position[0],data.position[1]);
     
@@ -470,20 +433,15 @@ GLubyte faceShapeTriangles[] = {
 
 // MARK: - Public
 
-- (void)noFaceDetect {
-    
-}
+
 - (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape faceIndex:(long)faceIndex {
-    
     CGRect rect = [[UIScreen mainScreen] bounds];
     for (int i = 0; i < shape.size(); i++) {
-        auto point = shape[i];
-        float x = ((float)point.x * rect.size.width) / 720;  // dlib axis to drawing axis conversion (y)->(x) & (x)->(y)
-
-        float y = ((float)point.y * rect.size.height) / 1280; // dlib dimension to device dimension conversion (720*1280)->(320*568)
-            //
+        const auto& point = shape[i];
+        float x = ((float)point.x * rect.size.width) / 720;
+        float y = ((float)point.y * rect.size.height) / 1280;
+        
         VertexData& data = _landmarkVertices[i];
-            //
         data.position[0] = x;
         data.position[1] = y;
     }
@@ -499,10 +457,10 @@ GLubyte faceShapeTriangles[] = {
 }
 
 
-- (void)setupVBOs:(NSString *)imageName withLandmaskArray:(NSMutableArray *)landmarkArray {
+- (void)setupVBOs:(NSString *)imageName withLandmarkArray:(NSArray *)landmarkArray {
+    UIImage *image = [UIImage imageNamed:imageName];
     
     for(int i = 0; i < landmarkArray.count; ++i) {
-        
         NSDictionary *landmark = [landmarkArray objectAtIndex:i];
         VertexData& data = _landmarkVertices[i];
 
@@ -511,20 +469,20 @@ GLubyte faceShapeTriangles[] = {
         data.position[0] = x;
         data.position[1] = y;
         data.position[2] = 0;
-        data.uv[0] = x / W;
-        data.uv[1] = y / H;
+        data.uv[0] = x / image.size.width;
+        data.uv[1] = y / image.size.height;
     }
     [self initReferenceMaskData];
     
     glGenBuffers(1, &_vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeFaceShapeVertices, _landmarkVertices);
+    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
     
     glGenBuffers(1, &_indexBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceShapeTriangles), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(faceShapeTriangles), faceShapeTriangles);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_delaunayTriangles), NULL, GL_STATIC_DRAW);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(_delaunayTriangles), _delaunayTriangles);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, position));
@@ -532,13 +490,24 @@ GLubyte faceShapeTriangles[] = {
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, uv));
     
-    UIImage *image = [UIImage imageNamed:imageName];
     CGImageRef texRef = [image CGImage];
     GLKTextureInfo* textureInfo =[GLKTextureLoader textureWithCGImage:texRef options:nil error:NULL];
     
-    _baseEffect.texture2d0.name = textureInfo.name;
-    _baseEffect.texture2d0.target = GLKTextureTarget2D;
+    self.baseEffect.texture2d0.name = textureInfo.name;
+    self.baseEffect.texture2d0.target = GLKTextureTarget2D;
 }
+
+
+// MARK: - GETTER & SETTER
+
+-(GLKBaseEffect *)baseEffect {
+    if (_baseEffect == nil) {
+        _baseEffect = [[GLKBaseEffect alloc] init];
+        _baseEffect.transform.projectionMatrix = GLKMatrix4MakeOrtho(0, self.frame.size.width, self.frame.size.height, 0, 0, 1);
+    }
+    return _baseEffect;
+}
+
 
 @end
 

@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)takePhoto;
 
+-(void)switchCamera;
+
 @end
 
 NS_ASSUME_NONNULL_END

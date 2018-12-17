@@ -11,6 +11,7 @@
 		CB1143C021A39F5A003CCB2E /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143BF21A39F5A003CCB2E /* libdlib.a */; };
 		CB1143C521A3A5CF003CCB2E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */; };
 		CB1ED87E21BD4566002BB191 /* mask.json in Resources */ = {isa = PBXBuildFile; fileRef = CB1ED87D21BD4566002BB191 /* mask.json */; };
+		CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2E21ABB26F0053AB48 /* ScissorView.m */; };
 		CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
 		CB88A32721C13E110083C01B /* btn_camera_ratio_11_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31821C13E110083C01B /* btn_camera_ratio_11_dark.png */; };
@@ -38,8 +39,6 @@
 		CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C3921ABB26F0053AB48 /* FCCoreVisualService.mm */; };
 		CBD38C7A21ABB26F0053AB48 /* FaceCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C3C21ABB26F0053AB48 /* FaceCore.cpp */; };
 		CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C4521ABB26F0053AB48 /* FCMainViewController.mm */; };
-		CBD38C7E21ABB26F0053AB48 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C4621ABB26F0053AB48 /* BaseViewController.m */; };
-		CBD38C7F21ABB26F0053AB48 /* ScissorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C4821ABB26F0053AB48 /* ScissorViewController.m */; };
 		CBD38C8021ABB26F0053AB48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD38C4D21ABB26F0053AB48 /* LaunchScreen.storyboard */; };
 		CBD38C8121ABB26F0053AB48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD38C4F21ABB26F0053AB48 /* Main.storyboard */; };
 		CBD38C8321ABB26F0053AB48 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = CBD38C5321ABB26F0053AB48 /* shape_predictor_68_face_landmarks.dat */; };
@@ -118,21 +117,17 @@
 		CBD38C2721ABB26F0053AB48 /* FaceCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceCamera.m; sourceTree = "<group>"; };
 		CBD38C2821ABB26F0053AB48 /* FaceCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceCameraView.m; sourceTree = "<group>"; };
 		CBD38C2921ABB26F0053AB48 /* FaceCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceCamera.h; sourceTree = "<group>"; };
-		CBD38C2C21ABB26F0053AB48 /* ScissorSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScissorSwitch.h; sourceTree = "<group>"; };
+		CBD38C2C21ABB26F0053AB48 /* ScissorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScissorView.h; sourceTree = "<group>"; };
 		CBD38C2D21ABB26F0053AB48 /* ShutterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
-		CBD38C2E21ABB26F0053AB48 /* ScissorSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScissorSwitch.m; sourceTree = "<group>"; };
+		CBD38C2E21ABB26F0053AB48 /* ScissorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScissorView.m; sourceTree = "<group>"; };
 		CBD38C3021ABB26F0053AB48 /* ShutterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 		CBD38C3121ABB26F0053AB48 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CBD38C3521ABB26F0053AB48 /* FaceCore.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FaceCore.hpp; sourceTree = "<group>"; };
 		CBD38C3821ABB26F0053AB48 /* FCCoreVisualService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCoreVisualService.h; sourceTree = "<group>"; };
 		CBD38C3921ABB26F0053AB48 /* FCCoreVisualService.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FCCoreVisualService.mm; sourceTree = "<group>"; };
 		CBD38C3C21ABB26F0053AB48 /* FaceCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceCore.cpp; sourceTree = "<group>"; };
-		CBD38C4421ABB26F0053AB48 /* ScissorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScissorViewController.h; sourceTree = "<group>"; };
 		CBD38C4521ABB26F0053AB48 /* FCMainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FCMainViewController.mm; sourceTree = "<group>"; };
-		CBD38C4621ABB26F0053AB48 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		CBD38C4721ABB26F0053AB48 /* FCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCMainViewController.h; sourceTree = "<group>"; };
-		CBD38C4821ABB26F0053AB48 /* ScissorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScissorViewController.m; sourceTree = "<group>"; };
-		CBD38C4921ABB26F0053AB48 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		CBD38C4A21ABB26F0053AB48 /* FaceCameraHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceCameraHeader.pch; sourceTree = "<group>"; };
 		CBD38C4E21ABB26F0053AB48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBD38C5021ABB26F0053AB48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -342,8 +337,8 @@
 		CBD38C2B21ABB26F0053AB48 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				CBD38C2C21ABB26F0053AB48 /* ScissorSwitch.h */,
-				CBD38C2E21ABB26F0053AB48 /* ScissorSwitch.m */,
+				CBD38C2C21ABB26F0053AB48 /* ScissorView.h */,
+				CBD38C2E21ABB26F0053AB48 /* ScissorView.m */,
 				CBD38C2D21ABB26F0053AB48 /* ShutterView.h */,
 				CBD38C3021ABB26F0053AB48 /* ShutterView.m */,
 			);
@@ -362,12 +357,8 @@
 		CBD38C4321ABB26F0053AB48 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				CBD38C4421ABB26F0053AB48 /* ScissorViewController.h */,
-				CBD38C4821ABB26F0053AB48 /* ScissorViewController.m */,
 				CBD38C4721ABB26F0053AB48 /* FCMainViewController.h */,
 				CBD38C4521ABB26F0053AB48 /* FCMainViewController.mm */,
-				CBD38C4921ABB26F0053AB48 /* BaseViewController.h */,
-				CBD38C4621ABB26F0053AB48 /* BaseViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -685,14 +676,13 @@
 			files = (
 				CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */,
 				CBD38CA921AE923A0053AB48 /* CosmeticCore.cpp in Sources */,
-				CBD38C7E21ABB26F0053AB48 /* BaseViewController.m in Sources */,
 				CBD38C7121ABB26F0053AB48 /* FaceCameraView.m in Sources */,
 				CBD38C7421ABB26F0053AB48 /* ShutterView.m in Sources */,
 				CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */,
 				CBD38C6D21ABB26F0053AB48 /* main.m in Sources */,
+				CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */,
 				CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */,
 				CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */,
-				CBD38C7F21ABB26F0053AB48 /* ScissorViewController.m in Sources */,
 				CBD38C7021ABB26F0053AB48 /* FaceCamera.m in Sources */,
 				CBD38C7A21ABB26F0053AB48 /* FaceCore.cpp in Sources */,
 			);
