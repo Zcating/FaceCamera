@@ -1,3 +1,6 @@
+
+
+
 //
 //  FaceCamera.m
 //  FaceCamera
@@ -24,25 +27,20 @@ AVCaptureMetadataOutputObjectsDelegate
     AVCaptureDevicePosition _devicePosition;
     NSArray *_metadataObjects;
     
+    BOOL _running;
+    BOOL _sessionLoaded;
+    
 }
 
 @property (nonatomic, strong) AVCaptureSession *session;
-
-@property (nonatomic, strong) AVCaptureDevice *device;
-
-@property (nonatomic, strong) AVCaptureDeviceInput *currentInput;
 
 @property (nonatomic, strong) AVCaptureDeviceInput *frontCameraInput;
 
 @property (nonatomic, strong) AVCaptureDeviceInput *backCameraInput;
 
-@property (nonatomic, strong) AVCaptureConnection *videoConnection;
-
 @property (nonatomic, strong) AVCaptureMetadataOutput *metadataOuput;
 
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput;
-
-@property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
 
 @property (nonatomic, strong) NSArray *metadataObjects;
 
@@ -52,100 +50,115 @@ AVCaptureMetadataOutputObjectsDelegate
 @implementation FaceCamera
 
 - (instancetype)initWithDelegate:(id<FaceCameraDelegate>)delegate {
-    self = [self init];
+    self = [super init];
     if (self) {
         self.delegate = delegate;
+        _metadataQueue = dispatch_queue_create("face.camera.metadata", 0);
+        _videoQueue = dispatch_queue_create("video.queue", NULL);
+        _concurrentQueue = dispatch_queue_create("concurrent.queue", DISPATCH_QUEUE_CONCURRENT);
+
     }
     
     return self;
-}
-
-// real initialization function.
-- (instancetype) init {
-    self = [super init];
-    if (self) {
-        // Camera
-        [self initCamera];
-        
-        // data output
-        [self initVideoDataOutput];
-        
-        // photo taking.
-//        [self initPhotoTaking];
-        
-        // metadata output
-        [self initMetadataOutput];
-        
-        [self initQueue];
-    }
-    return self;
-}
-
-
--(void)initCamera {
-    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    self.frontCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.lastObject error:nil];
-    self.backCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:devices.firstObject error:nil];
-    if ([self.session canAddInput:self.backCameraInput]) {
-        [self.session addInput:self.backCameraInput];
-        self.currentInput = self.backCameraInput;
-    }
-}
-
--(void)initVideoDataOutput {
-    if ([self.session canAddOutput:self.videoOutput]) {
-        [self.session addOutput:self.videoOutput];
-    }
-}
-
-//-(void)initPhotoTaking {
-//    if ([self.session canAddOutput:self.stillImageOutput]) {
-//        [self.session addOutput:self.stillImageOutput];
-//    }
-//}
-
--(void)initMetadataOutput {
-    if ([self.session canAddOutput:self.metadataOuput]) {
-        [self.session addOutput:self.metadataOuput];
-        _metadataQueue = dispatch_queue_create("face.camera.metadata", 0);
-        [self.metadataOuput setMetadataObjectsDelegate:self queue:_metadataQueue];
-        [self.metadataOuput setMetadataObjectTypes:@[AVMetadataObjectTypeFace]];
-    }
-}
-
--(void)initQueue {
-    _concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 }
 
 
 // MARK: - Public Function
 
 - (void)start {
+    if (_running == YES) {
+        return;
+    }
+    if (_sessionLoaded == NO) {
+        [self updateSession];
+        _sessionLoaded = YES;
+    }
+    
     [self.session startRunning];
+    _running = YES;
 }
 
 
 - (void)stop {
+    if (_running == NO) {
+        return;
+    }
+
+    for (AVCaptureInput *input in self.session.inputs) {
+        [self.session removeInput:input];
+    }
+
+    for (AVCaptureOutput *output in self.session.outputs) {
+        [self.session removeOutput:output];
+    }
+
     [self.session stopRunning];
+    _running = NO;
+    _sessionLoaded = NO;
+}
+
+-(void)pause {
+    [self.session stopRunning];
+    _running = NO;
+}
+
+-(void)switchCameras {
+    BOOL wasRunning = _running;
+    if (wasRunning) {
+        [self stop];
+    }
+    if (self.devicePosition == AVCaptureDevicePositionFront) {
+        self.devicePosition = AVCaptureDevicePositionBack;
+    } else {
+        self.devicePosition = AVCaptureDevicePositionFront;
+    }
+    if (wasRunning) {
+        [self start];
+    }
 }
 
 
 // MARK: - Private Function
 
+-(void)updateSession {
+        // video data output
+
+    if (self.devicePosition == AVCaptureDevicePositionFront) {
+        if ([self.session canAddInput:self.frontCameraInput]) {
+            [self.session addInput:self.frontCameraInput];
+        }
+    } else {
+        if ([self.session canAddInput:self.backCameraInput]) {
+            [self.session addInput:self.backCameraInput];
+        }
+    }
+
+    if ([self.session canAddOutput:self.videoOutput]) {
+        [self.session addOutput:self.videoOutput];
+    }
+    
+    // metadata output
+    if ([self.session canAddOutput:self.metadataOuput]) {
+        [self.session addOutput:self.metadataOuput];
+        [self.metadataOuput setMetadataObjectsDelegate:self queue:_metadataQueue];
+        [self.metadataOuput setMetadataObjectTypes:@[AVMetadataObjectTypeFace]];
+    }
+}
 
 
 // MARK: - Video Delegate
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    
-    connection.videoOrientation = AVCaptureVideoOrientationPortrait;
-    if(self.devicePosition == AVCaptureDevicePositionFront && connection.supportsVideoMirroring) {
-        [connection setVideoMirrored:YES];
+    if (connection.supportsVideoOrientation) {
+        connection.videoOrientation = self.orientation;
     }
-    
+    if (connection.supportsVideoMirroring) {
+        connection.videoMirrored = self.devicePosition == AVCaptureDevicePositionFront;
+        
+    }
     NSMutableArray *bounds = nil;
     if (self.metadataObjects.count != 0) {
-        // find faces.
+            // find faces.
         bounds = [NSMutableArray arrayWithCapacity:2];
         for (AVMetadataObject *object in self.metadataObjects) {
             if([object isKindOfClass:[AVMetadataFaceObject class]]) {
@@ -155,18 +168,9 @@ AVCaptureMetadataOutputObjectsDelegate
         }
     }
     
-    // process faces in delegate function.
+        // process faces in delegate function.
     if ([self.delegate respondsToSelector:@selector(processframe:faces:)]) {
         [self.delegate processframe:sampleBuffer faces:bounds];
-    }
-}
-
-
-- (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    
-    connection.videoOrientation = AVCaptureVideoOrientationPortrait;
-    if(self.devicePosition == AVCaptureDevicePositionFront && connection.supportsVideoMirroring) {
-        [connection setVideoMirrored:YES];
     }
 }
 
@@ -177,13 +181,13 @@ AVCaptureMetadataOutputObjectsDelegate
 
 
 
-// MARK: - getter & setter
+    // MARK: - getter & setter
 
 -(AVCaptureSession *)session {
     if (_session == nil) {
         _session = [AVCaptureSession new];
-        if ([_session canSetSessionPreset:AVCaptureSessionPresetHigh]) {
-            _session.sessionPreset = AVCaptureSessionPresetHigh;
+        if ([_session canSetSessionPreset:self.sessionPreset]) {
+            _session.sessionPreset = self.sessionPreset;
         }
     }
     return _session;
@@ -191,15 +195,13 @@ AVCaptureMetadataOutputObjectsDelegate
 
 -(AVCaptureMetadataOutput *)metadataOuput {
     if (_metadataOuput == nil) {
-        _metadataOuput = [[AVCaptureMetadataOutput alloc] init];
+        _metadataOuput = [AVCaptureMetadataOutput new];
     }
     return _metadataOuput;
 }
 
 -(AVCaptureVideoDataOutput *)videoOutput {
     if (_videoOutput == nil) {
-        _videoQueue = dispatch_queue_create("video.queue", NULL);
-        
         _videoOutput = [AVCaptureVideoDataOutput new];
         _videoOutput.videoSettings = @{
             (NSString*)kCVPixelBufferPixelFormatTypeKey: @(kCMPixelFormat_32BGRA)
@@ -211,84 +213,74 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
--(AVCaptureStillImageOutput *)stillImageOutput {
-    if (_stillImageOutput == nil) {
-        _stillImageOutput = [AVCaptureStillImageOutput new];
-        [_stillImageOutput addObserver:self forKeyPath:@"capturingStillImage" options:NSKeyValueObservingOptionNew context:nil];
+
+-(AVCaptureDeviceInput *)backCameraInput {
+    if (_backCameraInput == nil) {
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        NSError *error;
+        for (AVCaptureDevice *device in devices) {
+            if (device.position == AVCaptureDevicePositionFront) {
+                continue;
+            }
+            _backCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+            if (error) {
+                NSLog(@"[FaceCamera] error: %@", error.description);
+            }
+        }
     }
-    return _stillImageOutput;
+    return _backCameraInput;
+}
+
+-(AVCaptureDeviceInput *)frontCameraInput {
+    if (_frontCameraInput == nil) {
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        NSError *error;
+        for (AVCaptureDevice *device in devices) {
+            if (device.position == AVCaptureDevicePositionBack) {
+                continue;
+            }
+            _frontCameraInput  = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+            if (error) {
+                NSLog(@"[FaceCamera] error: %@", error.description);
+            }
+        }
+    }
+    return _frontCameraInput;
 }
 
 - (AVCaptureSessionPreset)sessionPreset {
-    return self.session.sessionPreset;
-}
-
-- (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset{
-    if ([self.session isRunning]) {
-//        [self.session stopRunning];
-        [self.session beginConfiguration];
-        self.session.sessionPreset = sessionPreset;
-        [self.session commitConfiguration];
-//        [self.session startRunning];
-        
-    } else {
-        self.session.sessionPreset = sessionPreset;
+    if (_sessionPreset == nil) {
+        _sessionPreset = AVCaptureSessionPreset1280x720;
     }
+    return _sessionPreset;
 }
-
-
 
 - (AVCaptureDevicePosition)devicePosition {
     return _devicePosition;
 }
 
-
--(void)setDevicePosition:(AVCaptureDevicePosition)devicePosition {
-    _devicePosition = devicePosition;
-    if ([self.session isRunning]) {
-        dispatch_async(_concurrentQueue, ^{
-            [self.session stopRunning];
-            [self.session beginConfiguration];
-            [self.session removeInput:self.currentInput];
-            if (devicePosition == AVCaptureDevicePositionFront && [self.session canAddInput:self.frontCameraInput]) {
-                [self.session addInput:self.frontCameraInput];
-                self.currentInput = self.frontCameraInput;
-            } else if ([self.session canAddInput:self.backCameraInput]) {
-                [self.session addInput:self.backCameraInput];
-                self.currentInput = self.backCameraInput;
-            }
-            dispatch_barrier_async(self->_metadataQueue, ^{
-                self.metadataObjects = nil;
-            });
-            [self.session commitConfiguration];
-            [self.session startRunning];
-
-        });
-    } else {
-        [self.session removeInput:self.currentInput];
-        if (devicePosition == AVCaptureDevicePositionFront && [self.session canAddInput:self.frontCameraInput]) {
-            [self.session addInput:self.frontCameraInput];
-            self.currentInput = self.frontCameraInput;
-        } else if ([self.session canAddInput:self.backCameraInput]) {
-            [self.session addInput:self.backCameraInput];
-            self.currentInput = self.backCameraInput;
-        }
-        self.metadataObjects = nil;
+-(AVCaptureVideoOrientation)orientation {
+    if (_orientation == 0) {
+        _orientation = AVCaptureVideoOrientationPortrait;
     }
+    return _orientation;
 }
 
 -(NSArray *)metadataObjects {
     __block NSArray *objects = nil;
-//    dispatch_sync(_concurrentQueue, ^{
+    dispatch_sync(_concurrentQueue, ^{
         objects = self->_metadataObjects;
-//    });
+    });
     return objects;
 }
 
 -(void)setMetadataObjects:(NSArray *)metadataObjects {
-//    dispatch_barrier_async(_concurrentQueue, ^{
+    dispatch_barrier_async(_concurrentQueue, ^{
         self->_metadataObjects = metadataObjects;
-//    });
+    });
 }
+
+
+
 
 @end

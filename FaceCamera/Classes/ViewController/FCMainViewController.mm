@@ -53,7 +53,7 @@ FaceCameraDelegate
     [self.view addSubview:self.cameraView];
     [self.view addSubview:self.cameraSwitcher];
     [self.view addSubview:self.resolutionSwitcher];
-//    [self.view addSubview:self.scissorView];
+    [self.view addSubview:self.scissorView];
     
     [self.cameraView addSubview:self.maskGLView];
     
@@ -191,7 +191,6 @@ FaceCameraDelegate
         [_resolutionSwitcher addTarget:self action:@selector(openResolutionSelector:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _resolutionSwitcher;
-    
 }
 
 @end

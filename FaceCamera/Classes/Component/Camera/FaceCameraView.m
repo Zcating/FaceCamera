@@ -52,11 +52,7 @@
 }
 
 -(void)switchCamera {
-    if (self.faceCamera.devicePosition == AVCaptureDevicePositionBack) {
-        self.faceCamera.devicePosition = AVCaptureDevicePositionFront;
-    } else {
-        self.faceCamera.devicePosition = AVCaptureDevicePositionBack;
-    }
+    [self.faceCamera switchCameras];
 }
 
 - (void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
@@ -73,7 +69,7 @@
 }
 
 
-// MARK: Getter & Setter
+// MARK: GETTER & SETTER
 
 - (AVSampleBufferDisplayLayer *)displayLayer {
     if (_displayLayer == nil) {

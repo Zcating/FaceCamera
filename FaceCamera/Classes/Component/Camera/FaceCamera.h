@@ -21,22 +21,24 @@ typedef NS_ENUM(NSUInteger, FCRatioType) {
 
 @interface FaceCamera : NSObject
 
+// NSString type
+@property (nonatomic, copy) AVCaptureSessionPreset sessionPreset;
+
 @property (nonatomic) AVCaptureDevicePosition devicePosition;
 
-@property (nonatomic) AVCaptureSessionPreset sessionPreset;
-
-@property (nonatomic) FCRatioType type;
+@property (nonatomic) AVCaptureVideoOrientation orientation;
 
 @property (nonatomic, weak) id<FaceCameraDelegate> delegate;
-
-@property (nonatomic, strong, readonly) UIImage *pasterImage;
-
 
 - (instancetype)initWithDelegate:(id<FaceCameraDelegate>)delegate;
 
 - (void)start;
 
 - (void)stop;
+
+- (void)pause;
+
+- (void)switchCameras;
 
 @end
 
