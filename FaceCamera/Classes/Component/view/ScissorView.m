@@ -26,35 +26,59 @@
 
 @implementation ScissorView
 
+-(instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.clipsToBounds = YES;
+        self.layer.cornerRadius = 10;
+        self.backgroundColor = [UIColor yellowColor];
+        
+        [self addSubview:self.ratio16To9Button];
+        [self addSubview:self.ratio4To3Button];
+        [self addSubview:self.ratio1To1Button];
+        [self addSubview:self.roundScissorButton];
+    }
+    return self;
+}
+
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    [super drawRect:rect];
-    
-    self.clipsToBounds = YES;
-    self.layer.cornerRadius = 10;
-    [self addSubview:self.ratio16To9Button];
-    [self addSubview:self.ratio4To3Button];
-    [self addSubview:self.ratio1To1Button];
-    [self addSubview:self.roundScissorButton];
+//    [super drawRect:rect];
+//
+//    self.clipsToBounds = YES;
+//    self.layer.cornerRadius = 10;
+//    self.backgroundColor = [UIColor whiteColor];
+//    self.hidden = NO;
+//
+//    [self addSubview:self.ratio16To9Button];
+//    [self addSubview:self.ratio4To3Button];
+//    [self addSubview:self.ratio1To1Button];
+//    [self addSubview:self.roundScissorButton];
+}
+
+-(void)changeState:(FCResolutionType)type {
+    self.ratio1To1Button.selected = type == FCResolutionType11;
+    self.ratio4To3Button.selected = type == FCResolutionType34;
+    self.ratio16To9Button.selected = type == FCResolutionType916;
 }
 
 
 -(void)changeRatio1To1:(UIButton *)sender {
-    sender.selected = !sender.selected;
+    [self changeState:FCResolutionType11];
     if ([self.delegate respondsToSelector:@selector(resolutionChangeTo:selectedImage:)]) {
         [self.delegate resolutionChangeTo:1.0 selectedImage:self.images[0]];
     }
 }
 
 -(void)changeRatio4To3:(UIButton *)sender {
-    sender.selected = !sender.selected;
+    [self changeState:FCResolutionType34];
     if ([self.delegate respondsToSelector:@selector(resolutionChangeTo:selectedImage:)]) {
         [self.delegate resolutionChangeTo:4/3.0 selectedImage:self.images[1]];
     }
 }
 
 -(void)changeRatio16To9:(UIButton *)sender {
-    sender.selected = !sender.selected;
+    [self changeState:FCResolutionType916];
     if ([self.delegate respondsToSelector:@selector(resolutionChangeTo:selectedImage:)]) {
         [self.delegate resolutionChangeTo:16/9.0 selectedImage:self.images[2]];
     }
@@ -64,9 +88,9 @@
 -(NSArray *)images {
     if (_images == nil) {
         _images = @[
-                    [UIImage imageNamed:@"btn_camera_ratio_11_dark"],
-                    [UIImage imageNamed:@"btn_camera_ratio_34_dark"],
-                    [UIImage imageNamed:@"btn_camera_ratio_916_dark"]
+                    [UIImage imageNamed:@"btn_camera_ratio_11_light"],
+                    [UIImage imageNamed:@"btn_camera_ratio_34_light"],
+                    [UIImage imageNamed:@"btn_camera_ratio_916_light"]
                     ];
     }
     return _images;
@@ -77,8 +101,8 @@
     if (_ratio1To1Button == nil) {
         _ratio1To1Button = [UIButton buttonWithType:UIButtonTypeCustom];
         _ratio1To1Button.frame = CGRectMake(10, 10, 50, 50);
-        [_ratio1To1Button setImage:self.images[0] forState:UIControlStateNormal];
-        [_ratio1To1Button setImage:[UIImage imageNamed:@"btn_camera_ratio_11_light"] forState:UIControlStateSelected];
+        [_ratio1To1Button setImage:[UIImage imageNamed:@"btn_camera_ratio_11_dark"] forState:UIControlStateNormal];
+        [_ratio1To1Button setImage:self.images[0]  forState:UIControlStateSelected];
         [_ratio1To1Button addTarget:self action:@selector(changeRatio1To1:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _ratio1To1Button;
@@ -88,8 +112,8 @@
     if (_ratio4To3Button == nil) {
         _ratio4To3Button = [UIButton buttonWithType:UIButtonTypeCustom];
         _ratio4To3Button.frame = CGRectMake(60, 10, 50, 50);
-        [_ratio4To3Button setImage:self.images[1] forState:UIControlStateNormal];
-        [_ratio4To3Button setImage:[UIImage imageNamed:@"btn_camera_ratio_34_light"] forState:UIControlStateSelected];
+        [_ratio4To3Button setImage:[UIImage imageNamed:@"btn_camera_ratio_34_dark"] forState:UIControlStateNormal];
+        [_ratio4To3Button setImage:self.images[1] forState:UIControlStateSelected];
         [_ratio4To3Button addTarget:self action:@selector(changeRatio4To3:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _ratio4To3Button;
@@ -100,8 +124,8 @@
         _ratio16To9Button = [UIButton buttonWithType:UIButtonTypeCustom];
         _ratio16To9Button.frame = CGRectMake(120, 10, 50, 50);
         
-        [_ratio16To9Button setImage:self.images[2] forState:UIControlStateNormal];
-        [_ratio16To9Button setImage:[UIImage imageNamed:@"btn_camera_ratio_916_light"] forState:UIControlStateSelected];
+        [_ratio16To9Button setImage:[UIImage imageNamed:@"btn_camera_ratio_916_dark"] forState:UIControlStateNormal];
+        [_ratio16To9Button setImage:self.images[2] forState:UIControlStateSelected];
         [_ratio16To9Button addTarget:self action:@selector(changeRatio16To9:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _ratio16To9Button;

@@ -40,3 +40,9 @@
 
 //#define FC_DEBUG
 
+typedef enum {
+    FCResolutionType11 = 1,
+    FCResolutionType34 = 2,
+    FCResolutionType916 = 3,
+} FCResolutionType;
+

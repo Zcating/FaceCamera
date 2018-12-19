@@ -39,7 +39,6 @@ FaceCameraDelegate
 
 @property (strong, nonatomic) UIButton *resolutionSwitcher;
 
-
 @property (strong, nonatomic) FCCoreVisualService *coreVisualService;
 
 @end
@@ -53,8 +52,6 @@ FaceCameraDelegate
     [self.view addSubview:self.cameraView];
     [self.view addSubview:self.cameraSwitcher];
     [self.view addSubview:self.resolutionSwitcher];
-    [self.view addSubview:self.scissorView];
-    
     [self.cameraView addSubview:self.maskGLView];
     
     
@@ -87,7 +84,15 @@ FaceCameraDelegate
 }
 
 -(void)openResolutionSelector:(UIButton *)sender {
-    
+    sender.selected = !sender.selected;
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+//    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+    CGRect showingFrame = CGRectMake(20, 100, width - 40 , 70);
+    CGRect hiddenFrame = CGRectMake(20, 100, 0, 0);
+    [self.view bringSubviewToFront:self.scissorView];
+    [UIView animateWithDuration:0.2 animations:^{
+        self.scissorView.frame = sender.selected ? showingFrame : hiddenFrame;
+    }];
 }
 
 //- (IBAction)openSetting:(id)sender {
@@ -98,6 +103,7 @@ FaceCameraDelegate
 
 
 -(void)resolutionChangeTo:(double)ratio selectedImage:(nonnull UIImage *)image {
+    [self.resolutionSwitcher setImage:image forState:UIControlStateNormal];
     double width = CGRectGetWidth(self.cameraView.frame);
     CGRect afterFrame = CGRectMake(0, 0, width, width * ratio);
     [UIView animateWithDuration:0.2 animations:^{
@@ -140,9 +146,13 @@ FaceCameraDelegate
 
 -(ScissorView *)scissorView {
     if (_scissorView == nil) {
-        _scissorView = [[ScissorView alloc] init];
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        _scissorView = [[ScissorView alloc] initWithFrame:CGRectMake(20, 100, width - 40 , 70)];
+        _scissorView.delegate = self;
+        [self.view addSubview:_scissorView];
     }
     return _scissorView;
+
 }
 
 -(FaceCameraView *)cameraView {
@@ -187,7 +197,6 @@ FaceCameraDelegate
         _resolutionSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
         _resolutionSwitcher.frame = CGRectMake(70, 20, 50, 50);
         [_resolutionSwitcher setImage:[UIImage imageNamed:@"btn_camera_ratio_916_light"] forState:UIControlStateNormal];
-        [_resolutionSwitcher setImage:[UIImage imageNamed:@"btn_camera_ratio_916_dark"] forState:UIControlStateSelected];
         [_resolutionSwitcher addTarget:self action:@selector(openResolutionSelector:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _resolutionSwitcher;
