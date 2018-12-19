@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ResolutionDelegate <NSObject>
 
--(void) resolutionChangeTo:(double)ratio selectedImage:(UIImage *)image;
+-(void) resolutionChangeTo:(FCResolutionType)type selectedImage:(UIImage *)image;
 
 @end
 

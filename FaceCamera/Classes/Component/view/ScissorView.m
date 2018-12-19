@@ -31,7 +31,6 @@
     if (self) {
         self.clipsToBounds = YES;
         self.layer.cornerRadius = 10;
-        self.backgroundColor = [UIColor yellowColor];
         
         [self addSubview:self.ratio16To9Button];
         [self addSubview:self.ratio4To3Button];
@@ -41,20 +40,6 @@
     return self;
 }
 
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-//    [super drawRect:rect];
-//
-//    self.clipsToBounds = YES;
-//    self.layer.cornerRadius = 10;
-//    self.backgroundColor = [UIColor whiteColor];
-//    self.hidden = NO;
-//
-//    [self addSubview:self.ratio16To9Button];
-//    [self addSubview:self.ratio4To3Button];
-//    [self addSubview:self.ratio1To1Button];
-//    [self addSubview:self.roundScissorButton];
-}
 
 -(void)changeState:(FCResolutionType)type {
     self.ratio1To1Button.selected = type == FCResolutionType11;
@@ -66,21 +51,21 @@
 -(void)changeRatio1To1:(UIButton *)sender {
     [self changeState:FCResolutionType11];
     if ([self.delegate respondsToSelector:@selector(resolutionChangeTo:selectedImage:)]) {
-        [self.delegate resolutionChangeTo:1.0 selectedImage:self.images[0]];
+        [self.delegate resolutionChangeTo:FCResolutionType11 selectedImage:self.images[0]];
     }
 }
 
 -(void)changeRatio4To3:(UIButton *)sender {
     [self changeState:FCResolutionType34];
     if ([self.delegate respondsToSelector:@selector(resolutionChangeTo:selectedImage:)]) {
-        [self.delegate resolutionChangeTo:4/3.0 selectedImage:self.images[1]];
+        [self.delegate resolutionChangeTo:FCResolutionType34 selectedImage:self.images[1]];
     }
 }
 
 -(void)changeRatio16To9:(UIButton *)sender {
     [self changeState:FCResolutionType916];
     if ([self.delegate respondsToSelector:@selector(resolutionChangeTo:selectedImage:)]) {
-        [self.delegate resolutionChangeTo:16/9.0 selectedImage:self.images[2]];
+        [self.delegate resolutionChangeTo:FCResolutionType916 selectedImage:self.images[2]];
     }
 }
 

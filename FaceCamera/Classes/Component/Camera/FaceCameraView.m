@@ -26,10 +26,15 @@
 
 @implementation FaceCameraView
 
-
--(void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
+-(instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+//        self.contentMode = UIViewContentModeRedraw;
+        [self.layer addSublayer:self.displayLayer];
+    }
+    return self;
 }
+
 
 
 
@@ -75,7 +80,6 @@
     if (_displayLayer == nil) {
         _displayLayer = [AVSampleBufferDisplayLayer layer];
         _displayLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        [self.layer addSublayer:_displayLayer];
         _displayLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     }
     return _displayLayer;
@@ -90,12 +94,12 @@
     return _faceCamera;
 }
 
-- (void)setFrame:(CGRect)frame {
-    self.displayLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
-    for (UIView *view in self.subviews) {
-        view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
-    }
-    [super setFrame:frame];
-}
+//- (void)setFrame:(CGRect)frame {
+//    self.displayLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+//    for (UIView *view in self.subviews) {
+//        view.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+//    }
+//    [super setFrame:frame];
+//}
 
 @end

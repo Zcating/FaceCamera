@@ -12,7 +12,7 @@
 		CB1143C521A3A5CF003CCB2E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */; };
 		CB1ED87E21BD4566002BB191 /* mask.json in Resources */ = {isa = PBXBuildFile; fileRef = CB1ED87D21BD4566002BB191 /* mask.json */; };
 		CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2E21ABB26F0053AB48 /* ScissorView.m */; };
-		CB685B6521C94F820074209C /* RatioMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB685B6421C94F820074209C /* RatioMaskView.m */; };
+		CB685B6821CA88800074209C /* MaskView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB685B6721CA88800074209C /* MaskView.mm */; };
 		CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
 		CB88A32721C13E110083C01B /* btn_camera_ratio_11_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31821C13E110083C01B /* btn_camera_ratio_11_dark.png */; };
@@ -89,8 +89,8 @@
 		CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		CB1ED87D21BD4566002BB191 /* mask.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mask.json; sourceTree = "<group>"; };
 		CB30CA682192B3F40012D84A /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = Frameworks/opencv2.framework; sourceTree = "<group>"; };
-		CB685B6321C94F820074209C /* RatioMaskView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RatioMaskView.h; sourceTree = "<group>"; };
-		CB685B6421C94F820074209C /* RatioMaskView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RatioMaskView.m; sourceTree = "<group>"; };
+		CB685B6621CA88800074209C /* MaskView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaskView.h; sourceTree = "<group>"; };
+		CB685B6721CA88800074209C /* MaskView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MaskView.mm; sourceTree = "<group>"; };
 		CB83E1E12129B02C00265D61 /* FaceCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB83E1F92129B03100265D61 /* FaceCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB83E213212A861F00265D61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -210,8 +210,8 @@
 			children = (
 				CBD38CA121AE6F1E0053AB48 /* MaskGLView.h */,
 				CBD38CA221AE6F1E0053AB48 /* MaskGLView.mm */,
-				CB685B6321C94F820074209C /* RatioMaskView.h */,
-				CB685B6421C94F820074209C /* RatioMaskView.m */,
+				CB685B6621CA88800074209C /* MaskView.h */,
+				CB685B6721CA88800074209C /* MaskView.mm */,
 			);
 			path = Mask;
 			sourceTree = "<group>";
@@ -679,11 +679,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB685B6521C94F820074209C /* RatioMaskView.m in Sources */,
 				CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */,
 				CBD38CA921AE923A0053AB48 /* CosmeticCore.cpp in Sources */,
 				CBD38C7121ABB26F0053AB48 /* FaceCameraView.m in Sources */,
 				CBD38C7421ABB26F0053AB48 /* ShutterView.m in Sources */,
+				CB685B6821CA88800074209C /* MaskView.mm in Sources */,
 				CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */,
 				CBD38C6D21ABB26F0053AB48 /* main.m in Sources */,
 				CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */,

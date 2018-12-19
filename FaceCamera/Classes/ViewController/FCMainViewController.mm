@@ -11,6 +11,7 @@
 #import "FaceCameraView.h"
 
 #import "MaskGLView.h"
+#import "MaskView.h"
 
 #import "ShutterView.h"
 
@@ -30,6 +31,8 @@ FaceCameraDelegate
 
 
 @property (strong, nonatomic) IBOutlet FaceCameraView *cameraView;
+
+@property (strong, nonatomic) MaskView *maskView;
 
 @property (strong, nonatomic) MaskGLView *maskGLView;
 
@@ -52,7 +55,9 @@ FaceCameraDelegate
     [self.view addSubview:self.cameraView];
     [self.view addSubview:self.cameraSwitcher];
     [self.view addSubview:self.resolutionSwitcher];
+    [self.view addSubview:self.scissorView];
     [self.cameraView addSubview:self.maskGLView];
+    [self.cameraView addSubview:self.maskView];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(start) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -102,16 +107,9 @@ FaceCameraDelegate
 //}
 
 
--(void)resolutionChangeTo:(double)ratio selectedImage:(nonnull UIImage *)image {
+-(void)resolutionChangeTo:(FCResolutionType)type selectedImage:(nonnull UIImage *)image {
     [self.resolutionSwitcher setImage:image forState:UIControlStateNormal];
-    double width = CGRectGetWidth(self.cameraView.frame);
-    CGRect afterFrame = CGRectMake(0, 0, width, width * ratio);
-    [UIView animateWithDuration:0.2 animations:^{
-        self.cameraView.frame = afterFrame;
-        if (ratio == 1) {
-            self.cameraView.center = self.view.center;
-        }
-    }];
+    self.maskView.type = type;
 }
 
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
@@ -147,9 +145,10 @@ FaceCameraDelegate
 -(ScissorView *)scissorView {
     if (_scissorView == nil) {
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
-        _scissorView = [[ScissorView alloc] initWithFrame:CGRectMake(20, 100, width - 40 , 70)];
+        _scissorView = [[ScissorView alloc] initWithFrame:CGRectMake(20, 100, 0, 0)];
+//        _scissorView.frame = CGRectMake(20, 100, 0, 0);
+        _scissorView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1];
         _scissorView.delegate = self;
-        [self.view addSubview:_scissorView];
     }
     return _scissorView;
 
@@ -170,15 +169,24 @@ FaceCameraDelegate
         NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
         NSData *jsonData = [NSData dataWithContentsOfURL:path];
         NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
-        
+
         EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         [EAGLContext setCurrentContext:context];
-        
-        _maskGLView = [[MaskGLView alloc] initWithFrame:self.cameraView.frame context:context];
+
+        CGRect frame = [UIScreen mainScreen].bounds;
+        _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
         _maskGLView.hidden = YES;
         [_maskGLView setupVBOs:@"leopard" withLandmarkArray:array];
     }
     return _maskGLView;
+}
+
+-(MaskView *)maskView {
+    if (_maskView == nil) {
+        CGRect frame = [UIScreen mainScreen].bounds;
+        _maskView = [[MaskView alloc] initWithFrame:frame];
+    }
+    return _maskView;
 }
 
 -(UIButton *)cameraSwitcher {

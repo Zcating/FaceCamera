@@ -62,25 +62,16 @@ inline static double Angle(const cv::Point_<double>& point1, const cv::Point_<do
     float _previousDistOf75and36;
     float _previousAngleOf75and36;
     
-    
-//    dispatch_queue_t _concurrentQueue;
 }
 
-@property (nonatomic) dispatch_queue_t concurrentQueue;
 
 @property (nonatomic, strong) GLKBaseEffect *baseEffect;
-
-@property (nonatomic) CGSize frameSize;
-
-@property (nonatomic) CGSize imageSize;
 
 @end
 
 
 @implementation MaskGLView
-//
-//// define the face shape vertex bufferfor drawing
-//
+
 int _numVertices = 76;
 int _sizeFaceShapeVertices = _numVertices * sizeof(VertexData);
 
@@ -253,7 +244,6 @@ GLubyte _delaunayTriangles[] = {
 - (id)initWithFrame:(CGRect)frame context:(EAGLContext *)context {
     self = [super initWithFrame:frame context:context];
     if (self) {
-        self.type = FCResolutionType916;
         [self setupLayer];
         [self setupContext];
         [self setupDisplayLink];
@@ -262,7 +252,7 @@ GLubyte _delaunayTriangles[] = {
 }
 
 
-// MARK: - Private
+// MARK: - PRIVATE
 
 - (void)setupLayer {
     CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
@@ -438,18 +428,16 @@ GLubyte _delaunayTriangles[] = {
 
 
 
-// MARK: - Public
+// MARK: - PUBLIC
 
 
 - (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape faceIndex:(long)faceIndex {
 
-    CGSize imageSize = self.imageSize;
-    CGSize frameSize = self.frameSize;
-//    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGSize frameSize = [UIScreen mainScreen].bounds.size;
     for (int i = 0; i < shape.size(); i++) {
         const auto& point = shape[i];
-        float x = ((float)point.x * frameSize.width) / imageSize.width;
-        float y = ((float)point.y * frameSize.height) / imageSize.height;
+        double x = ((double)point.x * frameSize.width) / 720.0;
+        double y = ((double)point.y * frameSize.height) / 1280.0;
         
         VertexData& data = _landmarkVertices[i];
         data.position[0] = x;
@@ -518,43 +506,6 @@ GLubyte _delaunayTriangles[] = {
     return _baseEffect;
 }
 
--(void)setType:(FCResolutionType)type {
-    _type = type;
-    CGSize frameSize = [UIScreen mainScreen].bounds.size;
-    CGSize imageSize = CGSizeMake(720, 1280);
-    if (type == FCResolutionType11) {
-        frameSize.height = frameSize.width;
-        imageSize.height = imageSize.width;
-    } else if (type == FCResolutionType34) {
-        frameSize.height = frameSize.width * 3 / 4.0;
-        imageSize.height = imageSize.width * 3 / 4.0;
-    }
-    self.frameSize = frameSize;
-    self.imageSize = imageSize;
-}
-
-//-(dispatch_queue_t)concurrentQueue {
-//    if (_concurrentQueue == 0) {
-//        _concurrentQueue = dispatch_queue_create("mask.concurrent.queue", DISPATCH_QUEUE_CONCURRENT);
-//    }
-//    return _concurrentQueue;
-//}
-//
-//-(CGFloat)ratio {
-//    __block CGFloat theRatio;
-//    dispatch_sync(self.concurrentQueue, ^{
-//        theRatio = self->_ratio;
-//    });
-//    return theRatio;
-//}
-//
-//
-//-(void)setRatio:(CGFloat)ratio {
-//    dispatch_barrier_sync(self.concurrentQueue, ^{
-//        self->_ratio = ratio;
-//    });
-//}
-//
 
 @end
 

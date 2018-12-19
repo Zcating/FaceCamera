@@ -52,12 +52,7 @@ struct MaskMap {
 
 };
 
-@interface MaskGLView : GLKView {
-    CGFloat _ratio;
-}
-
-@property (nonatomic) FCResolutionType type;
-
+@interface MaskGLView : GLKView
 
 - (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape faceIndex:(long)faceIndex;
 

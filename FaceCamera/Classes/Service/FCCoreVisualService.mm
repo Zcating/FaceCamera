@@ -66,7 +66,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
             //
         cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
         
-        auto landmarks = _shapePredictor(dlib::cv_image<dlib::rgb_alpha_pixel>(image), ConvertCVRect(faceRect));
+        auto landmarks = self->_shapePredictor(dlib::cv_image<dlib::rgb_alpha_pixel>(image), ConvertCVRect(faceRect));
         
 #ifdef FC_DEBUG
         cv::rectangle(image, faceRect.tl(), faceRect.br(), cv::Scalar(0, 0, 255, 255), 2);
