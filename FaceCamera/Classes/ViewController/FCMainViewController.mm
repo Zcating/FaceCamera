@@ -120,7 +120,11 @@ FaceCameraDelegate
 //    }];
 //}
 -(void)takingPhoto:(UIButton *)sender {
-    [self.testView setImage:[self.maskGLView snapshot]  forState:UIControlStateNormal];
+    [self.coreVisualService getSnapshot:^(UIImage *image) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.testView setImage:image  forState:UIControlStateNormal];
+        });
+    }];
 }
 
 

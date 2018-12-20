@@ -18,9 +18,11 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 //    std::shared_ptr<fc::FaceCore> _faceCore;
 }
 
-@property (nonatomic) dispatch_semaphore_t semaphore;
+@property (nonatomic, copy) SnapshotBlock snapshotBlock;
 
 @property (nonatomic) BOOL enableSnapshot;
+
+@property (nonatomic, strong) UIImage *snapshot;
 
 @end
 
@@ -108,13 +110,14 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     
     if(self.enableSnapshot) {
-        [self getSnapshot];
+        [self startSnapshot:pixelBuffer];
+        self.enableSnapshot = NO;
     }
-    
 }
 
--(UIImage *)getSnapshot {
-    return nil;
+-(void)getSnapshot:(SnapshotBlock)block {
+    self.enableSnapshot = YES;
+    self.snapshotBlock = block;
 }
 
 
@@ -137,17 +140,16 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     
     CGContextRelease(context);
     CGColorSpaceRelease(colorSpace);
-    
+
     UIImage *image = [UIImage imageWithCGImage:cgImage];
     
     CGImageRelease(cgImage);
-}
-
--(dispatch_semaphore_t)semaphore {
-    if (_semaphore == NULL) {
-        _semaphore = dispatch_semaphore_create(0);
+    
+    if(self.snapshotBlock) {
+        self.snapshotBlock(image);
+        self.snapshotBlock = nil;
     }
-    return _semaphore;
+//    dispatch_semaphore_signal(self.semaphore);
 }
 
 
