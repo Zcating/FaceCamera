@@ -19,6 +19,8 @@
 
 #import "FCCoreVisualService.h"
 
+#import "ConstantValue.h"
+
 #import <Masonry/Masonry.h>
 
 
@@ -42,6 +44,10 @@ FaceCameraDelegate
 
 @property (strong, nonatomic) UIButton *resolutionSwitcher;
 
+@property (strong, nonatomic) UIButton *shutterButton;
+
+@property (strong, nonatomic) UIButton *testView;
+
 @property (strong, nonatomic) FCCoreVisualService *coreVisualService;
 
 @end
@@ -56,6 +62,7 @@ FaceCameraDelegate
     [self.view addSubview:self.cameraSwitcher];
     [self.view addSubview:self.resolutionSwitcher];
     [self.view addSubview:self.scissorView];
+    [self.view addSubview:self.shutterButton];
     [self.cameraView addSubview:self.maskGLView];
     [self.cameraView addSubview:self.maskView];
     
@@ -63,6 +70,13 @@ FaceCameraDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(start) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    
+    self.testView = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.testView.frame = CGRectMake(ScreenWidth - 90, 0, 90, 90);
+    [self.testView setImage:[UIImage imageNamed:BTN_SWITCH_DARK] forState:UIControlStateNormal];
+    [self.view addSubview:self.testView];
+    
 }
 
 
@@ -105,6 +119,9 @@ FaceCameraDelegate
 //        self.scissorView.hidden = !self.scissorView.hidden;
 //    }];
 //}
+-(void)takingPhoto:(UIButton *)sender {
+    [self.testView setImage:[self.maskGLView snapshot]  forState:UIControlStateNormal];
+}
 
 
 -(void)resolutionChangeTo:(FCResolutionType)type selectedImage:(nonnull UIImage *)image {
@@ -144,9 +161,7 @@ FaceCameraDelegate
 
 -(ScissorView *)scissorView {
     if (_scissorView == nil) {
-        CGFloat width = [UIScreen mainScreen].bounds.size.width;
         _scissorView = [[ScissorView alloc] initWithFrame:CGRectMake(20, 100, 0, 0)];
-//        _scissorView.frame = CGRectMake(20, 100, 0, 0);
         _scissorView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1];
         _scissorView.delegate = self;
     }
@@ -192,10 +207,11 @@ FaceCameraDelegate
 -(UIButton *)cameraSwitcher {
     if (_cameraSwitcher == nil) {
         _cameraSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
-        _cameraSwitcher.frame = CGRectMake(10, 20, 50, 50);
-        [_cameraSwitcher setImage:[UIImage imageNamed:@"btn_camera_switch_camera_light"] forState:UIControlStateNormal];
-        [_cameraSwitcher setImage:[UIImage imageNamed:@"btn_camera_switch_camera_dark"] forState:UIControlStateSelected];
+        [_cameraSwitcher setImage:[UIImage imageNamed:BTN_SWITCH_LIGHT] forState:UIControlStateNormal];
+        [_cameraSwitcher setImage:[UIImage imageNamed:BTN_SWITCH_DARK] forState:UIControlStateSelected];
         [_cameraSwitcher addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchUpInside];
+
+        _cameraSwitcher.frame = CGRectMake(10, 20, 50, 50);
     }
     return _cameraSwitcher;
 }
@@ -203,11 +219,27 @@ FaceCameraDelegate
 -(UIButton *)resolutionSwitcher {
     if (_resolutionSwitcher == nil) {
         _resolutionSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
-        _resolutionSwitcher.frame = CGRectMake(70, 20, 50, 50);
         [_resolutionSwitcher setImage:[UIImage imageNamed:@"btn_camera_ratio_916_light"] forState:UIControlStateNormal];
         [_resolutionSwitcher addTarget:self action:@selector(openResolutionSelector:) forControlEvents:UIControlEventTouchUpInside];
+
+        _resolutionSwitcher.frame = CGRectMake(70, 20, 50, 50);
     }
     return _resolutionSwitcher;
+}
+
+-(UIButton *)shutterButton {
+    if (_shutterButton == nil) {
+        _shutterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_LIGHT] forState:UIControlStateNormal];
+        [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_DARK] forState:UIControlStateSelected];
+        [_shutterButton addTarget:self action:@selector(takingPhoto:) forControlEvents:UIControlEventTouchUpInside];
+
+        CGRect frame = [[UIScreen mainScreen] bounds];
+        CGFloat x = CGRectGetMidX(frame) - 40;
+        CGFloat y = frame.size.height - 30 - 80;
+        _shutterButton.frame = CGRectMake(x, y, 80, 80);
+    }
+    return _shutterButton;
 }
 
 @end

@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)stop;
 
--(void)takePhoto;
+-(UIImage *)takePhoto;
 
 -(void)switchCamera;
 

@@ -8,6 +8,7 @@
 
 #import "ScissorView.h"
 
+#import "ConstantValue.h"
 
 @interface ScissorView ()
 
@@ -73,9 +74,9 @@
 -(NSArray *)images {
     if (_images == nil) {
         _images = @[
-                    [UIImage imageNamed:@"btn_camera_ratio_11_light"],
-                    [UIImage imageNamed:@"btn_camera_ratio_34_light"],
-                    [UIImage imageNamed:@"btn_camera_ratio_916_light"]
+                    [UIImage imageNamed:BTN_RATIO_11_LIGHT],
+                    [UIImage imageNamed:BTN_RATIO_34_LIGHT],
+                    [UIImage imageNamed:BTN_RATIO_916_LIGHT]
                     ];
     }
     return _images;
@@ -86,7 +87,7 @@
     if (_ratio1To1Button == nil) {
         _ratio1To1Button = [UIButton buttonWithType:UIButtonTypeCustom];
         _ratio1To1Button.frame = CGRectMake(10, 10, 50, 50);
-        [_ratio1To1Button setImage:[UIImage imageNamed:@"btn_camera_ratio_11_dark"] forState:UIControlStateNormal];
+        [_ratio1To1Button setImage:[UIImage imageNamed:BTN_RATIO_11_DARK] forState:UIControlStateNormal];
         [_ratio1To1Button setImage:self.images[0]  forState:UIControlStateSelected];
         [_ratio1To1Button addTarget:self action:@selector(changeRatio1To1:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -97,7 +98,7 @@
     if (_ratio4To3Button == nil) {
         _ratio4To3Button = [UIButton buttonWithType:UIButtonTypeCustom];
         _ratio4To3Button.frame = CGRectMake(60, 10, 50, 50);
-        [_ratio4To3Button setImage:[UIImage imageNamed:@"btn_camera_ratio_34_dark"] forState:UIControlStateNormal];
+        [_ratio4To3Button setImage:[UIImage imageNamed:BTN_RATIO_34_DARK] forState:UIControlStateNormal];
         [_ratio4To3Button setImage:self.images[1] forState:UIControlStateSelected];
         [_ratio4To3Button addTarget:self action:@selector(changeRatio4To3:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -109,7 +110,7 @@
         _ratio16To9Button = [UIButton buttonWithType:UIButtonTypeCustom];
         _ratio16To9Button.frame = CGRectMake(120, 10, 50, 50);
         
-        [_ratio16To9Button setImage:[UIImage imageNamed:@"btn_camera_ratio_916_dark"] forState:UIControlStateNormal];
+        [_ratio16To9Button setImage:[UIImage imageNamed:BTN_RATIO_916_DARK] forState:UIControlStateNormal];
         [_ratio16To9Button setImage:self.images[2] forState:UIControlStateSelected];
         [_ratio16To9Button addTarget:self action:@selector(changeRatio16To9:) forControlEvents:UIControlEventTouchUpInside];
     }

@@ -15,23 +15,14 @@
 		CB685B6821CA88800074209C /* MaskView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB685B6721CA88800074209C /* MaskView.mm */; };
 		CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
-		CB88A32721C13E110083C01B /* btn_camera_ratio_11_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31821C13E110083C01B /* btn_camera_ratio_11_dark.png */; };
-		CB88A32821C13E110083C01B /* btn_camera_ratio_916_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31921C13E110083C01B /* btn_camera_ratio_916_dark.png */; };
-		CB88A32921C13E110083C01B /* btn_camera_ratio_11_light.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31A21C13E110083C01B /* btn_camera_ratio_11_light.png */; };
-		CB88A32A21C13E110083C01B /* btn_camera_ratio_full_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31B21C13E110083C01B /* btn_camera_ratio_full_dark.png */; };
-		CB88A32B21C13E110083C01B /* btn_camera_ratio_34_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31C21C13E110083C01B /* btn_camera_ratio_34_dark.png */; };
-		CB88A32C21C13E110083C01B /* btn_camera_ratio_34_light.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31D21C13E110083C01B /* btn_camera_ratio_34_light.png */; };
-		CB88A32D21C13E110083C01B /* btn_camera_ratio_916_light.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31E21C13E110083C01B /* btn_camera_ratio_916_light.png */; };
-		CB88A32E21C13E110083C01B /* btn_camera_ratio_full_light.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A31F21C13E110083C01B /* btn_camera_ratio_full_light.png */; };
 		CB88A32F21C13E110083C01B /* nose_000.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32121C13E110083C01B /* nose_000.png */; };
 		CB88A33021C13E110083C01B /* nose_001.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32221C13E110083C01B /* nose_001.png */; };
 		CB88A33121C13E110083C01B /* whiskers.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32321C13E110083C01B /* whiskers.png */; };
 		CB88A33221C13E110083C01B /* leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32421C13E110083C01B /* leopard.png */; };
 		CB88A33321C13E110083C01B /* ear_000.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32521C13E110083C01B /* ear_000.png */; };
 		CB88A33421C13E110083C01B /* ear_001.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32621C13E110083C01B /* ear_001.png */; };
-		CB88A33721C158D50083C01B /* btn_camera_switch_camera_light.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A33521C158D40083C01B /* btn_camera_switch_camera_light.png */; };
-		CB88A33821C158D50083C01B /* btn_camera_switch_camera_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A33621C158D40083C01B /* btn_camera_switch_camera_dark.png */; };
 		CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
+		CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */; };
 		CBD38C6D21ABB26F0053AB48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C1C21ABB26E0053AB48 /* main.m */; };
 		CBD38C7021ABB26F0053AB48 /* FaceCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2721ABB26F0053AB48 /* FaceCamera.m */; };
 		CBD38C7121ABB26F0053AB48 /* FaceCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2821ABB26F0053AB48 /* FaceCameraView.m */; };
@@ -95,23 +86,15 @@
 		CB83E1F92129B03100265D61 /* FaceCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB83E213212A861F00265D61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CB83E215212A864E00265D61 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		CB88A31821C13E110083C01B /* btn_camera_ratio_11_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_11_dark.png; sourceTree = "<group>"; };
-		CB88A31921C13E110083C01B /* btn_camera_ratio_916_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_916_dark.png; sourceTree = "<group>"; };
-		CB88A31A21C13E110083C01B /* btn_camera_ratio_11_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_11_light.png; sourceTree = "<group>"; };
-		CB88A31B21C13E110083C01B /* btn_camera_ratio_full_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_full_dark.png; sourceTree = "<group>"; };
-		CB88A31C21C13E110083C01B /* btn_camera_ratio_34_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_34_dark.png; sourceTree = "<group>"; };
-		CB88A31D21C13E110083C01B /* btn_camera_ratio_34_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_34_light.png; sourceTree = "<group>"; };
-		CB88A31E21C13E110083C01B /* btn_camera_ratio_916_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_916_light.png; sourceTree = "<group>"; };
-		CB88A31F21C13E110083C01B /* btn_camera_ratio_full_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_ratio_full_light.png; sourceTree = "<group>"; };
 		CB88A32121C13E110083C01B /* nose_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nose_000.png; sourceTree = "<group>"; };
 		CB88A32221C13E110083C01B /* nose_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nose_001.png; sourceTree = "<group>"; };
 		CB88A32321C13E110083C01B /* whiskers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiskers.png; sourceTree = "<group>"; };
 		CB88A32421C13E110083C01B /* leopard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leopard.png; sourceTree = "<group>"; };
 		CB88A32521C13E110083C01B /* ear_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_000.png; sourceTree = "<group>"; };
 		CB88A32621C13E110083C01B /* ear_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_001.png; sourceTree = "<group>"; };
-		CB88A33521C158D40083C01B /* btn_camera_switch_camera_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_switch_camera_light.png; sourceTree = "<group>"; };
-		CB88A33621C158D40083C01B /* btn_camera_switch_camera_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera_switch_camera_dark.png; sourceTree = "<group>"; };
 		CB9CB68B214F753200E687B9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CBD0FD1E21CBB92E00BDDE5E /* ConstantValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstantValue.h; sourceTree = "<group>"; };
+		CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConstantValue.m; sourceTree = "<group>"; };
 		CBD38C1A21ABB26E0053AB48 /* FaceCameraTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceCameraTests.m; sourceTree = "<group>"; };
 		CBD38C1B21ABB26E0053AB48 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBD38C1C21ABB26E0053AB48 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -254,23 +237,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CB88A31721C13E110083C01B /* Button */ = {
-			isa = PBXGroup;
-			children = (
-				CB88A33621C158D40083C01B /* btn_camera_switch_camera_dark.png */,
-				CB88A33521C158D40083C01B /* btn_camera_switch_camera_light.png */,
-				CB88A31821C13E110083C01B /* btn_camera_ratio_11_dark.png */,
-				CB88A31921C13E110083C01B /* btn_camera_ratio_916_dark.png */,
-				CB88A31A21C13E110083C01B /* btn_camera_ratio_11_light.png */,
-				CB88A31B21C13E110083C01B /* btn_camera_ratio_full_dark.png */,
-				CB88A31C21C13E110083C01B /* btn_camera_ratio_34_dark.png */,
-				CB88A31D21C13E110083C01B /* btn_camera_ratio_34_light.png */,
-				CB88A31E21C13E110083C01B /* btn_camera_ratio_916_light.png */,
-				CB88A31F21C13E110083C01B /* btn_camera_ratio_full_light.png */,
-			);
-			path = Button;
-			sourceTree = "<group>";
-		};
 		CB88A32021C13E110083C01B /* Mask */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,6 +280,8 @@
 				CBD38C4321ABB26F0053AB48 /* ViewController */,
 				CBD38C1E21ABB26E0053AB48 /* AppDelegate.h */,
 				CBD38C3121ABB26F0053AB48 /* AppDelegate.m */,
+				CBD0FD1E21CBB92E00BDDE5E /* ConstantValue.h */,
+				CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -390,7 +358,6 @@
 		CBD38C5121ABB26F0053AB48 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CB88A31721C13E110083C01B /* Button */,
 				CB88A32021C13E110083C01B /* Mask */,
 				CBD38C5321ABB26F0053AB48 /* shape_predictor_68_face_landmarks.dat */,
 				CB1ED87D21BD4566002BB191 /* mask.json */,
@@ -560,20 +527,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB88A33021C13E110083C01B /* nose_001.png in Resources */,
-				CB88A32A21C13E110083C01B /* btn_camera_ratio_full_dark.png in Resources */,
-				CB88A32821C13E110083C01B /* btn_camera_ratio_916_dark.png in Resources */,
-				CB88A32B21C13E110083C01B /* btn_camera_ratio_34_dark.png in Resources */,
 				CBD38C8121ABB26F0053AB48 /* Main.storyboard in Resources */,
-				CB88A32921C13E110083C01B /* btn_camera_ratio_11_light.png in Resources */,
-				CB88A32D21C13E110083C01B /* btn_camera_ratio_916_light.png in Resources */,
-				CB88A32721C13E110083C01B /* btn_camera_ratio_11_dark.png in Resources */,
 				CB88A32F21C13E110083C01B /* nose_000.png in Resources */,
-				CB88A33821C158D50083C01B /* btn_camera_switch_camera_dark.png in Resources */,
-				CB88A32E21C13E110083C01B /* btn_camera_ratio_full_light.png in Resources */,
-				CB88A32C21C13E110083C01B /* btn_camera_ratio_34_light.png in Resources */,
 				CB88A33421C13E110083C01B /* ear_001.png in Resources */,
 				CBD38C9821ABB26F0053AB48 /* Assets.xcassets in Resources */,
-				CB88A33721C158D50083C01B /* btn_camera_switch_camera_light.png in Resources */,
 				CB88A33221C13E110083C01B /* leopard.png in Resources */,
 				CB88A33321C13E110083C01B /* ear_000.png in Resources */,
 				CBD38C8021ABB26F0053AB48 /* LaunchScreen.storyboard in Resources */,
@@ -686,6 +643,7 @@
 				CB685B6821CA88800074209C /* MaskView.mm in Sources */,
 				CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */,
 				CBD38C6D21ABB26F0053AB48 /* main.m in Sources */,
+				CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */,
 				CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */,
 				CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */,
 				CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */,

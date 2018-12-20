@@ -16,6 +16,8 @@ typedef void(^LandmarkBlock)(const std::vector<cv::Point_<double>>& landmarks, l
 
 - (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces forLandmarkBlock:(LandmarkBlock)landmarkBlock;
 
+- (UIImage *)getSnapshot;
+
 @end
 
 NS_ASSUME_NONNULL_END

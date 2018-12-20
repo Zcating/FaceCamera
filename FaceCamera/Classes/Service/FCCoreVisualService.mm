@@ -18,6 +18,10 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 //    std::shared_ptr<fc::FaceCore> _faceCore;
 }
 
+@property (nonatomic) dispatch_semaphore_t semaphore;
+
+@property (nonatomic) BOOL enableSnapshot;
+
 @end
 
 @implementation FCCoreVisualService
@@ -102,11 +106,50 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     }
     
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    if(self.enableSnapshot) {
+        [self getSnapshot];
+    }
+    
+}
+
+-(UIImage *)getSnapshot {
+    return nil;
 }
 
 
 
-//- ()
+-(void)startSnapshot:(CVPixelBufferRef)pixelBuffer {
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    
+    void *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+    
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+    size_t width = CVPixelBufferGetWidth(pixelBuffer);
+    size_t height = CVPixelBufferGetHeight(pixelBuffer);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    CGImageRef cgImage = CGBitmapContextCreateImage(context);
+    
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    
+    CGImageRelease(cgImage);
+}
+
+-(dispatch_semaphore_t)semaphore {
+    if (_semaphore == NULL) {
+        _semaphore = dispatch_semaphore_create(0);
+    }
+    return _semaphore;
+}
+
 
 @end
 

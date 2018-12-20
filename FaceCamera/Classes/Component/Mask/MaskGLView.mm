@@ -257,7 +257,10 @@ GLubyte _delaunayTriangles[] = {
 - (void)setupLayer {
     CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
     eaglLayer.opaque = NO;
-    eaglLayer.drawableProperties = @{kEAGLColorFormatRGBA8: kEAGLDrawablePropertyColorFormat};
+    eaglLayer.drawableProperties = @{
+                                     kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8,
+                                     kEAGLDrawablePropertyRetainedBacking: @(YES),
+                                     };
 }
 
 - (void)setupContext {
@@ -494,6 +497,7 @@ GLubyte _delaunayTriangles[] = {
     self.baseEffect.texture2d0.name = textureInfo.name;
     self.baseEffect.texture2d0.target = GLKTextureTarget2D;
 }
+
 
 
 // MARK: - GETTER & SETTER

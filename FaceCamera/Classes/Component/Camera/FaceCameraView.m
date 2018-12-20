@@ -10,6 +10,7 @@
 
 //#import "MaskGLView.h"
 
+
 #import "FaceCamera.h"
 
 
@@ -19,7 +20,8 @@
 
 @property (nonatomic, strong) FaceCamera *faceCamera;
 
-//@property (nonatomic, strong) MaskGLView *glView;
+@property (nonatomic, strong) UIImage *snapshot;
+
 
 @end
 
@@ -29,13 +31,11 @@
 -(instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-//        self.contentMode = UIViewContentModeRedraw;
         [self.layer addSublayer:self.displayLayer];
+        self.backgroundColor = [UIColor blackColor];
     }
     return self;
 }
-
-
 
 
 -(void)start {
@@ -46,19 +46,39 @@
     [self.faceCamera stop];
 }
 
--(void)takePhoto {
-    UIGraphicsBeginImageContext(self.bounds.size);
-
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-
-    UIGraphicsEndImageContext();
-//    return image;
-}
 
 -(void)switchCamera {
     [self.faceCamera switchCameras];
 }
+
+
+// MARK: PRIVATE
+
+-(void)startSnapshot:(CMSampleBufferRef)frame {
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(frame);
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    
+    void *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+    
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+    size_t width = CVPixelBufferGetWidth(pixelBuffer);
+    size_t height = CVPixelBufferGetHeight(pixelBuffer);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    CGImageRef cgImage = CGBitmapContextCreateImage(context);
+
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    
+    CGImageRelease(cgImage);
+}
+
 
 - (void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
     
@@ -69,7 +89,7 @@
     if (self.displayLayer.status == AVQueuedSampleBufferRenderingStatusFailed) {
         [self.displayLayer flush];
     }
-
+    
     [self.displayLayer enqueueSampleBuffer:frame];
 }
 
