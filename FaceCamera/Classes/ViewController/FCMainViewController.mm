@@ -15,7 +15,7 @@
 
 #import "ShutterView.h"
 
-#import "ScissorView.h"
+#import "ResolutionSwitchView.h"
 
 #import "FCCoreVisualService.h"
 
@@ -38,15 +38,13 @@ FaceCameraDelegate
 
 @property (strong, nonatomic) MaskGLView *maskGLView;
 
-@property (strong, nonatomic) ScissorView *scissorView;
+@property (strong, nonatomic) ResolutionSwitchView *scissorView;
 
 @property (strong, nonatomic) UIButton *cameraSwitcher;
 
 @property (strong, nonatomic) UIButton *resolutionSwitcher;
 
 @property (strong, nonatomic) UIButton *shutterButton;
-
-@property (strong, nonatomic) UIButton *testView;
 
 @property (strong, nonatomic) FCCoreVisualService *coreVisualService;
 
@@ -67,15 +65,10 @@ FaceCameraDelegate
     [self.cameraView addSubview:self.maskView];
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(start) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restart) name:UIApplicationDidBecomeActiveNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.cameraView selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
-    
-    self.testView = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.testView.frame = CGRectMake(ScreenWidth - 90, 0, 90, 90);
-    [self.testView setImage:[UIImage imageNamed:BTN_SWITCH_DARK] forState:UIControlStateNormal];
-    [self.view addSubview:self.testView];
     
 }
 
@@ -93,25 +86,45 @@ FaceCameraDelegate
     return YES;
 }
 
+// MARK: - PRIVATE
 
-// MARK: - DELEGATE
-
--(void)switchCamera:(UIButton *)sender {
-//    NSLog(@"shit");
-    sender.selected = !sender.selected;
-    [self.cameraView switchCamera];
-}
-
--(void)openResolutionSelector:(UIButton *)sender {
-    sender.selected = !sender.selected;
+-(void)animateResolutionView:(BOOL)showed {
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-//    CGFloat height = [UIScreen mainScreen].bounds.size.height;
     CGRect showingFrame = CGRectMake(20, 100, width - 40 , 70);
     CGRect hiddenFrame = CGRectMake(20, 100, 0, 0);
     [self.view bringSubviewToFront:self.scissorView];
     [UIView animateWithDuration:0.2 animations:^{
-        self.scissorView.frame = sender.selected ? showingFrame : hiddenFrame;
+        self.scissorView.frame = showed ? showingFrame : hiddenFrame;
     }];
+}
+
+
+// MARK: - DELEGATE
+
+-(void)restart {
+    [self.cameraView start];
+}
+-(void)stop {
+    self.maskGLView.hidden = YES;
+    [self.cameraView stop];
+}
+
+-(void)switchCamera:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    [self.cameraView switchCamera];
+}
+
+
+-(void)openResolutionSelector:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    [self animateResolutionView:sender.selected];
+}
+
+-(void)resolutionChangeTo:(FCResolutionType)type selectedImage:(nonnull UIImage *)image {
+    [self.resolutionSwitcher setImage:image forState:UIControlStateNormal];
+    self.maskView.type = type;
+    self.resolutionSwitcher.selected = NO;
+    [self animateResolutionView:self.resolutionSwitcher.selected];
 }
 
 //- (IBAction)openSetting:(id)sender {
@@ -119,19 +132,15 @@ FaceCameraDelegate
 //        self.scissorView.hidden = !self.scissorView.hidden;
 //    }];
 //}
+
 -(void)takingPhoto:(UIButton *)sender {
-    [self.coreVisualService getSnapshot:^(UIImage *image) {
+    [self.coreVisualService generateImageWithMask:self.maskGLView.snapshot inBlock:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.testView setImage:image  forState:UIControlStateNormal];
+            
         });
     }];
 }
 
-
--(void)resolutionChangeTo:(FCResolutionType)type selectedImage:(nonnull UIImage *)image {
-    [self.resolutionSwitcher setImage:image forState:UIControlStateNormal];
-    self.maskView.type = type;
-}
 
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
     if (faces == nil) {
@@ -143,14 +152,16 @@ FaceCameraDelegate
         return;
     }
     
+    [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
+        [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
+    }];
+
+    // showing after render..
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.maskGLView.hidden) {
             self.maskGLView.hidden = NO;
         }
     });
-    [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
-        [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
-    }];
 }
 
 
@@ -163,9 +174,9 @@ FaceCameraDelegate
     return _coreVisualService;
 }
 
--(ScissorView *)scissorView {
+-(ResolutionSwitchView *)scissorView {
     if (_scissorView == nil) {
-        _scissorView = [[ScissorView alloc] initWithFrame:CGRectMake(20, 100, 0, 0)];
+        _scissorView = [[ResolutionSwitchView alloc] initWithFrame:CGRectMake(20, 100, 0, 0)];
         _scissorView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1];
         _scissorView.delegate = self;
     }
@@ -232,7 +243,7 @@ FaceCameraDelegate
 }
 
 -(UIButton *)shutterButton {
-    if (_shutterButton == nil) {
+    if (_shutterButton == nil) {1
         _shutterButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_LIGHT] forState:UIControlStateNormal];
         [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_DARK] forState:UIControlStateSelected];
@@ -245,5 +256,7 @@ FaceCameraDelegate
     }
     return _shutterButton;
 }
+
+
 
 @end

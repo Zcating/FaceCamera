@@ -7,7 +7,8 @@
 //
 
 #import "FCCoreVisualService.h"
-#import "FaceCore.hpp"
+//#import "FaceCore.hpp"
+#import "ImageProcession.hpp"
 
 
 static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
@@ -16,13 +17,14 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 @interface FCCoreVisualService () {
     dlib::shape_predictor _shapePredictor;
 //    std::shared_ptr<fc::FaceCore> _faceCore;
+    dispatch_queue_t _concurrentQueue;
 }
 
 @property (nonatomic, copy) SnapshotBlock snapshotBlock;
 
 @property (nonatomic) BOOL enableSnapshot;
 
-@property (nonatomic, strong) UIImage *snapshot;
+@property (nonatomic, strong) UIImage *mask;
 
 @end
 
@@ -32,6 +34,8 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     self = [super init];
     if (self) {
         [self prepare];
+        
+        _concurrentQueue = dispatch_queue_create("mask.image.queue", DISPATCH_QUEUE_CONCURRENT);
     }
     return self;
 }
@@ -41,11 +45,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *path = [bundle pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
     dlib::deserialize([path UTF8String]) >> _shapePredictor;
-
-//    _faceCore = std::make_shared<fc::FaceCore>(1080, 1920);
-    
 }
-
 
 
 - (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces forLandmarkBlock:(LandmarkBlock)landmarkBlock {
@@ -61,7 +61,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
     char *baseBuffer = (char *)CVPixelBufferGetBaseAddress(pixelBuffer);
     
-    // get opencv image object
+    // get opencv image object BGR
     cv::Mat image((int)height, (int)width, CV_8UC4, baseBuffer, bytesPerRow);
     
     
@@ -101,7 +101,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     
     uint8_t *pixelPtr = (uint8_t *)image.data;
     
-    // traslate to sample buffer.
+    //Mat traslate to sample buffer.
     long size = image.rows * image.cols * image.channels();
     for (int index = 0; index < size; index++) {
         baseBuffer[index] = pixelPtr[index];
@@ -110,46 +110,37 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     
     if(self.enableSnapshot) {
-        [self startSnapshot:pixelBuffer];
+        [self startSnapshot:image];
         self.enableSnapshot = NO;
     }
 }
 
--(void)getSnapshot:(SnapshotBlock)block {
+-(void)generateImageWithMask:(UIImage *)mask inBlock:(SnapshotBlock)block {
     self.enableSnapshot = YES;
+    self.mask = mask;
     self.snapshotBlock = block;
 }
 
 
 
--(void)startSnapshot:(CVPixelBufferRef)pixelBuffer {
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    
-    void *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-    
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-    size_t width = CVPixelBufferGetWidth(pixelBuffer);
-    size_t height = CVPixelBufferGetHeight(pixelBuffer);
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-    CGImageRef cgImage = CGBitmapContextCreateImage(context);
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    
-    CGContextRelease(context);
-    CGColorSpaceRelease(colorSpace);
-
-    UIImage *image = [UIImage imageWithCGImage:cgImage];
-    
-    CGImageRelease(cgImage);
-    
-    if(self.snapshotBlock) {
-        self.snapshotBlock(image);
-        self.snapshotBlock = nil;
+-(void)startSnapshot:(cv::Mat &)mat {
+    if(!self.snapshotBlock) {
+        return;
     }
-//    dispatch_semaphore_signal(self.semaphore);
+    
+    cv::Mat convertedMat;
+    cv::cvtColor(mat, convertedMat, CV_BGRA2RGBA);
+    UIImage *image = fc::MatToUIImage(convertedMat);
+    UIGraphicsBeginImageContextWithOptions(image.size, FALSE, 0.0);
+    [image drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
+    [self.mask drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+    self.snapshotBlock(result);
+    self.snapshotBlock = nil;
+    self.mask = nil;
 }
 
 

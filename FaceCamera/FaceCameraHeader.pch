@@ -7,32 +7,24 @@
 //
 
 
-#define ALL_HEADER
-
 #ifdef __cplusplus
-
 #include <dlib/image_processing.h>
 #include <dlib/image_io.h>
 #include <dlib/opencv.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
-//#import <opencv2/videoio/>
-
-//#include <>
-
-//#import <opencv2/shape/>
 #endif
-
 
 
 #ifdef __OBJC__
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-
 #endif
+
+
+//#import <opencv2/imgcodecs/ios.h>
 
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
