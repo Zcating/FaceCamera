@@ -27,3 +27,11 @@ extern NSString *const BTN_RATIO_916_LIGHT;
 extern NSString *const BTN_PHOTO_TAKING_DARK;
 
 extern NSString *const BTN_PHOTO_TAKING_LIGHT;
+
+extern NSString *const BTN_SAVING_DARK;
+
+extern NSString *const BTN_SAVING_LIGHT;
+
+extern NSString *const BTN_BACK_DARK;
+
+extern NSString *const BTN_BACK_LIGHT;

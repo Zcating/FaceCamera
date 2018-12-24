@@ -263,6 +263,7 @@ AVCaptureMetadataOutputObjectsDelegate
     return _orientation;
 }
 
+// Parallel operation for metadataObjects.
 -(NSArray *)metadataObjects {
     __block NSArray *objects = nil;
     dispatch_sync(_concurrentQueue, ^{

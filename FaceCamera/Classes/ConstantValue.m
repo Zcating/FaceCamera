@@ -28,3 +28,11 @@ NSString *const BTN_RATIO_916_LIGHT = @"btn_camera_ratio_916_light";
 NSString *const BTN_PHOTO_TAKING_DARK = @"btn_camera_photo_taking_dark";
 
 NSString *const BTN_PHOTO_TAKING_LIGHT = @"btn_camera_photo_taking_light";
+
+NSString *const BTN_SAVING_DARK = @"btn_camera_photo_saving_dark";
+
+NSString *const BTN_SAVING_LIGHT = @"btn_camera_photo_saving_light";
+
+NSString *const BTN_BACK_DARK = @"btn_back_dark";
+
+NSString *const BTN_BACK_LIGHT = @"btn_back_light";

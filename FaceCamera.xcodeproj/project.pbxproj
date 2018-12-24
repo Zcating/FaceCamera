@@ -11,7 +11,10 @@
 		CB1143C021A39F5A003CCB2E /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143BF21A39F5A003CCB2E /* libdlib.a */; };
 		CB1143C521A3A5CF003CCB2E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */; };
 		CB1ED87E21BD4566002BB191 /* mask.json in Resources */ = {isa = PBXBuildFile; fileRef = CB1ED87D21BD4566002BB191 /* mask.json */; };
-		CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2E21ABB26F0053AB48 /* ScissorView.m */; };
+		CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */; };
+		CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093D21CFE15800607E71 /* FCCoreEditService.m */; };
+		CB44094221D12C0D00607E71 /* FCPresentAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44094121D12C0D00607E71 /* FCPresentAnimation.m */; };
+		CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2E21ABB26F0053AB48 /* ResolutionSwitchView.m */; };
 		CB685B6821CA88800074209C /* MaskView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB685B6721CA88800074209C /* MaskView.mm */; };
 		CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
@@ -29,7 +32,6 @@
 		CBD38C7421ABB26F0053AB48 /* ShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C3021ABB26F0053AB48 /* ShutterView.m */; };
 		CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C3121ABB26F0053AB48 /* AppDelegate.m */; };
 		CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C3921ABB26F0053AB48 /* FCCoreVisualService.mm */; };
-		CBD38C7A21ABB26F0053AB48 /* FaceCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C3C21ABB26F0053AB48 /* FaceCore.cpp */; };
 		CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C4521ABB26F0053AB48 /* FCMainViewController.mm */; };
 		CBD38C8021ABB26F0053AB48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD38C4D21ABB26F0053AB48 /* LaunchScreen.storyboard */; };
 		CBD38C8121ABB26F0053AB48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD38C4F21ABB26F0053AB48 /* Main.storyboard */; };
@@ -79,6 +81,12 @@
 		CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		CB1ED87D21BD4566002BB191 /* mask.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mask.json; sourceTree = "<group>"; };
 		CB30CA682192B3F40012D84A /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = Frameworks/opencv2.framework; sourceTree = "<group>"; };
+		CB44093921CDD58400607E71 /* FCImageEditingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageEditingViewController.h; sourceTree = "<group>"; };
+		CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCImageEditingViewController.m; sourceTree = "<group>"; };
+		CB44093C21CFE15800607E71 /* FCCoreEditService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCCoreEditService.h; sourceTree = "<group>"; };
+		CB44093D21CFE15800607E71 /* FCCoreEditService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCCoreEditService.m; sourceTree = "<group>"; };
+		CB44094021D12C0D00607E71 /* FCPresentAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCPresentAnimation.h; sourceTree = "<group>"; };
+		CB44094121D12C0D00607E71 /* FCPresentAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCPresentAnimation.m; sourceTree = "<group>"; };
 		CB685B6621CA88800074209C /* MaskView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaskView.h; sourceTree = "<group>"; };
 		CB685B6721CA88800074209C /* MaskView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MaskView.mm; sourceTree = "<group>"; };
 		CB83E1E12129B02C00265D61 /* FaceCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,15 +111,13 @@
 		CBD38C2721ABB26F0053AB48 /* FaceCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceCamera.m; sourceTree = "<group>"; };
 		CBD38C2821ABB26F0053AB48 /* FaceCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceCameraView.m; sourceTree = "<group>"; };
 		CBD38C2921ABB26F0053AB48 /* FaceCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceCamera.h; sourceTree = "<group>"; };
-		CBD38C2C21ABB26F0053AB48 /* ScissorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScissorView.h; sourceTree = "<group>"; };
+		CBD38C2C21ABB26F0053AB48 /* ResolutionSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionSwitchView.h; sourceTree = "<group>"; };
 		CBD38C2D21ABB26F0053AB48 /* ShutterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShutterView.h; sourceTree = "<group>"; };
-		CBD38C2E21ABB26F0053AB48 /* ScissorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScissorView.m; sourceTree = "<group>"; };
+		CBD38C2E21ABB26F0053AB48 /* ResolutionSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionSwitchView.m; sourceTree = "<group>"; };
 		CBD38C3021ABB26F0053AB48 /* ShutterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShutterView.m; sourceTree = "<group>"; };
 		CBD38C3121ABB26F0053AB48 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		CBD38C3521ABB26F0053AB48 /* FaceCore.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FaceCore.hpp; sourceTree = "<group>"; };
 		CBD38C3821ABB26F0053AB48 /* FCCoreVisualService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCoreVisualService.h; sourceTree = "<group>"; };
 		CBD38C3921ABB26F0053AB48 /* FCCoreVisualService.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FCCoreVisualService.mm; sourceTree = "<group>"; };
-		CBD38C3C21ABB26F0053AB48 /* FaceCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceCore.cpp; sourceTree = "<group>"; };
 		CBD38C4521ABB26F0053AB48 /* FCMainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FCMainViewController.mm; sourceTree = "<group>"; };
 		CBD38C4721ABB26F0053AB48 /* FCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCMainViewController.h; sourceTree = "<group>"; };
 		CBD38C4A21ABB26F0053AB48 /* FaceCameraHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceCameraHeader.pch; sourceTree = "<group>"; };
@@ -194,6 +200,15 @@
 				CB685B6721CA88800074209C /* MaskView.mm */,
 			);
 			path = Mask;
+			sourceTree = "<group>";
+		};
+		CB44093F21D12BDD00607E71 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				CB44094021D12C0D00607E71 /* FCPresentAnimation.h */,
+				CB44094121D12C0D00607E71 /* FCPresentAnimation.m */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 		CB83E1D82129B02C00265D61 = {
@@ -286,6 +301,7 @@
 		CBD38C2421ABB26F0053AB48 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				CB44093F21D12BDD00607E71 /* Animation */,
 				CB1ED87F21BD50A7002BB191 /* Mask */,
 				CBD38C2521ABB26F0053AB48 /* Camera */,
 				CBD38C2B21ABB26F0053AB48 /* view */,
@@ -307,8 +323,8 @@
 		CBD38C2B21ABB26F0053AB48 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				CBD38C2C21ABB26F0053AB48 /* ScissorView.h */,
-				CBD38C2E21ABB26F0053AB48 /* ScissorView.m */,
+				CBD38C2C21ABB26F0053AB48 /* ResolutionSwitchView.h */,
+				CBD38C2E21ABB26F0053AB48 /* ResolutionSwitchView.m */,
 				CBD38C2D21ABB26F0053AB48 /* ShutterView.h */,
 				CBD38C3021ABB26F0053AB48 /* ShutterView.m */,
 			);
@@ -320,6 +336,8 @@
 			children = (
 				CBD38C3821ABB26F0053AB48 /* FCCoreVisualService.h */,
 				CBD38C3921ABB26F0053AB48 /* FCCoreVisualService.mm */,
+				CB44093C21CFE15800607E71 /* FCCoreEditService.h */,
+				CB44093D21CFE15800607E71 /* FCCoreEditService.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -329,6 +347,8 @@
 			children = (
 				CBD38C4721ABB26F0053AB48 /* FCMainViewController.h */,
 				CBD38C4521ABB26F0053AB48 /* FCMainViewController.mm */,
+				CB44093921CDD58400607E71 /* FCImageEditingViewController.h */,
+				CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -365,8 +385,6 @@
 		CBD38CA621AE916B0053AB48 /* Cpp */ = {
 			isa = PBXGroup;
 			children = (
-				CBD38C3521ABB26F0053AB48 /* FaceCore.hpp */,
-				CBD38C3C21ABB26F0053AB48 /* FaceCore.cpp */,
 				CBD0FD2121CD3C7800BDDE5E /* ImageProcession.hpp */,
 			);
 			path = Cpp;
@@ -631,18 +649,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */,
 				CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */,
 				CBD38C7121ABB26F0053AB48 /* FaceCameraView.m in Sources */,
+				CB44094221D12C0D00607E71 /* FCPresentAnimation.m in Sources */,
+				CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */,
 				CBD38C7421ABB26F0053AB48 /* ShutterView.m in Sources */,
 				CB685B6821CA88800074209C /* MaskView.mm in Sources */,
 				CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */,
 				CBD38C6D21ABB26F0053AB48 /* main.m in Sources */,
 				CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */,
-				CB45808A21C6640200ABA1EA /* ScissorView.m in Sources */,
+				CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */,
 				CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */,
 				CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */,
 				CBD38C7021ABB26F0053AB48 /* FaceCamera.m in Sources */,
-				CBD38C7A21ABB26F0053AB48 /* FaceCore.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

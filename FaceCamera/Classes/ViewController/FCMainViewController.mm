@@ -9,24 +9,23 @@
 #import "FCMainViewController.h"
 
 #import "FaceCameraView.h"
-
 #import "MaskGLView.h"
 #import "MaskView.h"
-
 #import "ShutterView.h"
-
 #import "ResolutionSwitchView.h"
 
+#import "FCImageEditingViewController.h"
+
+#import "FCPresentAnimation.h"
 #import "FCCoreVisualService.h"
-
 #import "ConstantValue.h"
-
 #import <Masonry/Masonry.h>
 
 
 @interface FCMainViewController () <
 ResolutionDelegate,
-FaceCameraDelegate
+FaceCameraDelegate,
+UIViewControllerTransitioningDelegate
 > {
     
 }
@@ -101,13 +100,17 @@ FaceCameraDelegate
 
 // MARK: - DELEGATE
 
+// Oberserve Events
 -(void)restart {
     [self.cameraView start];
 }
+
 -(void)stop {
     self.maskGLView.hidden = YES;
     [self.cameraView stop];
 }
+
+// Button Events
 
 -(void)switchCamera:(UIButton *)sender {
     sender.selected = !sender.selected;
@@ -127,21 +130,25 @@ FaceCameraDelegate
     [self animateResolutionView:self.resolutionSwitcher.selected];
 }
 
-//- (IBAction)openSetting:(id)sender {
-//    [UIView animateWithDuration:0.2 animations:^{
-//        self.scissorView.hidden = !self.scissorView.hidden;
-//    }];
-//}
-
 -(void)takingPhoto:(UIButton *)sender {
     [self.coreVisualService generateImageWithMask:self.maskGLView.snapshot inBlock:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            
+            FCImageEditingViewController *controller =  [[FCImageEditingViewController alloc] init];
+            controller.imageView.image = image;
+            controller.transitioningDelegate = self;
+            [self presentViewController:controller animated:YES completion:nil];
         });
     }];
 }
 
 
+// Animation Delegate
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    return [FCPresentAnimation new];
+}
+
+
+// Camera Frame Delegate
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
     if (faces == nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -243,7 +250,7 @@ FaceCameraDelegate
 }
 
 -(UIButton *)shutterButton {
-    if (_shutterButton == nil) {1
+    if (_shutterButton == nil) {
         _shutterButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_LIGHT] forState:UIControlStateNormal];
         [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_DARK] forState:UIControlStateSelected];

@@ -18,7 +18,7 @@ typedef void(^SnapshotBlock)(UIImage *image);
 
 - (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces forLandmarkBlock:(LandmarkBlock)landmarkBlock;
 
-- (void)getSnapshot:(SnapshotBlock)block;
+-(void)generateImageWithMask:(UIImage *)mask inBlock:(SnapshotBlock)block;
 
 @end
 

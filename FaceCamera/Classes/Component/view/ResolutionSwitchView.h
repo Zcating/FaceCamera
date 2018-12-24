@@ -1,5 +1,5 @@
 //
-//  ScissorView.h
+//  ResolutionSwitchView.h
 //  FaceCamera
 //
 //  Created by  zcating on 2018/11/7.
