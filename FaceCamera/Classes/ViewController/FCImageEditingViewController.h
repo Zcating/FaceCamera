@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FCImageEditingViewController : UIViewController
 
+@property (nonatomic) FCResolutionType type;
+
 @property (nonatomic, strong) UIImageView *imageView;
 
 @end

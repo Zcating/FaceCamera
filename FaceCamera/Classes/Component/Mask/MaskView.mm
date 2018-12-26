@@ -11,7 +11,7 @@
 
 @interface MaskView()
 
-@property (nonatomic) CGRect resolutionRect;
+@property (nonatomic) CGRect noMaskArea;
 
 @end
 
@@ -22,7 +22,9 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         self.opaque = NO;
-        self.resolutionRect = [UIScreen mainScreen].bounds;
+        self.noMaskArea = [UIScreen mainScreen].bounds;
+        
+        _type = FCResolutionType916;
     }
     return self;
 }
@@ -40,11 +42,8 @@
     // The mask area.
     UIRectFill(rect);
     
-    // The no mask area.
-    CGRect noMaskArea = self.resolutionRect;
-    
     // Get the intersection of them.
-    CGRect intersection = CGRectIntersection(noMaskArea, rect);
+    CGRect intersection = CGRectIntersection(self.noMaskArea, rect);
     [[UIColor clearColor] setFill];
     
     UIRectFill(intersection);
@@ -53,25 +52,7 @@
 
 -(void)setType:(FCResolutionType)type {
     _type = type;
-    CGRect screenFrame = [UIScreen mainScreen].bounds;
-    switch (_type) {
-        case FCResolutionType11: {
-            CGPoint center = CGPointMake(CGRectGetMidX(screenFrame), CGRectGetMidY(screenFrame));
-            CGFloat y = center.y - screenFrame.size.width / 2;
-            self.resolutionRect = CGRectMake(0, y, screenFrame.size.width, screenFrame.size.width);
-            break;
-        }
-        case FCResolutionType34: {
-            self.resolutionRect = CGRectMake(0, 0, screenFrame.size.width, screenFrame.size.height * 3 / 4);
-            break;
-        }
-        case FCResolutionType916: {
-            self.resolutionRect = CGRectMake(0, 0, screenFrame.size.width, screenFrame.size.height);
-            break;
-        }
-        default:
-            break;
-    }
+    self.noMaskArea = [GlobalUtils getRectFromResolutionType:_type size:[UIScreen mainScreen].bounds.size];
     [self setNeedsDisplay];
 }
 

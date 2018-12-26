@@ -36,16 +36,14 @@
         toView = toViewController.view;
     }
     
-    [fromView addSubview:self.maskView];
+    [toView addSubview:self.maskView];
     [[transitionContext containerView] addSubview:toView];
     
-//    transView.frame = CGRectMake(_isPresent ?width :0, 0, width, height);
-    
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-//        transView.frame = CGRectMake(_isPresent ?0 :width, 0, width, height);
-        
+        self.maskView.alpha = 0;
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+        [self.maskView removeFromSuperview];
     }];
 }
 

@@ -10,7 +10,7 @@
 #define ImageProcession_h
 
 namespace fc {
-    static void OverlayImage(cv::Mat& image, cv::Mat& mask) {
+    void OverlayImage(cv::Mat& image, cv::Mat& mask) {
         cv::Rect rect(0, 0, image.cols, image.rows);
         cv::Mat resizedMask;
         cv::resize(mask, resizedMask, rect.size());
@@ -30,7 +30,7 @@ namespace fc {
         }
     }
     
-    static cv::Mat MatFromUIImage(UIImage *image) {
+    cv::Mat MatFromUIImage(UIImage *image) {
         CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
         CGFloat cols = image.size.width;
         CGFloat rows = image.size.height;
@@ -43,7 +43,7 @@ namespace fc {
                                                         8,                          // Bits per component
                                                         cvMat.step[0],              // Bytes per row
                                                         colorSpace,                 // Colorspace
-                                                        kCGImageAlphaPremultipliedLast |
+                                                        kCGImageAlphaLast |
                                                         kCGBitmapByteOrderDefault); // Bitmap info flags
         
         CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
@@ -53,7 +53,7 @@ namespace fc {
     }
     
     
-    static UIImage *MatToUIImage(cv::Mat &cvMat) {
+    UIImage *MatToUIImage(cv::Mat &cvMat) {
         NSData *data = [NSData dataWithBytes:cvMat.data length:cvMat.elemSize()*cvMat.total()];
         CGColorSpaceRef colorSpace;
         

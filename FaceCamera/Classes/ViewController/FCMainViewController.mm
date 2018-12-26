@@ -7,6 +7,7 @@
 //
 
 #import "FCMainViewController.h"
+#import "FCImageEditingViewController.h"
 
 #import "FaceCameraView.h"
 #import "MaskGLView.h"
@@ -14,11 +15,12 @@
 #import "ShutterView.h"
 #import "ResolutionSwitchView.h"
 
-#import "FCImageEditingViewController.h"
-
 #import "FCPresentAnimation.h"
+#import "FCDismissAnimation.h"
+
 #import "FCCoreVisualService.h"
 #import "ConstantValue.h"
+
 #import <Masonry/Masonry.h>
 
 
@@ -67,8 +69,6 @@ UIViewControllerTransitioningDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restart) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
-    
 }
 
 
@@ -111,7 +111,6 @@ UIViewControllerTransitioningDelegate
 }
 
 // Button Events
-
 -(void)switchCamera:(UIButton *)sender {
     sender.selected = !sender.selected;
     [self.cameraView switchCamera];
@@ -131,10 +130,11 @@ UIViewControllerTransitioningDelegate
 }
 
 -(void)takingPhoto:(UIButton *)sender {
-    [self.coreVisualService generateImageWithMask:self.maskGLView.snapshot inBlock:^(UIImage *image) {
+    [self.coreVisualService generateImageWithMask:self.maskGLView.snapshot resolutionType:self.maskView.type inBlock:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             FCImageEditingViewController *controller =  [[FCImageEditingViewController alloc] init];
             controller.imageView.image = image;
+            controller.type = self.maskView.type;
             controller.transitioningDelegate = self;
             [self presentViewController:controller animated:YES completion:nil];
         });
@@ -147,27 +147,18 @@ UIViewControllerTransitioningDelegate
     return [FCPresentAnimation new];
 }
 
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    return [FCDismissAnimation new];
+}
 
 // Camera Frame Delegate
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
-    if (faces == nil) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self.maskGLView.hidden) {
-                self.maskGLView.hidden = YES;
-            }
-        });
-        return;
-    }
-    
     [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
         [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
     }];
 
-    // showing after render..
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.maskGLView.hidden) {
-            self.maskGLView.hidden = NO;
-        }
+        self.maskGLView.hidden = faces == nil;
     });
 }
 

@@ -24,6 +24,8 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 
 @property (nonatomic) BOOL enableSnapshot;
 
+@property (nonatomic) FCResolutionType resolutionType;
+
 @property (nonatomic, strong) UIImage *mask;
 
 @end
@@ -115,9 +117,10 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     }
 }
 
--(void)generateImageWithMask:(UIImage *)mask inBlock:(SnapshotBlock)block {
+-(void)generateImageWithMask:(UIImage *)mask resolutionType:(FCResolutionType)type inBlock:(SnapshotBlock)block {
     self.enableSnapshot = YES;
     self.mask = mask;
+    self.resolutionType = type;
     self.snapshotBlock = block;
 }
 
@@ -132,13 +135,20 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     cv::cvtColor(mat, convertedMat, CV_BGRA2RGBA);
     UIImage *image = fc::MatToUIImage(convertedMat);
     UIGraphicsBeginImageContextWithOptions(image.size, FALSE, 0.0);
-    [image drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
+    [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
     [self.mask drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+
+    CGSize size = CGSizeMake(CGImageGetWidth(result.CGImage), CGImageGetHeight(result.CGImage));
+    CGRect rect = [GlobalUtils getRectFromResolutionType:self.resolutionType size:size];
+    CGImageRef cgImageRef = CGImageCreateWithImageInRect(result.CGImage, rect);
+    UIImage *cutting = [UIImage imageWithCGImage:cgImageRef];
+    CGImageRelease(cgImageRef);
+    
     UIGraphicsEndImageContext();
     
     
-    self.snapshotBlock(result);
+    self.snapshotBlock(cutting);
     self.snapshotBlock = nil;
     self.mask = nil;
 }

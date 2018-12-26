@@ -38,3 +38,5 @@ typedef enum {
     FCResolutionType916 = 3,
 } FCResolutionType;
 
+#import "GlobalUtils.h"
+

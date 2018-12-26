@@ -72,4 +72,10 @@
     return _savingButton;
 }
 
+
+- (void)setType:(FCResolutionType)type {
+    _type = type;
+    self.imageView.frame =  [GlobalUtils getRectFromResolutionType:_type size:[UIScreen mainScreen].bounds.size];
+}
+
 @end

@@ -59,6 +59,8 @@
 		CBD38D9121AFD7970053AB48 /* include in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D8F21AFD7970053AB48 /* include */; };
 		CBD38D9221AFDB980053AB48 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CBD38D9521B0E47B0053AB48 /* FaceCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2721ABB26F0053AB48 /* FaceCamera.m */; };
+		CBEE125021D25A9400137D8B /* FCDismissAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE124F21D25A9400137D8B /* FCDismissAnimation.m */; };
+		CBEE125321D278D100137D8B /* GlobalUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE125221D278D100137D8B /* GlobalUtils.m */; };
 		CD613F5D9B2D920DA7C181E6 /* Pods_FaceCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2B697D72D3AA4A15B285C64 /* Pods_FaceCamera.framework */; };
 /* End PBXBuildFile section */
 
@@ -149,6 +151,10 @@
 		CBD38D8E21AFD7970053AB48 /* model */ = {isa = PBXFileReference; lastKnownFileType = folder; path = model; sourceTree = "<group>"; };
 		CBD38D8F21AFD7970053AB48 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
 		CBD38D9421AFE7C60053AB48 /* ldmarkmodel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ldmarkmodel.h; sourceTree = "<group>"; };
+		CBEE124E21D25A9400137D8B /* FCDismissAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCDismissAnimation.h; sourceTree = "<group>"; };
+		CBEE124F21D25A9400137D8B /* FCDismissAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCDismissAnimation.m; sourceTree = "<group>"; };
+		CBEE125121D278D100137D8B /* GlobalUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalUtils.h; sourceTree = "<group>"; };
+		CBEE125221D278D100137D8B /* GlobalUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlobalUtils.m; sourceTree = "<group>"; };
 		E5AAE4F91B468331EBCC8B0D /* Pods_FaceCameraTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceCameraTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE756E25B43340E2BB2F7284 /* Pods-FaceCameraTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceCameraTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FaceCameraTests/Pods-FaceCameraTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +213,8 @@
 			children = (
 				CB44094021D12C0D00607E71 /* FCPresentAnimation.h */,
 				CB44094121D12C0D00607E71 /* FCPresentAnimation.m */,
+				CBEE124E21D25A9400137D8B /* FCDismissAnimation.h */,
+				CBEE124F21D25A9400137D8B /* FCDismissAnimation.m */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -294,6 +302,8 @@
 				CBD38C3121ABB26F0053AB48 /* AppDelegate.m */,
 				CBD0FD1E21CBB92E00BDDE5E /* ConstantValue.h */,
 				CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */,
+				CBEE125121D278D100137D8B /* GlobalUtils.h */,
+				CBEE125221D278D100137D8B /* GlobalUtils.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -651,6 +661,7 @@
 			files = (
 				CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */,
 				CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */,
+				CBEE125021D25A9400137D8B /* FCDismissAnimation.m in Sources */,
 				CBD38C7121ABB26F0053AB48 /* FaceCameraView.m in Sources */,
 				CB44094221D12C0D00607E71 /* FCPresentAnimation.m in Sources */,
 				CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */,
@@ -658,6 +669,7 @@
 				CB685B6821CA88800074209C /* MaskView.mm in Sources */,
 				CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */,
 				CBD38C6D21ABB26F0053AB48 /* main.m in Sources */,
+				CBEE125321D278D100137D8B /* GlobalUtils.m in Sources */,
 				CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */,
 				CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */,
 				CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */,

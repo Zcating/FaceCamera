@@ -36,3 +36,4 @@ NSString *const BTN_SAVING_LIGHT = @"btn_camera_photo_saving_light";
 NSString *const BTN_BACK_DARK = @"btn_back_dark";
 
 NSString *const BTN_BACK_LIGHT = @"btn_back_light";
+
