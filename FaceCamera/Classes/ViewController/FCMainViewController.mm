@@ -12,7 +12,6 @@
 #import "FaceCameraView.h"
 #import "MaskGLView.h"
 #import "MaskView.h"
-#import "ShutterView.h"
 #import "ResolutionSwitchView.h"
 
 #import "FCPresentAnimation.h"
@@ -88,12 +87,12 @@ UIViewControllerTransitioningDelegate
 // MARK: - PRIVATE
 
 -(void)animateResolutionView:(BOOL)showed {
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGRect showingFrame = CGRectMake(20, 100, width - 40 , 70);
-    CGRect hiddenFrame = CGRectMake(20, 100, 0, 0);
+//    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+//    CGRect showingFrame = CGRectMake(20, 100, width - 40 , 70);
+//    CGRect hiddenFrame = CGRectMake(20, 100, 0, 0);
     [self.view bringSubviewToFront:self.scissorView];
     [UIView animateWithDuration:0.2 animations:^{
-        self.scissorView.frame = showed ? showingFrame : hiddenFrame;
+        self.scissorView.alpha = showed ? 1 : 0;
     }];
 }
 
@@ -130,7 +129,8 @@ UIViewControllerTransitioningDelegate
 }
 
 -(void)takingPhoto:(UIButton *)sender {
-    [self.coreVisualService generateImageWithMask:self.maskGLView.snapshot resolutionType:self.maskView.type inBlock:^(UIImage *image) {
+    UIImage *maskImage = !self.maskGLView.hidden ? self.maskGLView.snapshot : nil;
+    [self.coreVisualService generateImageWithMask:maskImage resolutionType:self.maskView.type inBlock:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             FCImageEditingViewController *controller =  [[FCImageEditingViewController alloc] init];
             controller.imageView.image = image;
@@ -175,8 +175,10 @@ UIViewControllerTransitioningDelegate
 -(ResolutionSwitchView *)scissorView {
     if (_scissorView == nil) {
         _scissorView = [[ResolutionSwitchView alloc] initWithFrame:CGRectMake(20, 100, 0, 0)];
-        _scissorView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1];
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        _scissorView.frame = CGRectMake(20, 100, width - 40 , 70);
         _scissorView.delegate = self;
+        _scissorView.alpha = 0;
     }
     return _scissorView;
 
@@ -249,8 +251,8 @@ UIViewControllerTransitioningDelegate
 
         CGRect frame = [[UIScreen mainScreen] bounds];
         CGFloat x = CGRectGetMidX(frame) - 40;
-        CGFloat y = frame.size.height - 30 - 80;
-        _shutterButton.frame = CGRectMake(x, y, 80, 80);
+        CGFloat y = frame.size.height - 30 - 60;
+        _shutterButton.frame = CGRectMake(x, y, 60, 60);
     }
     return _shutterButton;
 }

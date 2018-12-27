@@ -10,9 +10,9 @@
 
 #import "ConstantValue.h"
 
-@interface ResolutionSwitchView ()
+#import <Masonry/Masonry.h>
 
-@property (nonatomic, strong) NSArray *images;
+@interface ResolutionSwitchView ()
 
 @property (nonatomic, strong) UIButton *ratio4To3Button;
 
@@ -30,16 +30,64 @@
 -(instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.clipsToBounds = YES;
-        self.layer.cornerRadius = 10;
-        
         [self addSubview:self.ratio16To9Button];
         [self addSubview:self.ratio4To3Button];
         [self addSubview:self.ratio1To1Button];
-        [self addSubview:self.roundScissorButton];
+//        [self addSubview:self.roundScissorButton];
+        [self prepare];
     }
     return self;
 }
+
+- (void)drawRect:(CGRect)rect {
+    [self drawArrow: rect];
+}
+
+// MARK: - PRIVATE
+
+-(void)prepare {
+    [self.ratio1To1Button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+        make.left.equalTo(self).offset(40);
+        make.size.equalTo(@50);
+    }];
+    
+    [self.ratio4To3Button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+        make.centerX.equalTo(self.mas_centerX);
+            //        make.left.greaterThanOrEqualTo(self).offset(40);
+        make.size.equalTo(@50);
+    }];
+    
+    [self.ratio16To9Button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+            //        make.left.greaterThanOrEqualTo(self).offset(40);
+        make.right.equalTo(self).offset(-40);
+        make.size.equalTo(@50);
+    }];
+}
+
+
+-(void)drawArrow:(CGRect)rect {
+    CGFloat width = rect.size.width;
+    CGRect currentRect = CGRectMake(0, 0, rect.size.width, rect.size.height);
+    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:currentRect cornerRadius:10];
+    bezierPath.lineWidth = 1;
+    bezierPath.lineCapStyle = kCGLineCapRound;
+    bezierPath.lineJoinStyle = kCGLineJoinRound;
+    
+    [bezierPath addLineToPoint:CGPointMake(width * 0.2, 0)];
+    [bezierPath addLineToPoint:CGPointMake(width * 0.2 + 10, -10)];
+    [bezierPath addLineToPoint:CGPointMake(width * 0.2 + 20, 0)];
+    [bezierPath closePath];
+    
+    CAShapeLayer *shaperLayer = [CAShapeLayer new];
+    shaperLayer.fillColor =  [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:0.8].CGColor;
+    shaperLayer.path = bezierPath.CGPath;
+    self.layer.mask = shaperLayer;
+    [self.layer insertSublayer:shaperLayer atIndex:0];
+}
+
 
 
 -(void)changeState:(FCResolutionType)type {
@@ -48,6 +96,8 @@
     self.ratio16To9Button.selected = type == FCResolutionType916;
 }
 
+
+// MARK: - DELEGATE
 
 -(void)changeRatio1To1:(UIButton *)sender {
     [self changeState:FCResolutionType11];
@@ -70,17 +120,7 @@
     }
 }
 
-
--(NSArray *)images {
-    if (_images == nil) {
-        _images = @[
-                    [UIImage imageNamed:BTN_RATIO_11_LIGHT],
-                    [UIImage imageNamed:BTN_RATIO_34_LIGHT],
-                    [UIImage imageNamed:BTN_RATIO_916_LIGHT]
-                    ];
-    }
-    return _images;
-}
+// MARK: - GETTER & SETTER
 
 -(UIButton *)ratio1To1Button {
     if (_ratio1To1Button == nil) {
@@ -115,8 +155,6 @@
     }
     return _ratio16To9Button;
 }
-
-
 
 
 @end
