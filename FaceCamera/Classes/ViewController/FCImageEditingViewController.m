@@ -8,13 +8,13 @@
 
 #import "FCImageEditingViewController.h"
 
-#import "FCEditSelectionView.h"
+#import "FCImageEditBottomView.h"
 
 #import "ConstantValue.h"
 
-@interface FCImageEditingViewController ()<FCEditSelectionDelegate>
+@interface FCImageEditingViewController ()<FCImageEditBottomViewDelegate>
 
-@property (nonatomic, strong) FCEditSelectionView *selectionView;
+@property (nonatomic, strong) FCImageEditBottomView *bottomView;
 
 
 @end
@@ -25,7 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view addSubview:self.imageView];
-    [self.view addSubview:self.selectionView];
+    [self.view addSubview:self.bottomView];
 //    [self.selectionView prepare];
 }
 
@@ -54,13 +54,13 @@
     return _imageView;
 }
 
--(FCEditSelectionView *)selectionView {
-    if (_selectionView == nil) {
+-(FCImageEditBottomView *)bottomView {
+    if (_bottomView == nil) {
         CGSize screenSize = [UIScreen mainScreen].bounds.size;
-        _selectionView = [[FCEditSelectionView alloc] initWithFrame:CGRectMake(0, screenSize.height - 100, screenSize.width, 100)];
-        _selectionView.delegate = self;
+        _bottomView = [[FCImageEditBottomView alloc] initWithFrame:CGRectMake(0, screenSize.height - 100, screenSize.width, 100)];
+        _bottomView.delegate = self;
     }
-    return _selectionView;
+    return _bottomView;
 }
 
 - (void)setType:(FCResolutionType)type {

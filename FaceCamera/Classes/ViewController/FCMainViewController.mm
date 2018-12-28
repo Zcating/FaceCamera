@@ -13,6 +13,8 @@
 #import "MaskGLView.h"
 #import "MaskView.h"
 #import "ResolutionSwitchView.h"
+#import "FCMainTopView.h"
+#import "FCMainBottomView.h"
 
 #import "FCPresentAnimation.h"
 #import "FCDismissAnimation.h"
@@ -26,25 +28,23 @@
 @interface FCMainViewController () <
 ResolutionDelegate,
 FaceCameraDelegate,
-UIViewControllerTransitioningDelegate
-> {
-    
-}
+UIViewControllerTransitioningDelegate,
+FCMainTopViewDelegate,
+FCMainBottomViewDelegate
+>
 
 
-@property (strong, nonatomic) IBOutlet FaceCameraView *cameraView;
+@property (strong, nonatomic) FaceCameraView *cameraView;
 
 @property (strong, nonatomic) MaskView *maskView;
 
 @property (strong, nonatomic) MaskGLView *maskGLView;
 
-@property (strong, nonatomic) ResolutionSwitchView *scissorView;
+@property (strong, nonatomic) ResolutionSwitchView *switchView;
 
-@property (strong, nonatomic) UIButton *cameraSwitcher;
+@property (strong, nonatomic) FCMainTopView *topView;
 
-@property (strong, nonatomic) UIButton *resolutionSwitcher;
-
-@property (strong, nonatomic) UIButton *shutterButton;
+@property (strong, nonatomic) FCMainBottomView *bottomView;
 
 @property (strong, nonatomic) FCCoreVisualService *coreVisualService;
 
@@ -55,15 +55,15 @@ UIViewControllerTransitioningDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-
     [self.view addSubview:self.cameraView];
-    [self.view addSubview:self.cameraSwitcher];
-    [self.view addSubview:self.resolutionSwitcher];
-    [self.view addSubview:self.scissorView];
-    [self.view addSubview:self.shutterButton];
+    [self.view addSubview:self.topView];
+    [self.view addSubview:self.switchView];
+    [self.view addSubview:self.bottomView];
+    
     [self.cameraView addSubview:self.maskGLView];
     [self.cameraView addSubview:self.maskView];
     
+    [self prepare];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restart) name:UIApplicationDidBecomeActiveNotification object:nil];
     
@@ -86,13 +86,34 @@ UIViewControllerTransitioningDelegate
 
 // MARK: - PRIVATE
 
--(void)animateResolutionView:(BOOL)showed {
-//    CGFloat width = [UIScreen mainScreen].bounds.size.width;
-//    CGRect showingFrame = CGRectMake(20, 100, width - 40 , 70);
-//    CGRect hiddenFrame = CGRectMake(20, 100, 0, 0);
-    [self.view bringSubviewToFront:self.scissorView];
+-(void)prepare {
+    [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(0);
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.height.equalTo(@100);
+    }];
+    
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(0);
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.height.equalTo(@100);
+    }];
+    
+    [self.switchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(100);
+        make.left.equalTo(self.view).offset(20);
+        make.right.equalTo(self.view).offset(-20);
+        make.height.equalTo(@70);
+    }];
+}
+
+
+-(void)animateResolutionView {
+    
     [UIView animateWithDuration:0.2 animations:^{
-        self.scissorView.alpha = showed ? 1 : 0;
+        self.switchView.alpha = self.switchView.alpha ? 0 : 1;
     }];
 }
 
@@ -110,26 +131,23 @@ UIViewControllerTransitioningDelegate
 }
 
 // Button Events
--(void)switchCamera:(UIButton *)sender {
-    sender.selected = !sender.selected;
+-(void)switchCamera {
+//    sender.selected = !sender.selected;
     [self.cameraView switchCamera];
 }
 
 
--(void)openResolutionSelector:(UIButton *)sender {
-    sender.selected = !sender.selected;
-    [self animateResolutionView:sender.selected];
+-(void)controlResolutionSelector {
+    [self animateResolutionView];
 }
 
 -(void)resolutionChangeTo:(FCResolutionType)type selectedImage:(nonnull UIImage *)image {
-    [self.resolutionSwitcher setImage:image forState:UIControlStateNormal];
     self.maskView.type = type;
-    self.resolutionSwitcher.selected = NO;
-    [self animateResolutionView:self.resolutionSwitcher.selected];
+    [self.topView changeResolutionImage:image];
 }
 
--(void)takingPhoto:(UIButton *)sender {
-    UIImage *maskImage = !self.maskGLView.hidden ? self.maskGLView.snapshot : nil;
+-(void)takingPhoto {
+    UIImage *maskImage = self.maskGLView.hidden == NO ? self.maskGLView.snapshot : nil;
     [self.coreVisualService generateImageWithMask:maskImage resolutionType:self.maskView.type inBlock:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             FCImageEditingViewController *controller =  [[FCImageEditingViewController alloc] init];
@@ -140,6 +158,11 @@ UIViewControllerTransitioningDelegate
         });
     }];
 }
+
+- (void)selectImageFromPhotoAlbum {
+    
+}
+
 
 
 // Animation Delegate
@@ -156,7 +179,7 @@ UIViewControllerTransitioningDelegate
     [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
         [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
     }];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         self.maskGLView.hidden = faces == nil;
     });
@@ -172,16 +195,14 @@ UIViewControllerTransitioningDelegate
     return _coreVisualService;
 }
 
--(ResolutionSwitchView *)scissorView {
-    if (_scissorView == nil) {
-        _scissorView = [[ResolutionSwitchView alloc] initWithFrame:CGRectMake(20, 100, 0, 0)];
-        CGFloat width = [UIScreen mainScreen].bounds.size.width;
-        _scissorView.frame = CGRectMake(20, 100, width - 40 , 70);
-        _scissorView.delegate = self;
-        _scissorView.alpha = 0;
+-(ResolutionSwitchView *)switchView {
+    if (_switchView == nil) {
+        _switchView = [[ResolutionSwitchView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        _switchView.delegate = self;
+        _switchView.alpha = 0;
     }
-    return _scissorView;
-
+    return _switchView;
+    
 }
 
 -(FaceCameraView *)cameraView {
@@ -199,10 +220,10 @@ UIViewControllerTransitioningDelegate
         NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
         NSData *jsonData = [NSData dataWithContentsOfURL:path];
         NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
-
+        
         EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         [EAGLContext setCurrentContext:context];
-
+        
         CGRect frame = [UIScreen mainScreen].bounds;
         _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
         _maskGLView.hidden = YES;
@@ -219,44 +240,20 @@ UIViewControllerTransitioningDelegate
     return _maskView;
 }
 
--(UIButton *)cameraSwitcher {
-    if (_cameraSwitcher == nil) {
-        _cameraSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_cameraSwitcher setImage:[UIImage imageNamed:BTN_SWITCH_LIGHT] forState:UIControlStateNormal];
-        [_cameraSwitcher setImage:[UIImage imageNamed:BTN_SWITCH_DARK] forState:UIControlStateSelected];
-        [_cameraSwitcher addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchUpInside];
-
-        _cameraSwitcher.frame = CGRectMake(10, 20, 50, 50);
+-(FCMainTopView *)topView {
+    if (_topView == nil) {
+        _topView = [[FCMainTopView alloc] initWithFrame:CGRectZero];
+        _topView.delegate = self;
     }
-    return _cameraSwitcher;
+    return _topView;
 }
 
--(UIButton *)resolutionSwitcher {
-    if (_resolutionSwitcher == nil) {
-        _resolutionSwitcher = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_resolutionSwitcher setImage:[UIImage imageNamed:@"btn_camera_ratio_916_light"] forState:UIControlStateNormal];
-        [_resolutionSwitcher addTarget:self action:@selector(openResolutionSelector:) forControlEvents:UIControlEventTouchUpInside];
-
-        _resolutionSwitcher.frame = CGRectMake(70, 20, 50, 50);
+-(FCMainBottomView *)bottomView {
+    if (_bottomView == nil) {
+        _bottomView = [[FCMainBottomView alloc] initWithFrame:CGRectZero];
+        _bottomView.delegate = self;
     }
-    return _resolutionSwitcher;
+    return _bottomView;
 }
-
--(UIButton *)shutterButton {
-    if (_shutterButton == nil) {
-        _shutterButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_LIGHT] forState:UIControlStateNormal];
-        [_shutterButton setImage:[UIImage imageNamed:BTN_PHOTO_TAKING_DARK] forState:UIControlStateSelected];
-        [_shutterButton addTarget:self action:@selector(takingPhoto:) forControlEvents:UIControlEventTouchUpInside];
-
-        CGRect frame = [[UIScreen mainScreen] bounds];
-        CGFloat x = CGRectGetMidX(frame) - 40;
-        CGFloat y = frame.size.height - 30 - 60;
-        _shutterButton.frame = CGRectMake(x, y, 60, 60);
-    }
-    return _shutterButton;
-}
-
-
 
 @end

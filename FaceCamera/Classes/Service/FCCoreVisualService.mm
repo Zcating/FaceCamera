@@ -76,6 +76,7 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
         
         auto landmarks = self->_shapePredictor(dlib::cv_image<dlib::rgb_alpha_pixel>(image), ConvertCVRect(faceRect));
         
+        // Draw all 68 point.
 #ifdef FC_DEBUG
         cv::rectangle(image, faceRect.tl(), faceRect.br(), cv::Scalar(0, 0, 255, 255), 2);
         

@@ -39,4 +39,5 @@ typedef enum {
 } FCResolutionType;
 
 #import "GlobalUtils.h"
+#import "ConstantValue.h"
 

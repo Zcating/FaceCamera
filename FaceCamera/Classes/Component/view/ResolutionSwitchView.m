@@ -76,9 +76,10 @@
     bezierPath.lineCapStyle = kCGLineCapRound;
     bezierPath.lineJoinStyle = kCGLineJoinRound;
     
-    [bezierPath addLineToPoint:CGPointMake(width * 0.2, 0)];
-    [bezierPath addLineToPoint:CGPointMake(width * 0.2 + 10, -10)];
-    [bezierPath addLineToPoint:CGPointMake(width * 0.2 + 20, 0)];
+    CGFloat midX = width * 0.5;
+    [bezierPath addLineToPoint:CGPointMake(midX - 10, 0)];
+    [bezierPath addLineToPoint:CGPointMake(midX, -10)];
+    [bezierPath addLineToPoint:CGPointMake(midX + 10, 0)];
     [bezierPath closePath];
     
     CAShapeLayer *shaperLayer = [CAShapeLayer new];
