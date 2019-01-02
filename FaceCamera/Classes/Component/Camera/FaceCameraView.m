@@ -54,30 +54,6 @@
 
 // MARK: PRIVATE
 
--(void)startSnapshot:(CMSampleBufferRef)frame {
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(frame);
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    
-    void *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-    
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-    size_t width = CVPixelBufferGetWidth(pixelBuffer);
-    size_t height = CVPixelBufferGetHeight(pixelBuffer);
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-    CGImageRef cgImage = CGBitmapContextCreateImage(context);
-
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-
-    CGContextRelease(context);
-    CGColorSpaceRelease(colorSpace);
-    
-    UIImage *image = [UIImage imageWithCGImage:cgImage];
-    
-    CGImageRelease(cgImage);
-}
 
 
 - (void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {

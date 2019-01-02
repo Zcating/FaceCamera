@@ -12,10 +12,12 @@
 
 #import "ConstantValue.h"
 
+#import <Photos/Photos.h>
+#import <Masonry/Masonry.h>
+
 @interface FCImageEditingViewController ()<FCImageEditBottomViewDelegate>
 
 @property (nonatomic, strong) FCImageEditBottomView *bottomView;
-
 
 @end
 
@@ -27,12 +29,25 @@
     [self.view addSubview:self.imageView];
     [self.view addSubview:self.bottomView];
 //    [self.selectionView prepare];
+    [self prepare];
 }
 
+-(void)prepare {
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(0);
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.height.equalTo(@100);
+    }];
+}
 
 // MARK: - DELEGATE
 -(void)save {
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
     
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        
+    }];
 }
 
 -(void)edit {
@@ -56,8 +71,7 @@
 
 -(FCImageEditBottomView *)bottomView {
     if (_bottomView == nil) {
-        CGSize screenSize = [UIScreen mainScreen].bounds.size;
-        _bottomView = [[FCImageEditBottomView alloc] initWithFrame:CGRectMake(0, screenSize.height - 100, screenSize.width, 100)];
+        _bottomView = [[FCImageEditBottomView alloc] initWithFrame:CGRectZero];
         _bottomView.delegate = self;
     }
     return _bottomView;

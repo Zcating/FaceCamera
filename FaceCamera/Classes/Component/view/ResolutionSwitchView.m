@@ -33,8 +33,6 @@
         [self addSubview:self.ratio16To9Button];
         [self addSubview:self.ratio4To3Button];
         [self addSubview:self.ratio1To1Button];
-//        [self addSubview:self.roundScissorButton];
-        [self prepare];
     }
     return self;
 }
@@ -43,9 +41,7 @@
     [self drawArrow: rect];
 }
 
-// MARK: - PRIVATE
-
--(void)prepare {
+-(void)updateConstraints {
     [self.ratio1To1Button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
         make.left.equalTo(self).offset(40);
@@ -65,7 +61,10 @@
         make.right.equalTo(self).offset(-40);
         make.size.equalTo(@50);
     }];
+    [super updateConstraints];
 }
+
+// MARK: - PRIVATE
 
 
 -(void)drawArrow:(CGRect)rect {

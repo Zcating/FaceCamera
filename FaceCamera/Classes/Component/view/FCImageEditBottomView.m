@@ -29,14 +29,11 @@
         
         [self addSubview:self.savingButton];
         [self addSubview:self.backButton];
-        [self prepare];
-        
     }
     return self;
 }
 
-
--(void)prepare {
+- (void)updateConstraints {
     [self.savingButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self);
         make.size.equalTo(@(60));
@@ -47,6 +44,7 @@
         make.size.equalTo(@(40));
         make.left.equalTo(self).with.offset(40);
     }];
+    [super updateConstraints];
 }
 
 // MARK: DELEGATE

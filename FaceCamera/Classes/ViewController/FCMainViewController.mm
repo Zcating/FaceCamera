@@ -8,13 +8,13 @@
 
 #import "FCMainViewController.h"
 #import "FCImageEditingViewController.h"
+#import "FCMainBottomViewController.h"
 
 #import "FaceCameraView.h"
 #import "MaskGLView.h"
 #import "MaskView.h"
 #import "ResolutionSwitchView.h"
 #import "FCMainTopView.h"
-#import "FCMainBottomView.h"
 
 #import "FCPresentAnimation.h"
 #import "FCDismissAnimation.h"
@@ -44,7 +44,7 @@ FCMainBottomViewDelegate
 
 @property (strong, nonatomic) FCMainTopView *topView;
 
-@property (strong, nonatomic) FCMainBottomView *bottomView;
+@property (strong, nonatomic) UIView *bottomView;
 
 @property (strong, nonatomic) FCCoreVisualService *coreVisualService;
 
@@ -98,7 +98,7 @@ FCMainBottomViewDelegate
         make.bottom.equalTo(self.view).offset(0);
         make.left.equalTo(self.view).offset(0);
         make.right.equalTo(self.view).offset(0);
-        make.height.equalTo(@100);
+        make.height.equalTo(@([UIScreen mainScreen].bounds.size.height * 1 / 4));
     }];
     
     [self.switchView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -176,6 +176,9 @@ FCMainBottomViewDelegate
 
 // Camera Frame Delegate
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
+    
+//    [self.maskGLView prepare];
+    
     [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
         [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
     }];
@@ -216,18 +219,18 @@ FCMainBottomViewDelegate
 
 -(MaskGLView *)maskGLView {
     if (_maskGLView == nil) {
-        NSError *error = nil;
-        NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
-        NSData *jsonData = [NSData dataWithContentsOfURL:path];
-        NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
-        
         EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         [EAGLContext setCurrentContext:context];
         
         CGRect frame = [UIScreen mainScreen].bounds;
         _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
         _maskGLView.hidden = YES;
-        [_maskGLView setupVBOs:@"leopard" withLandmarkArray:array];
+//        [_maskGLView setupImage:@"leopard" landmarks:array];
+        NSError *error = nil;
+        NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
+        NSData *jsonData = [NSData dataWithContentsOfURL:path];
+        NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
+        [_maskGLView setupImage:@"leopard" landmarks:array];
     }
     return _maskGLView;
 }
@@ -248,10 +251,12 @@ FCMainBottomViewDelegate
     return _topView;
 }
 
--(FCMainBottomView *)bottomView {
+-(UIView *)bottomView {
     if (_bottomView == nil) {
-        _bottomView = [[FCMainBottomView alloc] initWithFrame:CGRectZero];
-        _bottomView.delegate = self;
+        FCMainBottomViewController *controller = [[FCMainBottomViewController alloc] init];
+        controller.delegate = self;
+        [self addChildViewController:controller];
+        _bottomView = controller.view;
     }
     return _bottomView;
 }

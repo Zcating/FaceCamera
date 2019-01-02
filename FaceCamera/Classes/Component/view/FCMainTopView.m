@@ -27,14 +27,12 @@
     if (self) {
         [self addSubview:self.cameraSwitcher];
         [self addSubview:self.resolutionSwitcher];
-        [self prepare];
     }
     return self;
 }
 
 
-
--(void)prepare {
+-(void)updateConstraints {
     [self.resolutionSwitcher mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self);
         make.size.equalTo(@40);
@@ -45,6 +43,7 @@
         make.centerY.equalTo(self.mas_centerY);
         make.size.equalTo(@40);
     }];
+    [super updateConstraints];
 }
 
 // MARK: PUBLIC
@@ -81,5 +80,6 @@
     }
     return _resolutionSwitcher;
 }
+
 
 @end
