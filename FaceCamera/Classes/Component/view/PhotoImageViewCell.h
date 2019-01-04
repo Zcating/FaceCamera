@@ -1,8 +1,8 @@
 //
-//  FCMaskCell.h
+//  PhotoImageViewCell.h
 //  FaceCamera
 //
-//  Created by  zcating on 2019/1/2.
+//  Created by  zcating on 2019/1/3.
 //  Copyright © 2019 zcat. All rights reserved.
 //
 
@@ -10,9 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FCMaskCell : UICollectionViewCell
+@interface PhotoImageViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImage *image;
+
+@property (nonatomic, copy) NSString *assetIdentifier;
 
 @end
 

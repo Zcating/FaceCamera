@@ -8,6 +8,7 @@
 
 #import "FCMainViewController.h"
 #import "FCImageEditingViewController.h"
+#import "FCAlbumViewController.h"
 #import "FCMainBottomViewController.h"
 
 #import "FaceCameraView.h"
@@ -16,8 +17,7 @@
 #import "ResolutionSwitchView.h"
 #import "FCMainTopView.h"
 
-#import "FCPresentAnimation.h"
-#import "FCDismissAnimation.h"
+#import "FCMainAnimation.h"
 
 #import "FCCoreVisualService.h"
 #import "ConstantValue.h"
@@ -163,29 +163,38 @@ FCMainBottomViewDelegate
     
 }
 
+- (void)selectSticker:(nonnull id)sticker {
+}
+
+
+- (void)selectSticker {
+    
+}
 
 
 // Animation Delegate
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    return [FCPresentAnimation new];
+    if ([presenting isKindOfClass:[FCImageEditingViewController class]]) {
+        return [FCMainPresentAnimation new];
+    } else if ([presenting isKindOfClass:[FCAlbumViewController class]]) {
+//        return
+    }
+    return [FCMainPresentAnimation new];
 }
 
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    return [FCDismissAnimation new];
+    return [FCMainDismissAnimation new];
 }
 
 // Camera Frame Delegate
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
-    
-//    [self.maskGLView prepare];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.maskGLView.hidden = faces == nil;
+    });
     
     [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
         [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
     }];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.maskGLView.hidden = faces == nil;
-    });
 }
 
 
@@ -225,7 +234,7 @@ FCMainBottomViewDelegate
         CGRect frame = [UIScreen mainScreen].bounds;
         _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
         _maskGLView.hidden = YES;
-//        [_maskGLView setupImage:@"leopard" landmarks:array];
+            //        [_maskGLView setupImage:@"leopard" landmarks:array];
         NSError *error = nil;
         NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
         NSData *jsonData = [NSData dataWithContentsOfURL:path];

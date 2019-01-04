@@ -1,8 +1,8 @@
 //
-//  FCMaskCell.h
+//  FCAlbumAnimation.h
 //  FaceCamera
 //
-//  Created by  zcating on 2019/1/2.
+//  Created by  zcating on 2019/1/4.
 //  Copyright © 2019 zcat. All rights reserved.
 //
 
@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FCMaskCell : UICollectionViewCell
-
-@property (nonatomic, strong) UIImage *image;
+@interface FCAlbumAnimation : UIView
 
 @end
 

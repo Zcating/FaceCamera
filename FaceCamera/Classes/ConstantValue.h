@@ -36,4 +36,4 @@ extern NSString *const BTN_BACK_DARK;
 
 extern NSString *const BTN_BACK_LIGHT;
 
-
+extern NSString *const BTN_CLOSE;

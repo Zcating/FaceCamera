@@ -12,9 +12,11 @@
 		CB1143C021A39F5A003CCB2E /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143BF21A39F5A003CCB2E /* libdlib.a */; };
 		CB1143C521A3A5CF003CCB2E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */; };
 		CB1ED87E21BD4566002BB191 /* mask.json in Resources */ = {isa = PBXBuildFile; fileRef = CB1ED87D21BD4566002BB191 /* mask.json */; };
+		CB36460521DFAD9B00489127 /* FCAlbumTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB36460221DFAA9000489127 /* FCAlbumTopView.m */; };
+		CB36460821DFB42B00489127 /* FCAlbumAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB36460721DFB42B00489127 /* FCAlbumAnimation.m */; };
 		CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */; };
 		CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093D21CFE15800607E71 /* FCCoreEditService.m */; };
-		CB44094221D12C0D00607E71 /* FCPresentAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44094121D12C0D00607E71 /* FCPresentAnimation.m */; };
+		CB44094221D12C0D00607E71 /* FCMainAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44094121D12C0D00607E71 /* FCMainAnimation.m */; };
 		CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2E21ABB26F0053AB48 /* ResolutionSwitchView.m */; };
 		CB61FDB721D6656F00319083 /* FCMainTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDB621D6656F00319083 /* FCMainTopView.m */; };
 		CB61FDBA21D7A59F00319083 /* FCMask.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDB921D7A59F00319083 /* FCMask.mm */; };
@@ -32,6 +34,7 @@
 		CB88A33321C13E110083C01B /* ear_000.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32521C13E110083C01B /* ear_000.png */; };
 		CB88A33421C13E110083C01B /* ear_001.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32621C13E110083C01B /* ear_001.png */; };
 		CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
+		CBAAAE5421DE3A9D0048A64A /* PhotoImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBAAAE5321DE3A9D0048A64A /* PhotoImageViewCell.m */; };
 		CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */; };
 		CBD38C6D21ABB26F0053AB48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C1C21ABB26E0053AB48 /* main.m */; };
 		CBD38C7021ABB26F0053AB48 /* FaceCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2721ABB26F0053AB48 /* FaceCamera.m */; };
@@ -65,7 +68,6 @@
 		CBD38D9121AFD7970053AB48 /* include in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D8F21AFD7970053AB48 /* include */; };
 		CBD38D9221AFDB980053AB48 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CBD38D9521B0E47B0053AB48 /* FaceCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2721ABB26F0053AB48 /* FaceCamera.m */; };
-		CBEE125021D25A9400137D8B /* FCDismissAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE124F21D25A9400137D8B /* FCDismissAnimation.m */; };
 		CBEE125321D278D100137D8B /* GlobalUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE125221D278D100137D8B /* GlobalUtils.m */; };
 		CBEE125621D3B19600137D8B /* FCImageEditBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE125521D3B19600137D8B /* FCImageEditBottomView.m */; };
 		CD613F5D9B2D920DA7C181E6 /* Pods_FaceCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2B697D72D3AA4A15B285C64 /* Pods_FaceCamera.framework */; };
@@ -92,12 +94,16 @@
 		CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		CB1ED87D21BD4566002BB191 /* mask.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mask.json; sourceTree = "<group>"; };
 		CB30CA682192B3F40012D84A /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = Frameworks/opencv2.framework; sourceTree = "<group>"; };
+		CB36460121DFAA9000489127 /* FCAlbumTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCAlbumTopView.h; sourceTree = "<group>"; };
+		CB36460221DFAA9000489127 /* FCAlbumTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCAlbumTopView.m; sourceTree = "<group>"; };
+		CB36460621DFB42B00489127 /* FCAlbumAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCAlbumAnimation.h; sourceTree = "<group>"; };
+		CB36460721DFB42B00489127 /* FCAlbumAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCAlbumAnimation.m; sourceTree = "<group>"; };
 		CB44093921CDD58400607E71 /* FCImageEditingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageEditingViewController.h; sourceTree = "<group>"; };
 		CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCImageEditingViewController.m; sourceTree = "<group>"; };
 		CB44093C21CFE15800607E71 /* FCCoreEditService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCCoreEditService.h; sourceTree = "<group>"; };
 		CB44093D21CFE15800607E71 /* FCCoreEditService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCCoreEditService.m; sourceTree = "<group>"; };
-		CB44094021D12C0D00607E71 /* FCPresentAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCPresentAnimation.h; sourceTree = "<group>"; };
-		CB44094121D12C0D00607E71 /* FCPresentAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCPresentAnimation.m; sourceTree = "<group>"; };
+		CB44094021D12C0D00607E71 /* FCMainAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMainAnimation.h; sourceTree = "<group>"; };
+		CB44094121D12C0D00607E71 /* FCMainAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMainAnimation.m; sourceTree = "<group>"; };
 		CB61FDB521D6656F00319083 /* FCMainTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMainTopView.h; sourceTree = "<group>"; };
 		CB61FDB621D6656F00319083 /* FCMainTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMainTopView.m; sourceTree = "<group>"; };
 		CB61FDB821D7A59F00319083 /* FCMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMask.h; sourceTree = "<group>"; };
@@ -123,6 +129,8 @@
 		CB88A32521C13E110083C01B /* ear_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_000.png; sourceTree = "<group>"; };
 		CB88A32621C13E110083C01B /* ear_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_001.png; sourceTree = "<group>"; };
 		CB9CB68B214F753200E687B9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CBAAAE5221DE3A9D0048A64A /* PhotoImageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoImageViewCell.h; sourceTree = "<group>"; };
+		CBAAAE5321DE3A9D0048A64A /* PhotoImageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoImageViewCell.m; sourceTree = "<group>"; };
 		CBD0FD1E21CBB92E00BDDE5E /* ConstantValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstantValue.h; sourceTree = "<group>"; };
 		CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConstantValue.m; sourceTree = "<group>"; };
 		CBD0FD2121CD3C7800BDDE5E /* ImageProcession.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageProcession.hpp; sourceTree = "<group>"; };
@@ -170,8 +178,6 @@
 		CBD38D8E21AFD7970053AB48 /* model */ = {isa = PBXFileReference; lastKnownFileType = folder; path = model; sourceTree = "<group>"; };
 		CBD38D8F21AFD7970053AB48 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
 		CBD38D9421AFE7C60053AB48 /* ldmarkmodel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ldmarkmodel.h; sourceTree = "<group>"; };
-		CBEE124E21D25A9400137D8B /* FCDismissAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCDismissAnimation.h; sourceTree = "<group>"; };
-		CBEE124F21D25A9400137D8B /* FCDismissAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCDismissAnimation.m; sourceTree = "<group>"; };
 		CBEE125121D278D100137D8B /* GlobalUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalUtils.h; sourceTree = "<group>"; };
 		CBEE125221D278D100137D8B /* GlobalUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlobalUtils.m; sourceTree = "<group>"; };
 		CBEE125421D3B19600137D8B /* FCImageEditBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageEditBottomView.h; sourceTree = "<group>"; };
@@ -234,10 +240,10 @@
 		CB44093F21D12BDD00607E71 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
-				CB44094021D12C0D00607E71 /* FCPresentAnimation.h */,
-				CB44094121D12C0D00607E71 /* FCPresentAnimation.m */,
-				CBEE124E21D25A9400137D8B /* FCDismissAnimation.h */,
-				CBEE124F21D25A9400137D8B /* FCDismissAnimation.m */,
+				CB44094021D12C0D00607E71 /* FCMainAnimation.h */,
+				CB44094121D12C0D00607E71 /* FCMainAnimation.m */,
+				CB36460621DFB42B00489127 /* FCAlbumAnimation.h */,
+				CB36460721DFB42B00489127 /* FCAlbumAnimation.m */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -384,6 +390,10 @@
 				CB61FDB621D6656F00319083 /* FCMainTopView.m */,
 				CB0FD67D21DCF2920019E2A1 /* FCMaskCell.h */,
 				CB0FD67E21DCF2920019E2A1 /* FCMaskCell.m */,
+				CBAAAE5221DE3A9D0048A64A /* PhotoImageViewCell.h */,
+				CBAAAE5321DE3A9D0048A64A /* PhotoImageViewCell.m */,
+				CB36460121DFAA9000489127 /* FCAlbumTopView.h */,
+				CB36460221DFAA9000489127 /* FCAlbumTopView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -713,10 +723,10 @@
 				CBEE125621D3B19600137D8B /* FCImageEditBottomView.m in Sources */,
 				CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */,
 				CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */,
-				CBEE125021D25A9400137D8B /* FCDismissAnimation.m in Sources */,
 				CBD38C7121ABB26F0053AB48 /* FaceCameraView.m in Sources */,
-				CB44094221D12C0D00607E71 /* FCPresentAnimation.m in Sources */,
+				CB44094221D12C0D00607E71 /* FCMainAnimation.m in Sources */,
 				CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */,
+				CB36460821DFB42B00489127 /* FCAlbumAnimation.m in Sources */,
 				CB685B6821CA88800074209C /* MaskView.mm in Sources */,
 				CB61FDBA21D7A59F00319083 /* FCMask.mm in Sources */,
 				CB61FDC821DBAC6500319083 /* FCAlbumViewController.m in Sources */,
@@ -725,9 +735,11 @@
 				CB61FDBF21D8598600319083 /* FCImageFilter.m in Sources */,
 				CBEE125321D278D100137D8B /* GlobalUtils.m in Sources */,
 				CB61FDB721D6656F00319083 /* FCMainTopView.m in Sources */,
+				CBAAAE5421DE3A9D0048A64A /* PhotoImageViewCell.m in Sources */,
 				CB61FDC221D9166D00319083 /* GLUtils.m in Sources */,
 				CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */,
 				CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */,
+				CB36460521DFAD9B00489127 /* FCAlbumTopView.m in Sources */,
 				CB0FD67F21DCF2920019E2A1 /* FCMaskCell.m in Sources */,
 				CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */,
 				CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */,

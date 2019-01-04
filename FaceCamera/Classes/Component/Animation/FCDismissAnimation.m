@@ -6,9 +6,9 @@
 //  Copyright © 2018 zcat. All rights reserved.
 //
 
-#import "FCDismissAnimation.h"
+#import "FCMainDismissAnimation.h"
 
-@implementation FCDismissAnimation
+@implementation FCMainDismissAnimation
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
     return 0.2;

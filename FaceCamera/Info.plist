@@ -21,9 +21,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>是否允许使用相机？</string>
+	<string>Allow using Camera?</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow using Photo Library?</string>
 	<key>TyphoonInitialAssemblies</key>
 	<array>
 		<string>FCApplicationAssembly</string>

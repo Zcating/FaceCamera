@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)takingPhoto;
 
+-(void)selectSticker:(id)sticker;
+
 @end
 
 @interface FCMainBottomViewController : UIViewController

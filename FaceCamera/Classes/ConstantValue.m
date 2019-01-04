@@ -37,3 +37,5 @@ NSString *const BTN_BACK_DARK = @"btn_back_dark";
 
 NSString *const BTN_BACK_LIGHT = @"btn_back_light";
 
+NSString *const BTN_CLOSE = @"btn_close";
+

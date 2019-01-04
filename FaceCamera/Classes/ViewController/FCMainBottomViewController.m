@@ -115,12 +115,9 @@
     return 100;
 }
 
-
-
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    FCMaskCell *cell = (FCMaskCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"MASK_CELL" forIndexPath:indexPath];
-    cell.imageView.image = [UIImage imageNamed:@"nose_001"];
-    cell.backgroundColor = [UIColor blueColor];
+    FCMaskCell *cell = (FCMaskCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"STICKER_CELL" forIndexPath:indexPath];
+    cell.image = [UIImage imageNamed:@"nose_001"];
     return cell;
 }
 
@@ -199,7 +196,7 @@
         _stickerView.backgroundColor = [UIColor clearColor];
         _stickerView.delegate = self;
         _stickerView.dataSource = self;
-        [_stickerView registerClass:[FCMaskCell class] forCellWithReuseIdentifier:@"MASK_CELL"];
+        [_stickerView registerClass:[FCMaskCell class] forCellWithReuseIdentifier:@"STICKER_CELL"];
         [_stickerView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"VIEW"];
     }
     return _stickerView;
