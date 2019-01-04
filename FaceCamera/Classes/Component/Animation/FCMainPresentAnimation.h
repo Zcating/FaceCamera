@@ -1,5 +1,5 @@
 //
-//  FCPresentAnimation.h
+//  FCMainAnimation.h
 //  FaceCamera
 //
 //  Created by  zcating on 2018/12/24.
@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FCPresentAnimation : NSObject<UIViewControllerAnimatedTransitioning>
+@interface FCMainAnimation : NSObject<UIViewControllerAnimatedTransitioning>
+
+@end
+
+@interface FCMainDismissAnimation : NSObject<UIViewControllerAnimatedTransitioning>
 
 @end
 
