@@ -64,7 +64,7 @@
     [super updateConstraints];
 }
 
-// MARK: - PRIVATE
+#pragma mark - PRIVATE
 
 
 -(void)drawArrow:(CGRect)rect {
@@ -97,7 +97,7 @@
 }
 
 
-// MARK: - DELEGATE
+#pragma mark - DELEGATE
 
 -(void)changeRatio1To1:(UIButton *)sender {
     [self changeState:FCResolutionType11];
@@ -120,7 +120,7 @@
     }
 }
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 
 -(UIButton *)ratio1To1Button {
     if (_ratio1To1Button == nil) {

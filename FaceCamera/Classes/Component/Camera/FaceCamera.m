@@ -60,7 +60,7 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-// MARK: - Public Function
+#pragma mark - Public Function
 
 - (void)start {
     if (_running == YES) {
@@ -115,7 +115,7 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-// MARK: - Private Function
+#pragma mark - Private Function
 
 -(void)updateSession {
         // video data output
@@ -143,7 +143,7 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-// MARK: - Video Delegate
+#pragma mark - Video Delegate
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     if (connection.supportsVideoOrientation) {
@@ -178,7 +178,7 @@ AVCaptureMetadataOutputObjectsDelegate
 
 
 
-    // MARK: - getter & setter
+    #pragma mark - getter & setter
 
 -(AVCaptureSession *)session {
     if (_session == nil) {

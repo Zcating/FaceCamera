@@ -46,7 +46,7 @@
     [super updateConstraints];
 }
 
-// MARK: PUBLIC
+#pragma mark PUBLIC
 -(void)changeResolutionImage:(UIImage *)image {
     [self.resolutionSwitcher setImage:image forState:UIControlStateNormal];
 }

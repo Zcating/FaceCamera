@@ -19,18 +19,19 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.layer.borderColor = [UIColor greenColor].CGColor;
         [self addSubview:self.imageView];
     }
     return self;
 }
 
-// MARK: - PUBLIC
+#pragma mark - PUBLIC
 
-// MARK: - PRIVATE
+#pragma mark - PRIVATE
 
-// MARK: - DELEGATE
+#pragma mark - DELEGATE
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 
 
 - (UIImageView *)imageView {
@@ -46,6 +47,15 @@
 
 -(void)setImage:(UIImage *)image {
     self.imageView.image = image;
+}
+
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    if (selected) {
+        self.layer.borderWidth = 2;
+    } else {
+        self.layer.borderWidth = 0;
+    }
 }
 
 @end

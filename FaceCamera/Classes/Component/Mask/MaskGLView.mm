@@ -9,7 +9,7 @@
 #import "MaskGLView.h"
 #import "FCMask.h"
 
-const static NSUInteger MAX_FACES_NUMBER = 5;
+const static NSUInteger MAX_FACES_NUMBER = 1;
 
 using namespace std;
 
@@ -46,7 +46,7 @@ using namespace std;
 }
 
 
-// MARK: - PRIVATE
+#pragma mark - PRIVATE
 
 - (void)initLayer {
     CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
@@ -80,7 +80,7 @@ using namespace std;
 }
 
 
-// MARK: - PUBLIC
+#pragma mark - PUBLIC
 
 - (void)prepare {
     for (NSUInteger index = 0; index < MAX_FACES_NUMBER; index++) {
@@ -107,7 +107,7 @@ using namespace std;
 
 
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 
 -(NSMutableArray<FCMask *> *)masks {
     if (_masks == nil) {

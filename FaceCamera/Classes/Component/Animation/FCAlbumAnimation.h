@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FCAlbumAnimation : UIView
+@interface FCAlbumPresentAnimation : NSObject<UIViewControllerAnimatedTransitioning>
+
+@end
+
+@interface FCAlbumDismissAnimation : NSObject<UIViewControllerAnimatedTransitioning>
 
 @end
 

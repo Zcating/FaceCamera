@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) FCResolutionType type;
 
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImage *image;
 
 @end
 

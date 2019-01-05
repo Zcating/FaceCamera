@@ -39,3 +39,4 @@ NSString *const BTN_BACK_LIGHT = @"btn_back_light";
 
 NSString *const BTN_CLOSE = @"btn_close";
 
+NSString *const BTN_SHOW_STICKERS = @"btn_show_stickers";

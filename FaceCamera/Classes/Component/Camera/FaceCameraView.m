@@ -52,7 +52,7 @@
 }
 
 
-// MARK: PRIVATE
+#pragma mark PRIVATE
 
 
 
@@ -70,7 +70,7 @@
 }
 
 
-// MARK: GETTER & SETTER
+#pragma mark GETTER & SETTER
 
 - (AVSampleBufferDisplayLayer *)displayLayer {
     if (_displayLayer == nil) {

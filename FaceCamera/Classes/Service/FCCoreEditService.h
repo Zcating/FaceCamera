@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FCCoreEditService : NSObject
 
+-(void)saveImage:(UIImage *)image;
+
 @end
 
 NS_ASSUME_NONNULL_END

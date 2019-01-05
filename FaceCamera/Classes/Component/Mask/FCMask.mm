@@ -251,7 +251,7 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
     return self;
 }
 
-// MARK: PRIVATE
+#pragma mark PRIVATE
 -(void)updateLandmarkPoint:(int)index updateWith:(LandmarkInfo)landmarkInfo {
     
     float distOfIndexAnd36 = (landmarkInfo.curDistOf36And45 / _previousDistOf36and45) * landmarkInfo.distOfIndexAnd36;
@@ -398,7 +398,7 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
 
 
 
-// MARK: - PUBLIC
+#pragma mark - PUBLIC
 - (void)draw {
     glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
@@ -465,7 +465,7 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
 }
 
 
-// MARK: GETTER & SETTER
+#pragma mark GETTER & SETTER
 -(GLKBaseEffect *)baseEffect {
     if (_baseEffect == nil) {
         CGSize size = [[UIScreen mainScreen] bounds].size;

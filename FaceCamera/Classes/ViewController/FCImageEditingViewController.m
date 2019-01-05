@@ -9,7 +9,7 @@
 #import "FCImageEditingViewController.h"
 
 #import "FCImageEditBottomView.h"
-
+#import "FCCoreEditService.h"
 #import "ConstantValue.h"
 
 #import <Photos/Photos.h>
@@ -17,37 +17,37 @@
 
 @interface FCImageEditingViewController ()<FCImageEditBottomViewDelegate>
 
+@property (nonatomic, strong) UIImageView *imageView;
+
 @property (nonatomic, strong) FCImageEditBottomView *bottomView;
+
+@property (nonatomic, strong) FCCoreEditService *service;
 
 @end
 
 @implementation FCImageEditingViewController
 
+#pragma mark - PUBLIC
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view addSubview:self.imageView];
     [self.view addSubview:self.bottomView];
-//    [self.selectionView prepare];
-    [self prepare];
 }
 
--(void)prepare {
+-(void)updateViewConstraints {
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(0);
         make.left.equalTo(self.view).offset(0);
         make.right.equalTo(self.view).offset(0);
-        make.height.equalTo(@100);
+        make.height.equalTo(@([UIScreen mainScreen].bounds.size.height * 1 / 4));
     }];
+    [super updateViewConstraints];
 }
 
-// MARK: - DELEGATE
+#pragma mark - DELEGATE
 -(void)save {
-    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-    
-    } completionHandler:^(BOOL success, NSError * _Nullable error) {
-        
-    }];
+    [self.service saveImage:self.imageView.image];
 }
 
 -(void)edit {
@@ -61,7 +61,7 @@
 
 
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 -(UIImageView *)imageView {
     if (_imageView == nil) {
         _imageView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -79,7 +79,22 @@
 
 - (void)setType:(FCResolutionType)type {
     _type = type;
-    self.imageView.frame =  [GlobalUtils getRectFromResolutionType:_type size:[UIScreen mainScreen].bounds.size];
+    self.imageView.frame = [GlobalUtils getRectFromResolutionType:_type size:[UIScreen mainScreen].bounds.size];
+}
+
+-(FCCoreEditService *)service {
+    if (_service == nil) {
+        _service = [FCCoreEditService new];
+    }
+    return _service;
+}
+
+-(UIImage *)image {
+    return self.imageView.image;
+}
+
+-(void)setImage:(UIImage *)image {
+    self.imageView.image = image;
 }
 
 @end

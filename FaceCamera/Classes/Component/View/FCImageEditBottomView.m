@@ -47,7 +47,7 @@
     [super updateConstraints];
 }
 
-// MARK: DELEGATE
+#pragma mark DELEGATE
 
 -(void)buttonDelegate:(UIButton *)sender {
     if (self.delegate == nil) {
@@ -64,7 +64,7 @@
 
 
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 
 -(UIButton *)savingButton {
     if (_savingButton == nil) {

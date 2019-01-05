@@ -37,11 +37,12 @@
 
 @implementation FCAlbumViewController
 
+#pragma mark - PUBLIC
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     CGFloat scale = [UIScreen mainScreen].scale;
-    
     self.cellImageSize = CGSizeMake(self.photosViewFlowLayout.itemSize.width * scale, self.photosViewFlowLayout.itemSize.height * scale);
     
     [self.view addSubview:self.photosView];
@@ -50,6 +51,9 @@
     [self prepare];
 }
 
+
+
+#pragma mark - PRIVATE
 -(void)prepare {
     [self.photosView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(50, 0, 0, 0));
@@ -63,12 +67,7 @@
     }];
 }
 
-
-// MARK: - PUBLIC
-// MARK: - PRIVATE
-
-
-// MARK: - DELEGATE
+#pragma mark - DELEGATE
 
 // UICollection View delegate
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -98,7 +97,7 @@
 }
 
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 
 -(PHFetchResult<PHAsset *> *)fetchResult {
     if (_fetchResult == nil) {
@@ -113,12 +112,6 @@
 -(FCAlbumTopView *)topView {
     if (_topView == nil) {
         _topView = [[FCAlbumTopView alloc] initWithFrame:CGRectZero];
-        
-        __weak typeof(self) weakSelf = self;
-        _topView.close = ^{
-            __strong typeof(self) strongSelf = weakSelf;
-            [strongSelf dismissViewControllerAnimated:YES completion:nil];
-        };
     }
     return _topView;
 }
@@ -147,6 +140,14 @@
         _photosViewFlowLayout.itemSize = CGSizeMake(width, width);
     }
     return _photosViewFlowLayout;
+}
+
+-(CloseBlock)close {
+    return self.topView.close;
+}
+
+-(void)setClose:(CloseBlock)close {
+    self.topView.close = close;
 }
 
 @end

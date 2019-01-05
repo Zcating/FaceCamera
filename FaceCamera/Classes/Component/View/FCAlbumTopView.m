@@ -28,27 +28,27 @@
 }
 
 
-// MARK: - PUBLIC
+#pragma mark - PUBLIC
 
 -(void)updateConstraints {
     [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
-        make.left.equalTo(self).offset(10);
+        make.left.equalTo(self).offset(15);
         make.size.equalTo(@20);
     }];
     [super updateConstraints];
 }
 
-// MARK: - PRIVATE
+#pragma mark - PRIVATE
 
-// MARK: - DELEGATE
+#pragma mark - DELEGATE
 -(void)buttonDelegate:(UIButton *)sender {
     if (self.close) {
         self.close();
     }
 }
 
-// MARK: - GETTER & SETTER
+#pragma mark - GETTER & SETTER
 
 -(UIButton *)closeButton {
     if (_closeButton == nil) {

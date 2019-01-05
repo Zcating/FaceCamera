@@ -25,10 +25,10 @@
 }
 
 
-// MARK: - PUBLIC
-// MARK: - PRIVATE
-// MARK: - DELEGATE
-// MARK: - GETTER & SETTER
+#pragma mark - PUBLIC
+#pragma mark - PRIVATE
+#pragma mark - DELEGATE
+#pragma mark - GETTER & SETTER
 
 - (UIImageView *)imageView {
     if (_imageView == nil) {
@@ -39,7 +39,6 @@
     return _imageView;
 }
 
-
 -(UIImage *)image {
     return self.imageView.image;
 }
@@ -47,5 +46,6 @@
 -(void)setImage:(UIImage *)image {
     self.imageView.image = image;
 }
+
 
 @end

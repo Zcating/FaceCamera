@@ -14,6 +14,7 @@
 		CB1ED87E21BD4566002BB191 /* mask.json in Resources */ = {isa = PBXBuildFile; fileRef = CB1ED87D21BD4566002BB191 /* mask.json */; };
 		CB36460521DFAD9B00489127 /* FCAlbumTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB36460221DFAA9000489127 /* FCAlbumTopView.m */; };
 		CB36460821DFB42B00489127 /* FCAlbumAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB36460721DFB42B00489127 /* FCAlbumAnimation.m */; };
+		CB36460A21E0E9A200489127 /* mouth.png in Resources */ = {isa = PBXBuildFile; fileRef = CB36460921E0E9A100489127 /* mouth.png */; };
 		CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */; };
 		CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093D21CFE15800607E71 /* FCCoreEditService.m */; };
 		CB44094221D12C0D00607E71 /* FCMainAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44094121D12C0D00607E71 /* FCMainAnimation.m */; };
@@ -27,12 +28,6 @@
 		CB685B6821CA88800074209C /* MaskView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB685B6721CA88800074209C /* MaskView.mm */; };
 		CB83E214212A861F00265D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
 		CB83E216212A864E00265D61 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
-		CB88A32F21C13E110083C01B /* nose_000.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32121C13E110083C01B /* nose_000.png */; };
-		CB88A33021C13E110083C01B /* nose_001.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32221C13E110083C01B /* nose_001.png */; };
-		CB88A33121C13E110083C01B /* whiskers.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32321C13E110083C01B /* whiskers.png */; };
-		CB88A33221C13E110083C01B /* leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32421C13E110083C01B /* leopard.png */; };
-		CB88A33321C13E110083C01B /* ear_000.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32521C13E110083C01B /* ear_000.png */; };
-		CB88A33421C13E110083C01B /* ear_001.png in Resources */ = {isa = PBXBuildFile; fileRef = CB88A32621C13E110083C01B /* ear_001.png */; };
 		CB9CB6912150959E00E687B9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
 		CBAAAE5421DE3A9D0048A64A /* PhotoImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBAAAE5321DE3A9D0048A64A /* PhotoImageViewCell.m */; };
 		CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD0FD1F21CBB92E00BDDE5E /* ConstantValue.m */; };
@@ -51,23 +46,6 @@
 		CBD38C9C21ABDC070053AB48 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB30CA682192B3F40012D84A /* opencv2.framework */; };
 		CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBD38CA221AE6F1E0053AB48 /* MaskGLView.mm */; };
 		CBD38CA521AE70470053AB48 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBD38CA421AE70470053AB48 /* GLKit.framework */; };
-		CBD38D1F21AFD5EE0053AB48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D1E21AFD5EE0053AB48 /* AppDelegate.m */; };
-		CBD38D2221AFD5EE0053AB48 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D2121AFD5EE0053AB48 /* ViewController.mm */; };
-		CBD38D2521AFD5EE0053AB48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D2321AFD5EE0053AB48 /* Main.storyboard */; };
-		CBD38D2721AFD5F70053AB48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D2621AFD5F70053AB48 /* Assets.xcassets */; };
-		CBD38D2A21AFD5F70053AB48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D2821AFD5F70053AB48 /* LaunchScreen.storyboard */; };
-		CBD38D2D21AFD5F70053AB48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D2C21AFD5F70053AB48 /* main.m */; };
-		CBD38D3121AFD6210053AB48 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB30CA682192B3F40012D84A /* opencv2.framework */; };
-		CBD38D3221AFD62B0053AB48 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9CB68B214F753200E687B9 /* Accelerate.framework */; };
-		CBD38D3321AFD6350053AB48 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E215212A864E00265D61 /* CoreMedia.framework */; };
-		CBD38D8521AFD77D0053AB48 /* hog.c in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D3821AFD77D0053AB48 /* hog.c */; };
-		CBD38D8921AFD77D0053AB48 /* helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D7C21AFD77D0053AB48 /* helper.cpp */; };
-		CBD38D8A21AFD77D0053AB48 /* feature_descriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D7F21AFD77D0053AB48 /* feature_descriptor.cpp */; };
-		CBD38D8D21AFD77D0053AB48 /* ldmarkmodel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBD38D8321AFD77D0053AB48 /* ldmarkmodel.cpp */; };
-		CBD38D9021AFD7970053AB48 /* model in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D8E21AFD7970053AB48 /* model */; };
-		CBD38D9121AFD7970053AB48 /* include in Resources */ = {isa = PBXBuildFile; fileRef = CBD38D8F21AFD7970053AB48 /* include */; };
-		CBD38D9221AFDB980053AB48 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB83E213212A861F00265D61 /* AVFoundation.framework */; };
-		CBD38D9521B0E47B0053AB48 /* FaceCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2721ABB26F0053AB48 /* FaceCamera.m */; };
 		CBEE125321D278D100137D8B /* GlobalUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE125221D278D100137D8B /* GlobalUtils.m */; };
 		CBEE125621D3B19600137D8B /* FCImageEditBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE125521D3B19600137D8B /* FCImageEditBottomView.m */; };
 		CD613F5D9B2D920DA7C181E6 /* Pods_FaceCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2B697D72D3AA4A15B285C64 /* Pods_FaceCamera.framework */; };
@@ -98,6 +76,7 @@
 		CB36460221DFAA9000489127 /* FCAlbumTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCAlbumTopView.m; sourceTree = "<group>"; };
 		CB36460621DFB42B00489127 /* FCAlbumAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCAlbumAnimation.h; sourceTree = "<group>"; };
 		CB36460721DFB42B00489127 /* FCAlbumAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCAlbumAnimation.m; sourceTree = "<group>"; };
+		CB36460921E0E9A100489127 /* mouth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouth.png; sourceTree = "<group>"; };
 		CB44093921CDD58400607E71 /* FCImageEditingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageEditingViewController.h; sourceTree = "<group>"; };
 		CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCImageEditingViewController.m; sourceTree = "<group>"; };
 		CB44093C21CFE15800607E71 /* FCCoreEditService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCCoreEditService.h; sourceTree = "<group>"; };
@@ -122,12 +101,6 @@
 		CB83E1F92129B03100265D61 /* FaceCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB83E213212A861F00265D61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CB83E215212A864E00265D61 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		CB88A32121C13E110083C01B /* nose_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nose_000.png; sourceTree = "<group>"; };
-		CB88A32221C13E110083C01B /* nose_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nose_001.png; sourceTree = "<group>"; };
-		CB88A32321C13E110083C01B /* whiskers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiskers.png; sourceTree = "<group>"; };
-		CB88A32421C13E110083C01B /* leopard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leopard.png; sourceTree = "<group>"; };
-		CB88A32521C13E110083C01B /* ear_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_000.png; sourceTree = "<group>"; };
-		CB88A32621C13E110083C01B /* ear_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_001.png; sourceTree = "<group>"; };
 		CB9CB68B214F753200E687B9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CBAAAE5221DE3A9D0048A64A /* PhotoImageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoImageViewCell.h; sourceTree = "<group>"; };
 		CBAAAE5321DE3A9D0048A64A /* PhotoImageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoImageViewCell.m; sourceTree = "<group>"; };
@@ -158,7 +131,6 @@
 		CBD38CA121AE6F1E0053AB48 /* MaskGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaskGLView.h; sourceTree = "<group>"; };
 		CBD38CA221AE6F1E0053AB48 /* MaskGLView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MaskGLView.mm; sourceTree = "<group>"; };
 		CBD38CA421AE70470053AB48 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		CBD38D1B21AFD5EC0053AB48 /* sdm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sdm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBD38D1D21AFD5EE0053AB48 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CBD38D1E21AFD5EE0053AB48 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CBD38D2021AFD5EE0053AB48 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -207,17 +179,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				57901528EACF6EE9E17D0987 /* Pods_FaceCameraTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CBD38D1821AFD5EC0053AB48 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CBD38D9221AFDB980053AB48 /* AVFoundation.framework in Frameworks */,
-				CBD38D3321AFD6350053AB48 /* CoreMedia.framework in Frameworks */,
-				CBD38D3221AFD62B0053AB48 /* Accelerate.framework in Frameworks */,
-				CBD38D3121AFD6210053AB48 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,7 +245,6 @@
 			children = (
 				CB83E1E12129B02C00265D61 /* FaceCamera.app */,
 				CB83E1F92129B03100265D61 /* FaceCameraTests.xctest */,
-				CBD38D1B21AFD5EC0053AB48 /* sdm.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,12 +268,7 @@
 		CB88A32021C13E110083C01B /* Mask */ = {
 			isa = PBXGroup;
 			children = (
-				CB88A32121C13E110083C01B /* nose_000.png */,
-				CB88A32221C13E110083C01B /* nose_001.png */,
-				CB88A32321C13E110083C01B /* whiskers.png */,
-				CB88A32421C13E110083C01B /* leopard.png */,
-				CB88A32521C13E110083C01B /* ear_000.png */,
-				CB88A32621C13E110083C01B /* ear_001.png */,
+				CB36460921E0E9A100489127 /* mouth.png */,
 			);
 			path = Mask;
 			sourceTree = "<group>";
@@ -547,23 +502,6 @@
 			productReference = CB83E1F92129B03100265D61 /* FaceCameraTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CBD38D1A21AFD5EC0053AB48 /* sdm */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CBD38D3021AFD5F70053AB48 /* Build configuration list for PBXNativeTarget "sdm" */;
-			buildPhases = (
-				CBD38D1721AFD5EC0053AB48 /* Sources */,
-				CBD38D1821AFD5EC0053AB48 /* Frameworks */,
-				CBD38D1921AFD5EC0053AB48 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = sdm;
-			productName = sdm;
-			productReference = CBD38D1B21AFD5EC0053AB48 /* sdm.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -579,9 +517,6 @@
 					CB83E1F82129B03100265D61 = {
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = CB83E1E02129B02C00265D61;
-					};
-					CBD38D1A21AFD5EC0053AB48 = {
-						CreatedOnToolsVersion = 10.1;
 					};
 				};
 			};
@@ -600,7 +535,6 @@
 			targets = (
 				CB83E1E02129B02C00265D61 /* FaceCamera */,
 				CB83E1F82129B03100265D61 /* FaceCameraTests */,
-				CBD38D1A21AFD5EC0053AB48 /* sdm */,
 			);
 		};
 /* End PBXProject section */
@@ -610,17 +544,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB88A33021C13E110083C01B /* nose_001.png in Resources */,
 				CBD38C8121ABB26F0053AB48 /* Main.storyboard in Resources */,
-				CB88A32F21C13E110083C01B /* nose_000.png in Resources */,
-				CB88A33421C13E110083C01B /* ear_001.png in Resources */,
 				CBD38C9821ABB26F0053AB48 /* Assets.xcassets in Resources */,
-				CB88A33221C13E110083C01B /* leopard.png in Resources */,
-				CB88A33321C13E110083C01B /* ear_000.png in Resources */,
 				CBD38C8021ABB26F0053AB48 /* LaunchScreen.storyboard in Resources */,
 				CBD38C8321ABB26F0053AB48 /* shape_predictor_68_face_landmarks.dat in Resources */,
 				CB1ED87E21BD4566002BB191 /* mask.json in Resources */,
-				CB88A33121C13E110083C01B /* whiskers.png in Resources */,
+				CB36460A21E0E9A200489127 /* mouth.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,18 +558,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBD38C9A21ABD7C80053AB48 /* Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CBD38D1921AFD5EC0053AB48 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CBD38D2A21AFD5F70053AB48 /* LaunchScreen.storyboard in Resources */,
-				CBD38D2721AFD5F70053AB48 /* Assets.xcassets in Resources */,
-				CBD38D9021AFD7970053AB48 /* model in Resources */,
-				CBD38D9121AFD7970053AB48 /* include in Resources */,
-				CBD38D2521AFD5EE0053AB48 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,21 +670,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBD38C9B21ABD7D00053AB48 /* FaceCameraTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CBD38D1721AFD5EC0053AB48 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CBD38D8521AFD77D0053AB48 /* hog.c in Sources */,
-				CBD38D8A21AFD77D0053AB48 /* feature_descriptor.cpp in Sources */,
-				CBD38D2221AFD5EE0053AB48 /* ViewController.mm in Sources */,
-				CBD38D8921AFD77D0053AB48 /* helper.cpp in Sources */,
-				CBD38D8D21AFD77D0053AB48 /* ldmarkmodel.cpp in Sources */,
-				CBD38D2D21AFD5F70053AB48 /* main.m in Sources */,
-				CBD38D1F21AFD5EE0053AB48 /* AppDelegate.m in Sources */,
-				CBD38D9521B0E47B0053AB48 /* FaceCamera.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1050,57 +952,6 @@
 			};
 			name = Release;
 		};
-		CBD38D2E21AFD5F70053AB48 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = TRFUN237XD;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/sdm/libs/include";
-				INFOPLIST_FILE = sdm/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pdmtest.1234;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = sdm;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		CBD38D2F21AFD5F70053AB48 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/sdm/libs/include";
-				INFOPLIST_FILE = sdm/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pdmtest.1234;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1127,15 +978,6 @@
 			buildConfigurations = (
 				CB83E2062129B03100265D61 /* Debug */,
 				CB83E2072129B03100265D61 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CBD38D3021AFD5F70053AB48 /* Build configuration list for PBXNativeTarget "sdm" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CBD38D2E21AFD5F70053AB48 /* Debug */,
-				CBD38D2F21AFD5F70053AB48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

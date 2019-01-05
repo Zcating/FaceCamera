@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^CloseBlock)(void);
+
 @interface FCAlbumViewController : UIViewController
+
+@property (nonatomic, copy) CloseBlock close;
 
 @end
 
