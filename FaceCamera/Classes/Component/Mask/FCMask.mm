@@ -230,17 +230,6 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
 
 @implementation FCMask
 
-//-(instancetype)initWithImage:(UIImage *)image landmarks:(NSArray *)landmarks {
-//    self = [super init];
-//    if(self) {
-//        _numVertices = 76;
-//        _sizeFaceShapeVertices = _numVertices * sizeof(VertexData);
-//        _screenSize = [UIScreen mainScreen].bounds.size;
-//        [self setupImage:image landmarks:landmarks];
-//    }
-//    return self;
-//}
-
 -(instancetype)init {
     self = [super init];
     if(self) {
@@ -251,7 +240,75 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
     return self;
 }
 
-#pragma mark PRIVATE
+#pragma mark - PUBLIC
+- (void)draw {
+    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
+    glDrawElements(GL_TRIANGLES, sizeof(DelaunayTriangles) / sizeof(GLubyte), GL_UNSIGNED_BYTE, 0);
+    [self.baseEffect prepareToDraw];
+}
+
+- (void)setupImage:(UIImage *)image landmarks:(NSArray *)landmarks {
+    for(int i = 0; i < landmarks.count; ++i) {
+        NSDictionary *landmark = [landmarks objectAtIndex:i];
+        VertexData& data = _landmarkVertices[i];
+        
+        int x = [landmark[@"x"] intValue];
+        int y = [landmark[@"y"] intValue];
+        data.position[0] = x;
+        data.position[1] = y;
+        data.position[2] = 0;
+        data.uv[0] = x / image.size.width;
+        data.uv[1] = y / image.size.height;
+    }
+    [self initReferenceMaskData];
+    
+    glGenBuffers(1, &_vertexBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
+    
+    glGenBuffers(1, &_indexBufferID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(DelaunayTriangles), NULL, GL_STATIC_DRAW);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(DelaunayTriangles), DelaunayTriangles);
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, position));
+    
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, uv));
+    
+    CGImageRef cgImage = [image CGImage];
+    GLKTextureInfo* textureInfo =[GLKTextureLoader textureWithCGImage:cgImage options:nil error:NULL];
+    self.baseEffect.texture2d0.name = textureInfo.name;
+    self.baseEffect.texture2d0.target = GLKTextureTarget2D;
+}
+
+- (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape {
+    for (int i = 0; i < shape.size(); i++) {
+        const auto& point = shape[i];
+        double x = ((double)point.x * _screenSize.width) / 720.0;
+        double y = ((double)point.y * _screenSize.height) / 1280.0;
+        
+        VertexData& data = _landmarkVertices[i];
+        data.position[0] = x;
+        data.position[1] = y;
+    }
+    
+    VertexData& data6 = _landmarkVertices[36];
+    _maskMap.curPoint36 = cv::Point_<double>(data6.position[0],data6.position[1]);
+    
+    
+    VertexData& data3 = _landmarkVertices[45];
+    _maskMap.curPoint45 = cv::Point_<double>(data3.position[0],data3.position[1]);
+    
+    [self calculateMaskRect];
+}
+
+
+
+#pragma mark - PRIVATE
 -(void)updateLandmarkPoint:(int)index updateWith:(LandmarkInfo)landmarkInfo {
     
     float distOfIndexAnd36 = (landmarkInfo.curDistOf36And45 / _previousDistOf36and45) * landmarkInfo.distOfIndexAnd36;
@@ -280,45 +337,45 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
     landmarkInfo.curAngleOf36And45 = curAngleOf36And45;
     landmarkInfo.curDistOf36And45 = curDistOf36And45;
     
-        // 68
+    // 68
     landmarkInfo.angleOfIndexAnd36 = M_PI - _previousAngleOf68and36;
     landmarkInfo.distOfIndexAnd36 = _previousDistOf68and36;
     [self updateLandmarkPoint:68 updateWith:landmarkInfo];
     
-        // 69
+    // 69
     landmarkInfo.angleOfIndexAnd36 = M_PI + abs( _previousAngleOf69and36);
     landmarkInfo.distOfIndexAnd36 = _previousDistOf69and36;
     [self updateLandmarkPoint:69 updateWith:landmarkInfo];
     
-        // 72
+    // 72
     landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _previousAngleOf72and36);
     landmarkInfo.distOfIndexAnd36 = _previousDistOf72and36;
     [self updateLandmarkPoint:72 updateWith:landmarkInfo];
     
     
-        // 74
+    // 74
     landmarkInfo.angleOfIndexAnd36 = -_previousAngleOf74and36 ;
     landmarkInfo.distOfIndexAnd36 = _previousDistOf74and36;
     [self updateLandmarkPoint:74 updateWith:landmarkInfo];
     
-        // 70
+    // 70
     landmarkInfo.angleOfIndexAnd36 = M_PI + abs( _previousAngleOf70and36);
     landmarkInfo.distOfIndexAnd36 = _previousDistOf70and36;
     [self updateLandmarkPoint:70 updateWith:landmarkInfo];
     
     
     
-        // 71
+    // 71
     landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _previousAngleOf71and36);
     landmarkInfo.distOfIndexAnd36 = _previousDistOf71and36;
     [self updateLandmarkPoint:71 updateWith:landmarkInfo];
     
-        // 73
+    // 73
     landmarkInfo.angleOfIndexAnd36 = (M_PI * 2) - abs( _previousAngleOf73and36);
     landmarkInfo.distOfIndexAnd36 = _previousDistOf73and36;
     [self updateLandmarkPoint:73 updateWith:landmarkInfo];
     
-        // 75
+    // 75
     landmarkInfo.angleOfIndexAnd36 =  -_previousAngleOf75and36;
     landmarkInfo.distOfIndexAnd36 = _previousDistOf75and36;
     [self updateLandmarkPoint:75 updateWith:landmarkInfo];
@@ -396,73 +453,6 @@ static inline double Angle(const cv::Point_<double>& point1, const cv::Point_<do
     
 }
 
-
-
-#pragma mark - PUBLIC
-- (void)draw {
-    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
-    glDrawElements(GL_TRIANGLES, sizeof(DelaunayTriangles) / sizeof(DelaunayTriangles[0]), GL_UNSIGNED_BYTE, 0);
-    [self.baseEffect prepareToDraw];
-}
-
-- (void)setupImage:(UIImage *)image landmarks:(NSArray *)landmarks {
-    for(int i = 0; i < landmarks.count; ++i) {
-        NSDictionary *landmark = [landmarks objectAtIndex:i];
-        VertexData& data = _landmarkVertices[i];
-        
-        int x = [landmark[@"x"] intValue];
-        int y = [landmark[@"y"] intValue];
-        data.position[0] = x;
-        data.position[1] = y;
-        data.position[2] = 0;
-        data.uv[0] = x / image.size.width;
-        data.uv[1] = y / image.size.height;
-    }
-    [self initReferenceMaskData];
-    
-    glGenBuffers(1, &_vertexBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
-    
-    glGenBuffers(1, &_indexBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(DelaunayTriangles), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(DelaunayTriangles), DelaunayTriangles);
-    
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, position));
-    
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, uv));
-
-    CGImageRef cgImage = [image CGImage];
-    GLKTextureInfo* textureInfo =[GLKTextureLoader textureWithCGImage:cgImage options:nil error:NULL];
-    self.baseEffect.texture2d0.name = textureInfo.name;
-    self.baseEffect.texture2d0.target = GLKTextureTarget2D;
-}
-
-- (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape {
-    for (int i = 0; i < shape.size(); i++) {
-        const auto& point = shape[i];
-        double x = ((double)point.x * _screenSize.width) / 720.0;
-        double y = ((double)point.y * _screenSize.height) / 1280.0;
-        
-        VertexData& data = _landmarkVertices[i];
-        data.position[0] = x;
-        data.position[1] = y;
-    }
-    
-    VertexData& data6 = _landmarkVertices[36];
-    _maskMap.curPoint36 = cv::Point_<double>(data6.position[0],data6.position[1]);
-    
-    
-    VertexData& data3 = _landmarkVertices[45];
-    _maskMap.curPoint45 = cv::Point_<double>(data3.position[0],data3.position[1]);
-    
-    [self calculateMaskRect];
-}
 
 
 #pragma mark GETTER & SETTER

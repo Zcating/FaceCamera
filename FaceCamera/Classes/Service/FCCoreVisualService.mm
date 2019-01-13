@@ -7,17 +7,13 @@
 //
 
 #import "FCCoreVisualService.h"
-//#import "FaceCore.hpp"
+#import "FaceCore.hpp"
 #import "ImageProcession.hpp"
 
 
-static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
-
-
 @interface FCCoreVisualService () {
-    dlib::shape_predictor _shapePredictor;
-//    std::shared_ptr<fc::FaceCore> _faceCore;
-    dispatch_queue_t _concurrentQueue;
+//    dlib::shape_predictor _shapePredictor;
+    fc::FaceCore _faceCore;
 }
 
 @property (nonatomic, copy) SnapshotBlock snapshotBlock;
@@ -36,8 +32,6 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
     self = [super init];
     if (self) {
         [self prepare];
-        
-        _concurrentQueue = dispatch_queue_create("mask.image.queue", DISPATCH_QUEUE_CONCURRENT);
     }
     return self;
 }
@@ -46,35 +40,23 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 - (void)prepare {
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *path = [bundle pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
-    dlib::deserialize([path UTF8String]) >> _shapePredictor;
+    _faceCore.prepare([path UTF8String]);
 }
 
 
 - (void)runWithSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)faces forLandmarkBlock:(LandmarkBlock)landmarkBlock {
-    
     // get all pixels in the frame.
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    
-    // need to lock buffer to access the pixels.
-    CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-    
-    size_t width = CVPixelBufferGetWidth(pixelBuffer);
-    size_t height = CVPixelBufferGetHeight(pixelBuffer);
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-    char *baseBuffer = (char *)CVPixelBufferGetBaseAddress(pixelBuffer);
-    
-    // get opencv image object BGR
-    cv::Mat image((int)height, (int)width, CV_8UC4, baseBuffer, bytesPerRow);
-    
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+
+    cv::Mat image = fc::PixelBufferToCvMat(pixelBuffer);
     
     [faces enumerateObjectsUsingBlock:^(NSValue * _Nonnull value, NSUInteger index, BOOL * _Nonnull stop) {
         CGRect rectValue = value.CGRectValue;
-            //
+        
         cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
         
-        auto landmarks = self->_shapePredictor(dlib::cv_image<dlib::rgb_alpha_pixel>(image), ConvertCVRect(faceRect));
+        auto cvLandmarks = self->_faceCore.landmarks(image, faceRect);
+        landmarkBlock(cvLandmarks, index);
         
         // Draw all 68 point.
 #ifdef FC_DEBUG
@@ -86,31 +68,9 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
             cv::circle(image, point, 2, cv::Scalar(255, 255, 0, 0));
         }
 #endif
-        std::vector<cv::Point_<double>> cvLandmarks(landmarks.num_parts(), cv::Point(0, 0));
-        for (auto index = 0; index < landmarks.num_parts(); index++) {
-            const auto& landmark = landmarks.part(index);
-            auto& point = cvLandmarks[index];
-            point.x = static_cast<double>(landmark.x());
-            point.y = static_cast<double>(landmark.y());
-        }
-        landmarkBlock(cvLandmarks, index);
     }];
     
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    
-    width = CVPixelBufferGetWidth(pixelBuffer);
-    height = CVPixelBufferGetHeight(pixelBuffer);
-    baseBuffer = (char *)CVPixelBufferGetBaseAddress(pixelBuffer);
-    
-    uint8_t *pixelPtr = (uint8_t *)image.data;
-    
-    //Mat traslate to sample buffer.
-    long size = image.rows * image.cols * image.channels();
-    for (int index = 0; index < size; index++) {
-        baseBuffer[index] = pixelPtr[index];
-    }
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    fc::SaveCvMatToPixelBuffer(image, pixelBuffer);
     
     if(self.enableSnapshot) {
         [self startSnapshot:image];
@@ -157,15 +117,3 @@ static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect);
 
 @end
 
-
-static inline dlib::rectangle ConvertCVRect(const cv::Rect& rect) {
-    auto tl = rect.tl();
-    auto br = rect.br();
-    
-    long left = tl.x;
-    long top = tl.y;
-    long right = br.x;
-    long bottom = br.y;
-    
-    return dlib::rectangle(left, top, right, bottom);
-}

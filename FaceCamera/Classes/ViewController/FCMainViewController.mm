@@ -54,6 +54,7 @@ FCMainBottomViewDelegate
 @end
 
 @implementation FCMainViewController
+#pragma mark - PUBLIC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,6 +75,10 @@ FCMainBottomViewDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stop) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
+-(void)viewDidDisappear:(BOOL)animated {
+    [self stop];
+    [super viewDidDisappear:animated];
+}
 
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -195,14 +200,6 @@ FCMainBottomViewDelegate
 
 // Animation Delegate
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-//    if ([presenting isKindOfClass:[FCImageEditingViewController class]]) {
-//        return [FCMainPresentAnimation new];
-//    } else if ([presenting isKindOfClass:[FCAlbumViewController class]]) {
-////        return
-//        return [FCAlbumPresentAnimation new];
-//    } else {
-//
-//    }
     return [FCMainPresentAnimation new];
 }
 
@@ -245,16 +242,15 @@ FCMainBottomViewDelegate
     if (_cameraView == nil) {
         CGSize size = self.view.frame.size;
         _cameraView = [[FaceCameraView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-        _cameraView.delegate = self;
+//        _cameraView.delegate = self;
     }
     return _cameraView;
 }
 
 -(MaskGLView *)maskGLView {
     if (_maskGLView == nil) {
-        EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-        [EAGLContext setCurrentContext:context];
-        
+        EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+//        [EAGLContext setCurrentContext:context];
         CGRect frame = [UIScreen mainScreen].bounds;
         _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
         _maskGLView.hidden = YES;

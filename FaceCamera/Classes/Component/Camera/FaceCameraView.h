@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
 
 #import "FaceCamera.h"
 
@@ -14,15 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-@interface FaceCameraView : UIView
+@interface FaceCameraView : GLKView
 
-@property (nonatomic, weak) id<FaceCameraDelegate> delegate;
+@property (nonatomic, weak) id<FaceCameraDelegate> cameraDelegate;
 
 -(void)start;
 
 -(void)stop;
-
--(UIImage *)takePhoto;
 
 -(void)switchCamera;
 

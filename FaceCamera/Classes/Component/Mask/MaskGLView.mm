@@ -120,6 +120,11 @@ using namespace std;
     return _masks;
 }
 
+
+-(BOOL)setupPixelBuffer:(CVPixelBufferRef)pixelBuffer {
+    
+    return YES;
+}
 //-(FCMask *)mask {
 //    if (_mask == nil) {
 //        _mask = [[FCMask alloc] init];

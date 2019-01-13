@@ -60,7 +60,7 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-#pragma mark - Public Function
+#pragma mark - PUBLIC
 
 - (void)start {
     if (_running == YES) {
@@ -115,10 +115,10 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-#pragma mark - Private Function
+#pragma mark - PRIVATE
 
 -(void)updateSession {
-        // video data output
+    // video data output
 
     if (self.devicePosition == AVCaptureDevicePositionFront) {
         if ([self.session canAddInput:self.frontCameraInput]) {
@@ -143,19 +143,18 @@ AVCaptureMetadataOutputObjectsDelegate
 }
 
 
-#pragma mark - Video Delegate
+#pragma mark - DELEGATE
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     if (connection.supportsVideoOrientation) {
         connection.videoOrientation = self.orientation;
     }
     if (connection.supportsVideoMirroring) {
-        connection.videoMirrored = self.devicePosition == AVCaptureDevicePositionFront;
-        
+        connection.videoMirrored = self.devicePosition == AVCaptureDevicePositionBack;
     }
     NSMutableArray *bounds = nil;
     if (self.metadataObjects.count != 0) {
-            // find faces.
+        // find faces.
         bounds = [NSMutableArray arrayWithCapacity:2];
         for (AVMetadataObject *object in self.metadataObjects) {
             if([object isKindOfClass:[AVMetadataFaceObject class]]) {
@@ -165,7 +164,7 @@ AVCaptureMetadataOutputObjectsDelegate
         }
     }
     
-        // process faces in delegate function.
+    // process faces in delegate function.
     if ([self.delegate respondsToSelector:@selector(processframe:faces:)]) {
         [self.delegate processframe:sampleBuffer faces:bounds];
     }
@@ -178,7 +177,7 @@ AVCaptureMetadataOutputObjectsDelegate
 
 
 
-    #pragma mark - getter & setter
+#pragma mark - GETTER & SETTER
 
 -(AVCaptureSession *)session {
     if (_session == nil) {
@@ -236,7 +235,7 @@ AVCaptureMetadataOutputObjectsDelegate
             if (device.position == AVCaptureDevicePositionBack) {
                 continue;
             }
-            _frontCameraInput  = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+            _frontCameraInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
             if (error) {
                 NSLog(@"[FaceCamera] error: %@", error.description);
             }
@@ -258,7 +257,7 @@ AVCaptureMetadataOutputObjectsDelegate
 
 -(AVCaptureVideoOrientation)orientation {
     if (_orientation == 0) {
-        _orientation = AVCaptureVideoOrientationPortrait;
+        _orientation = AVCaptureVideoOrientationPortraitUpsideDown;
     }
     return _orientation;
 }
