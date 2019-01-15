@@ -18,7 +18,6 @@
 #import "FCMainTopView.h"
 
 #import "FCMainAnimation.h"
-#import "FCAlbumAnimation.h"
 
 #import "FCCoreVisualService.h"
 #import "ConstantValue.h"
@@ -39,7 +38,7 @@ FCMainBottomViewDelegate
 
 @property (strong, nonatomic) MaskView *maskView;
 
-@property (strong, nonatomic) MaskGLView *maskGLView;
+//@property (strong, nonatomic) MaskGLView *maskGLView;
 
 @property (strong, nonatomic) ResolutionSwitchView *switchView;
 
@@ -65,7 +64,7 @@ FCMainBottomViewDelegate
     [self.view addSubview:self.bottomView];
     [self.view addSubview:self.albumView];
     
-    [self.cameraView addSubview:self.maskGLView];
+//    [self.cameraView addSubview:self.maskGLView];
     [self.cameraView addSubview:self.maskView];
     
     [self prepare];
@@ -154,7 +153,7 @@ FCMainBottomViewDelegate
 }
 
 -(void)stop {
-    self.maskGLView.hidden = YES;
+//    self.maskGLView.hidden = YES;
     [self.cameraView stop];
 }
 
@@ -173,7 +172,7 @@ FCMainBottomViewDelegate
 }
 
 -(void)takingPhoto {
-    UIImage *maskImage = self.maskGLView.hidden == NO ? self.maskGLView.snapshot : nil;
+    UIImage *maskImage = nil;
     [self.coreVisualService generateImageWithMask:maskImage resolutionType:self.maskView.type inBlock:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             FCImageEditingViewController *controller =  [[FCImageEditingViewController alloc] init];
@@ -194,7 +193,7 @@ FCMainBottomViewDelegate
     NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfURL:path];
     NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
-    [self.maskGLView setupImage:name landmarks:array];
+//    [self.maskGLView setupImage:name landmarks:array];
 }
 
 
@@ -210,11 +209,11 @@ FCMainBottomViewDelegate
 // Camera Frame Delegate
 - (void)processframe:(nonnull CMSampleBufferRef)sampleBuffer faces:(nullable NSArray *)faces {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.maskGLView.hidden = faces == nil;
+//        self.maskGLView.hidden = faces == nil;
     });
     
     [self.coreVisualService runWithSampleBuffer:sampleBuffer inRects:faces forLandmarkBlock:^(const std::vector<cv::Point_<double>>& landmarks, long faceIndex) {
-        [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
+//        [self.maskGLView updateLandmarks:landmarks faceIndex:faceIndex];
     }];
 }
 
@@ -247,16 +246,16 @@ FCMainBottomViewDelegate
     return _cameraView;
 }
 
--(MaskGLView *)maskGLView {
-    if (_maskGLView == nil) {
-        EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-//        [EAGLContext setCurrentContext:context];
-        CGRect frame = [UIScreen mainScreen].bounds;
-        _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
-        _maskGLView.hidden = YES;
-    }
-    return _maskGLView;
-}
+//-(MaskGLView *)maskGLView {
+//    if (_maskGLView == nil) {
+//        EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+////        [EAGLContext setCurrentContext:context];
+//        CGRect frame = [UIScreen mainScreen].bounds;
+//        _maskGLView = [[MaskGLView alloc] initWithFrame:frame context:context];
+//        _maskGLView.hidden = YES;
+//    }
+//    return _maskGLView;
+//}
 
 -(MaskView *)maskView {
     if (_maskView == nil) {

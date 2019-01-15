@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
+typedef void(^FilterBlock)(void);
 
 @interface FaceCameraView : GLKView
 

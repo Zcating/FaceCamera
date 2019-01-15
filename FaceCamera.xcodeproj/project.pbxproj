@@ -11,12 +11,13 @@
 		CB00683221E86F5100348426 /* FCShader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6F389A21E83374009DB2BB /* FCShader.m */; };
 		CB00683921E88E3E00348426 /* CameraRGBA.vsh in Resources */ = {isa = PBXBuildFile; fileRef = CB00683821E88E3E00348426 /* CameraRGBA.vsh */; };
 		CB00683B21E88E5100348426 /* CameraRGBA.fsh in Resources */ = {isa = PBXBuildFile; fileRef = CB00683A21E88E5100348426 /* CameraRGBA.fsh */; };
+		CB00683E21EE167D00348426 /* FCFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB00683D21EE167C00348426 /* FCFilter.m */; };
+		CB00684521EE1C0B00348426 /* FaceCameraCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB00684421EE1C0B00348426 /* FaceCameraCore.mm */; };
 		CB0FD67F21DCF2920019E2A1 /* FCMaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0FD67E21DCF2920019E2A1 /* FCMaskCell.m */; };
 		CB1143C021A39F5A003CCB2E /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143BF21A39F5A003CCB2E /* libdlib.a */; };
 		CB1143C521A3A5CF003CCB2E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1143C421A3A5CE003CCB2E /* OpenGLES.framework */; };
 		CB1ED87E21BD4566002BB191 /* mask.json in Resources */ = {isa = PBXBuildFile; fileRef = CB1ED87D21BD4566002BB191 /* mask.json */; };
 		CB36460521DFAD9B00489127 /* FCAlbumTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB36460221DFAA9000489127 /* FCAlbumTopView.m */; };
-		CB36460821DFB42B00489127 /* FCAlbumAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB36460721DFB42B00489127 /* FCAlbumAnimation.m */; };
 		CB36460A21E0E9A200489127 /* mouth.png in Resources */ = {isa = PBXBuildFile; fileRef = CB36460921E0E9A100489127 /* mouth.png */; };
 		CB44093B21CDD58400607E71 /* FCImageEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */; };
 		CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */ = {isa = PBXBuildFile; fileRef = CB44093D21CFE15800607E71 /* FCCoreEditService.m */; };
@@ -24,8 +25,7 @@
 		CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD38C2E21ABB26F0053AB48 /* ResolutionSwitchView.m */; };
 		CB61FDB721D6656F00319083 /* FCMainTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDB621D6656F00319083 /* FCMainTopView.m */; };
 		CB61FDBA21D7A59F00319083 /* FCMask.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDB921D7A59F00319083 /* FCMask.mm */; };
-		CB61FDBF21D8598600319083 /* FCImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDBE21D8598600319083 /* FCImageFilter.m */; };
-		CB61FDC221D9166D00319083 /* GLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDC121D9166D00319083 /* GLUtils.m */; };
+		CB61FDBF21D8598600319083 /* FCMaskFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDBE21D8598600319083 /* FCMaskFilter.mm */; };
 		CB61FDC521DBA47300319083 /* FCMainBottomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDC421DBA47300319083 /* FCMainBottomViewController.m */; };
 		CB61FDC821DBAC6500319083 /* FCAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61FDC721DBAC6500319083 /* FCAlbumViewController.m */; };
 		CB685B6821CA88800074209C /* MaskView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB685B6721CA88800074209C /* MaskView.mm */; };
@@ -71,6 +71,10 @@
 		C2B697D72D3AA4A15B285C64 /* Pods_FaceCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB00683821E88E3E00348426 /* CameraRGBA.vsh */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = CameraRGBA.vsh; sourceTree = "<group>"; };
 		CB00683A21E88E5100348426 /* CameraRGBA.fsh */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = CameraRGBA.fsh; sourceTree = "<group>"; };
+		CB00683C21EE167C00348426 /* FCFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCFilter.h; sourceTree = "<group>"; };
+		CB00683D21EE167C00348426 /* FCFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCFilter.m; sourceTree = "<group>"; };
+		CB00684321EE1C0B00348426 /* FaceCameraCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceCameraCore.h; sourceTree = "<group>"; };
+		CB00684421EE1C0B00348426 /* FaceCameraCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FaceCameraCore.mm; sourceTree = "<group>"; };
 		CB0CD84E21E39E23007F61B4 /* FaceCore.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FaceCore.hpp; sourceTree = "<group>"; };
 		CB0FD67D21DCF2920019E2A1 /* FCMaskCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMaskCell.h; sourceTree = "<group>"; };
 		CB0FD67E21DCF2920019E2A1 /* FCMaskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMaskCell.m; sourceTree = "<group>"; };
@@ -80,8 +84,6 @@
 		CB30CA682192B3F40012D84A /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = Frameworks/opencv2.framework; sourceTree = "<group>"; };
 		CB36460121DFAA9000489127 /* FCAlbumTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCAlbumTopView.h; sourceTree = "<group>"; };
 		CB36460221DFAA9000489127 /* FCAlbumTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCAlbumTopView.m; sourceTree = "<group>"; };
-		CB36460621DFB42B00489127 /* FCAlbumAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCAlbumAnimation.h; sourceTree = "<group>"; };
-		CB36460721DFB42B00489127 /* FCAlbumAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCAlbumAnimation.m; sourceTree = "<group>"; };
 		CB36460921E0E9A100489127 /* mouth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouth.png; sourceTree = "<group>"; };
 		CB44093921CDD58400607E71 /* FCImageEditingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageEditingViewController.h; sourceTree = "<group>"; };
 		CB44093A21CDD58400607E71 /* FCImageEditingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCImageEditingViewController.m; sourceTree = "<group>"; };
@@ -93,10 +95,8 @@
 		CB61FDB621D6656F00319083 /* FCMainTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMainTopView.m; sourceTree = "<group>"; };
 		CB61FDB821D7A59F00319083 /* FCMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMask.h; sourceTree = "<group>"; };
 		CB61FDB921D7A59F00319083 /* FCMask.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FCMask.mm; sourceTree = "<group>"; };
-		CB61FDBD21D8598600319083 /* FCImageFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageFilter.h; sourceTree = "<group>"; };
-		CB61FDBE21D8598600319083 /* FCImageFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCImageFilter.m; sourceTree = "<group>"; };
-		CB61FDC021D9166D00319083 /* GLUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLUtils.h; sourceTree = "<group>"; };
-		CB61FDC121D9166D00319083 /* GLUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLUtils.m; sourceTree = "<group>"; };
+		CB61FDBD21D8598600319083 /* FCMaskFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMaskFilter.h; sourceTree = "<group>"; };
+		CB61FDBE21D8598600319083 /* FCMaskFilter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FCMaskFilter.mm; sourceTree = "<group>"; };
 		CB61FDC321DBA47300319083 /* FCMainBottomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMainBottomViewController.h; sourceTree = "<group>"; };
 		CB61FDC421DBA47300319083 /* FCMainBottomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMainBottomViewController.m; sourceTree = "<group>"; };
 		CB61FDC621DBAC6400319083 /* FCAlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCAlbumViewController.h; sourceTree = "<group>"; };
@@ -174,6 +174,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB00684021EE1A9100348426 /* GL */ = {
+			isa = PBXGroup;
+			children = (
+				CB61FDBC21D8594300319083 /* Filter */,
+				CBD38C2621ABB26F0053AB48 /* FaceCameraView.h */,
+				CBD38C2821ABB26F0053AB48 /* FaceCameraView.mm */,
+				CBD38C2921ABB26F0053AB48 /* FaceCamera.h */,
+				CBD38C2721ABB26F0053AB48 /* FaceCamera.m */,
+				CB6F389921E83374009DB2BB /* FCShader.h */,
+				CB6F389A21E83374009DB2BB /* FCShader.m */,
+				CB00683821E88E3E00348426 /* CameraRGBA.vsh */,
+				CB00683A21E88E5100348426 /* CameraRGBA.fsh */,
+			);
+			path = GL;
+			sourceTree = "<group>";
+		};
+		CB00684221EE1BD100348426 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CB00684321EE1C0B00348426 /* FaceCameraCore.h */,
+				CB00684421EE1C0B00348426 /* FaceCameraCore.mm */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		CB1ED87F21BD50A7002BB191 /* Mask */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,29 +217,17 @@
 			children = (
 				CB44094021D12C0D00607E71 /* FCMainAnimation.h */,
 				CB44094121D12C0D00607E71 /* FCMainAnimation.m */,
-				CB36460621DFB42B00489127 /* FCAlbumAnimation.h */,
-				CB36460721DFB42B00489127 /* FCAlbumAnimation.m */,
 			);
 			path = Animation;
-			sourceTree = "<group>";
-		};
-		CB61FDBB21D8592900319083 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				CB61FDBC21D8594300319083 /* Filter */,
-				CB61FDC021D9166D00319083 /* GLUtils.h */,
-				CB61FDC121D9166D00319083 /* GLUtils.m */,
-				CB6F389921E83374009DB2BB /* FCShader.h */,
-				CB6F389A21E83374009DB2BB /* FCShader.m */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 		CB61FDBC21D8594300319083 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
-				CB61FDBD21D8598600319083 /* FCImageFilter.h */,
-				CB61FDBE21D8598600319083 /* FCImageFilter.m */,
+				CB61FDBD21D8598600319083 /* FCMaskFilter.h */,
+				CB61FDBE21D8598600319083 /* FCMaskFilter.mm */,
+				CB00683C21EE167C00348426 /* FCFilter.h */,
+				CB00683D21EE167C00348426 /* FCFilter.m */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -288,7 +301,6 @@
 		CBD38C1D21ABB26E0053AB48 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CB61FDBB21D8592900319083 /* Library */,
 				CBD38C2421ABB26F0053AB48 /* Component */,
 				CBD38C3221ABB26F0053AB48 /* Service */,
 				CBD38C4321ABB26F0053AB48 /* ViewController */,
@@ -305,25 +317,13 @@
 		CBD38C2421ABB26F0053AB48 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				CB00684221EE1BD100348426 /* Core */,
+				CB00684021EE1A9100348426 /* GL */,
 				CB44093F21D12BDD00607E71 /* Animation */,
 				CB1ED87F21BD50A7002BB191 /* Mask */,
-				CBD38C2521ABB26F0053AB48 /* Camera */,
 				CBD38C2B21ABB26F0053AB48 /* View */,
 			);
 			path = Component;
-			sourceTree = "<group>";
-		};
-		CBD38C2521ABB26F0053AB48 /* Camera */ = {
-			isa = PBXGroup;
-			children = (
-				CBD38C2621ABB26F0053AB48 /* FaceCameraView.h */,
-				CBD38C2821ABB26F0053AB48 /* FaceCameraView.mm */,
-				CBD38C2921ABB26F0053AB48 /* FaceCamera.h */,
-				CBD38C2721ABB26F0053AB48 /* FaceCamera.m */,
-				CB00683821E88E3E00348426 /* CameraRGBA.vsh */,
-				CB00683A21E88E5100348426 /* CameraRGBA.fsh */,
-			);
-			path = Camera;
 			sourceTree = "<group>";
 		};
 		CBD38C2B21ABB26F0053AB48 /* View */ = {
@@ -604,21 +604,21 @@
 				CBD38CA321AE6F1E0053AB48 /* MaskGLView.mm in Sources */,
 				CBD38C7121ABB26F0053AB48 /* FaceCameraView.mm in Sources */,
 				CB44094221D12C0D00607E71 /* FCMainAnimation.m in Sources */,
+				CB00683E21EE167D00348426 /* FCFilter.m in Sources */,
 				CB44093E21CFE15800607E71 /* FCCoreEditService.m in Sources */,
-				CB36460821DFB42B00489127 /* FCAlbumAnimation.m in Sources */,
 				CB685B6821CA88800074209C /* MaskView.mm in Sources */,
 				CB61FDBA21D7A59F00319083 /* FCMask.mm in Sources */,
 				CB61FDC821DBAC6500319083 /* FCAlbumViewController.m in Sources */,
 				CBD38C7521ABB26F0053AB48 /* AppDelegate.m in Sources */,
 				CBD38C6D21ABB26F0053AB48 /* main.m in Sources */,
-				CB61FDBF21D8598600319083 /* FCImageFilter.m in Sources */,
+				CB61FDBF21D8598600319083 /* FCMaskFilter.mm in Sources */,
 				CBEE125321D278D100137D8B /* GlobalUtils.m in Sources */,
 				CB61FDB721D6656F00319083 /* FCMainTopView.m in Sources */,
 				CBAAAE5421DE3A9D0048A64A /* PhotoImageViewCell.m in Sources */,
-				CB61FDC221D9166D00319083 /* GLUtils.m in Sources */,
 				CBD0FD2021CBB92E00BDDE5E /* ConstantValue.m in Sources */,
 				CB45808A21C6640200ABA1EA /* ResolutionSwitchView.m in Sources */,
 				CB36460521DFAD9B00489127 /* FCAlbumTopView.m in Sources */,
+				CB00684521EE1C0B00348426 /* FaceCameraCore.mm in Sources */,
 				CB0FD67F21DCF2920019E2A1 /* FCMaskCell.m in Sources */,
 				CBD38C7D21ABB26F0053AB48 /* FCMainViewController.mm in Sources */,
 				CBD38C7921ABB26F0053AB48 /* FCCoreVisualService.mm in Sources */,

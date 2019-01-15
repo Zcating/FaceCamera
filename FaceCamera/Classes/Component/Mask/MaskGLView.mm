@@ -23,7 +23,7 @@ using namespace std;
 
 //@property (nonatomic, strong) FCMask *mask;
 
-@property (nonatomic, strong) NSMutableArray<FCMask *> *masks;
+//@property (nonatomic, strong) NSMutableArray<FCMask *> *masks;
 
 @end
 
@@ -71,11 +71,11 @@ using namespace std;
 - (void)render:(CADisplayLink*)displayLink {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    [self.masks enumerateObjectsUsingBlock:^(FCMask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (obj.enable) {
-            [obj draw];
-        }
-    }];
+//    [self.masks enumerateObjectsUsingBlock:^(FCMask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        if (obj.enable) {
+//            [obj draw];
+//        }
+//    }];
     [self.context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
@@ -83,9 +83,9 @@ using namespace std;
 #pragma mark - PUBLIC
 
 - (void)prepare {
-    for (NSUInteger index = 0; index < MAX_FACES_NUMBER; index++) {
-        self.masks[index].enable = NO;
-    }
+//    for (NSUInteger index = 0; index < MAX_FACES_NUMBER; index++) {
+//        self.masks[index].enable = NO;
+//    }
 }
 
 //  If it detected n faces, the 'faceIndex' would be in the range of [0, n - 1).
@@ -94,31 +94,31 @@ using namespace std;
     if (faceIndex > MAX_FACES_NUMBER) {
         return;
     }
-    self.masks[faceIndex].enable = YES;
-    [self.masks[faceIndex] updateLandmarks:landmarks];
+//    self.masks[faceIndex].enable = YES;
+//    [self.masks[faceIndex] updateLandmarks:landmarks];
 }
 
 
 - (void)setupImage:(NSString *)imageName landmarks:(NSArray *)landmarks {
-    [self.masks enumerateObjectsUsingBlock:^(FCMask * _Nonnull mask, NSUInteger idx, BOOL * _Nonnull stop) {
-        [mask setupImage:[UIImage imageNamed:imageName] landmarks:landmarks];
-    }];
+//    [self.masks enumerateObjectsUsingBlock:^(FCMask * _Nonnull mask, NSUInteger idx, BOOL * _Nonnull stop) {
+//        [mask setupImage:[UIImage imageNamed:imageName] landmarks:landmarks];
+//    }];
 }
 
 
 
 #pragma mark - GETTER & SETTER
 
--(NSMutableArray<FCMask *> *)masks {
-    if (_masks == nil) {
-        _masks = [NSMutableArray arrayWithCapacity:MAX_FACES_NUMBER];
-        for(int i = 0; i < MAX_FACES_NUMBER; i++) {
-            FCMask *mask = [[FCMask alloc] init];
-            [_masks addObject:mask];
-        }
-    }
-    return _masks;
-}
+//-(NSMutableArray<FCMask *> *)masks {
+//    if (_masks == nil) {
+//        _masks = [NSMutableArray arrayWithCapacity:MAX_FACES_NUMBER];
+//        for(int i = 0; i < MAX_FACES_NUMBER; i++) {
+////            FCMask *mask = [[FCMask alloc] init];
+////            [_masks addObject:mask];
+//        }
+//    }
+//    return _masks;
+//}
 
 
 -(BOOL)setupPixelBuffer:(CVPixelBufferRef)pixelBuffer {

@@ -26,7 +26,7 @@ AVCaptureMetadataOutputObjectsDelegate
     
     BOOL _running;
     BOOL _sessionLoaded;
-    
+    BOOL _delegateResponded;
 }
 
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -165,7 +165,7 @@ AVCaptureMetadataOutputObjectsDelegate
     }
     
     // process faces in delegate function.
-    if ([self.delegate respondsToSelector:@selector(processframe:faces:)]) {
+    if (_delegateResponded) {
         [self.delegate processframe:sampleBuffer faces:bounds];
     }
 }
@@ -277,7 +277,10 @@ AVCaptureMetadataOutputObjectsDelegate
     });
 }
 
-
+-(void)setDelegate:(id<FaceCameraDelegate>)delegate {
+    _delegate = delegate;
+    _delegateResponded = [_delegate respondsToSelector:@selector(processframe:faces:)];
+}
 
 
 @end

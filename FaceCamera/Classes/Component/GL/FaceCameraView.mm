@@ -7,24 +7,19 @@
 //
 
 #import <GLKit/GLKit.h>
-
+#import <AVFoundation/AVUtilities.h>
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
 
 #import "FaceCameraView.h"
-
-//#import "MaskGLView.h"
-#import "ImageProcession.hpp"
-
 #import "FaceCamera.h"
 
+#import "FCMaskFilter.h"
 #import "FCShader.h"
 
+#import "FaceCameraCore.h"
 
-#import <QuartzCore/QuartzCore.h>
-#import <AVFoundation/AVUtilities.h>
-#import <mach/mach_time.h>
-#import <GLKit/GLKit.h>
+#import "ImageProcession.hpp"
 
 struct CameraUniformVariable {
     GLuint samplerRGBA;
@@ -63,6 +58,9 @@ GLfloat quadTextureData[] =  {
 
 @property (nonatomic, strong) FaceCamera *faceCamera;
 
+@property (nonatomic, strong) FCMaskFilter *filter;
+
+
 @end
 
 @implementation FaceCameraView
@@ -74,27 +72,28 @@ GLfloat quadTextureData[] =  {
     return [CAEAGLLayer class];
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-    if ((self = [super initWithFrame:frame]))
-    {
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
         self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
         self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
         [EAGLContext setCurrentContext:self.context];
-        
-        CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
-        eaglLayer.opaque = TRUE;
-        eaglLayer.drawableProperties = @{
-            kEAGLDrawablePropertyRetainedBacking: [NSNumber numberWithBool:NO],
-            kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8
-        };
 
         NSURL *vertShaderURL = [[NSBundle mainBundle] URLForResource:@"CameraRGBA" withExtension:@"vsh"];
         NSURL *fragShaderURL = [[NSBundle mainBundle] URLForResource:@"CameraRGBA" withExtension:@"fsh"];
-        self.shader = [[FCShader alloc] initWithVertexShaderURL:vertShaderURL fragmentShaderURL:fragShaderURL];
+        _shader = [[FCShader alloc] initWithVertexShaderURL:vertShaderURL fragmentShaderURL:fragShaderURL];
 
+        _filter = [[FCMaskFilter alloc] init];
+        
+        [self setupLayer];
         [self setupBuffers];
+        
+        NSError *error = nil;
+        NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
+        NSData *jsonData = [NSData dataWithContentsOfURL:path];
+        NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
+//        [_filter setupImage:[UIImage imageNamed:@"mouth"] landmarks:array];
     }
     return self;
 }
@@ -120,6 +119,15 @@ GLfloat quadTextureData[] =  {
 }
 
 #pragma mark - PRIVATE
+
+- (void)setupLayer {
+    CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+    eaglLayer.opaque = TRUE;
+    eaglLayer.drawableProperties = @{
+        kEAGLDrawablePropertyRetainedBacking: @(YES),
+        kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8
+    };
+}
 
 // Drawing table
 - (void)setupBuffers {
@@ -154,18 +162,30 @@ GLfloat quadTextureData[] =  {
 
 -(void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(frame);
+//
+//    cv::Mat image = fc::PixelBufferToCvMat(pixelBuffer);
+//    [faces enumerateObjectsUsingBlock:^(NSValue * _Nonnull value, NSUInteger idx, BOOL * _Nonnull stop) {
+//        CGRect rectValue = value.CGRectValue;
+//        cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
+//        auto landmarks = [[FaceCameraCore shared] getLandmarksWith:image rect:faceRect];
+//        [self->_filter updateLandmarks:landmarks];
+//    }];
     
-    [self displayPixelBuffer:pixelBuffer];
+    [self displayPixelBuffer:pixelBuffer runFilter:^{
+        if (faces.count > 0) {
+            [self->_filter draw];
+        }
+    }];
 }
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
-{
+- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer runFilter:(FilterBlock)runFilter {
     int frameWidth = (int)CVPixelBufferGetWidth(pixelBuffer);
     int frameHeight = (int)CVPixelBufferGetHeight(pixelBuffer);
 
     [EAGLContext setCurrentContext:self.context];
     CVOpenGLESTextureCacheFlush(self.cameraTextureCache, 0);
     
+    glClear(GL_COLOR_BUFFER_BIT);
     glActiveTexture(GL_TEXTURE0);
     CVOpenGLESTextureRef cameraTexture;
     CVReturn err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self.cameraTextureCache, pixelBuffer, NULL, GL_TEXTURE_2D, GL_RGBA, frameWidth, frameHeight, GL_BGRA, GL_UNSIGNED_BYTE, 0, &cameraTexture);
@@ -185,8 +205,7 @@ GLfloat quadTextureData[] =  {
     glViewport(0, 0, _renderBufferWidth, _renderBufferHeight);
     
     // Use shader program.
-    [self.shader use];
-    
+    [_shader use];
     CGRect bounds = [UIScreen mainScreen].bounds;
     CGRect insideRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), bounds);
     CGFloat heightScaling, widthScaling;
@@ -211,8 +230,9 @@ GLfloat quadTextureData[] =  {
     
     glBindRenderbuffer(GL_RENDERBUFFER, _colorBufferID);
     
-    [self.context presentRenderbuffer:GL_RENDERBUFFER];
+//    runFilter();
     
+    [self.context presentRenderbuffer:GL_RENDERBUFFER];
     CFRelease(cameraTexture);
 }
 
