@@ -27,7 +27,7 @@ struct CameraUniformVariable {
 
 enum CameraAttributes {
     CameraAttributesPosition = 0,
-    CameraAttributesTexCoord = 1,
+    CameraAttributesTextureCoordinate = 1,
 };
 
 GLfloat quadTextureData[] =  {
@@ -138,8 +138,8 @@ GLfloat quadTextureData[] =  {
     glEnableVertexAttribArray(CameraAttributesPosition);
     glVertexAttribPointer(CameraAttributesPosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
     
-    glEnableVertexAttribArray(CameraAttributesTexCoord);
-    glVertexAttribPointer(CameraAttributesTexCoord, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+    glEnableVertexAttribArray(CameraAttributesTextureCoordinate);
+    glVertexAttribPointer(CameraAttributesTextureCoordinate, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
     
     glGenFramebuffers(1, &_frameBufferID);
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferID);
@@ -200,8 +200,6 @@ GLfloat quadTextureData[] =  {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferID);
-    
-    // Set the view port to the entire view.
     glViewport(0, 0, _renderBufferWidth, _renderBufferHeight);
     
     // Use shader program.
@@ -223,8 +221,8 @@ GLfloat quadTextureData[] =  {
     glVertexAttribPointer(CameraAttributesPosition, 2, GL_FLOAT, 0, 0, _imageVertices);
     glEnableVertexAttribArray(CameraAttributesPosition);
     
-    glVertexAttribPointer(CameraAttributesTexCoord, 2, GL_FLOAT, 0, 0, quadTextureData);
-    glEnableVertexAttribArray(CameraAttributesTexCoord);
+    glVertexAttribPointer(CameraAttributesTextureCoordinate, 2, GL_FLOAT, 0, 0, quadTextureData);
+    glEnableVertexAttribArray(CameraAttributesTextureCoordinate);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
@@ -247,6 +245,7 @@ GLfloat quadTextureData[] =  {
     }
     return _faceCamera;
 }
+
 
 - (CVOpenGLESTextureCacheRef)cameraTextureCache {
     if (_cameraTextureCache == NULL) {
