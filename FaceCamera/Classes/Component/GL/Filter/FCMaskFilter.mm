@@ -261,28 +261,11 @@ const GLubyte DelaunayTriangles[] = {
     }];
     [self initReferenceMaskData];
     
-    glGenBuffers(1, &_vertexBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
-    
-    glGenBuffers(1, &_indexBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(DelaunayTriangles), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(DelaunayTriangles), DelaunayTriangles);
-    
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, position));
-    
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, uv));
-    
     CGImageRef cgImage = [image CGImage];
     GLKTextureInfo* textureInfo =[GLKTextureLoader textureWithCGImage:cgImage options:nil error:NULL];
     self.baseEffect.texture2d0.name = textureInfo.name;
     self.baseEffect.texture2d0.target = GLKTextureTarget2D;
 }
-
 
 - (void)updateLandmarks:(const std::vector<cv::Point_<double>> &)shape {
     for (int i = 0; i < shape.size(); i++) {
@@ -303,6 +286,27 @@ const GLubyte DelaunayTriangles[] = {
     _maskMap.curPoint45 = cv::Point_<double>(data3.position[0],data3.position[1]);
     
     [self calculateMaskRect];
+    
+    glGenBuffers(1, &_vertexBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
+    
+    glGenBuffers(1, &_indexBufferID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(DelaunayTriangles), NULL, GL_STATIC_DRAW);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(DelaunayTriangles), DelaunayTriangles);
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, position));
+    
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*) offsetof(VertexData, uv));
+    
+    glBufferData(GL_ARRAY_BUFFER, _sizeFaceShapeVertices, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _sizeFaceShapeVertices, _landmarkVertices);
+    glDrawElements(GL_TRIANGLES, sizeof(DelaunayTriangles) / sizeof(GLubyte), GL_UNSIGNED_BYTE, 0);
+    [self.baseEffect prepareToDraw];
 }
 
 
@@ -327,12 +331,12 @@ const GLubyte DelaunayTriangles[] = {
     float curDistOf36And45 = Distance(_maskMap.curPoint45, _maskMap.curPoint36);
     float curAngleOf36And45 = Angle(_maskMap.curPoint45, _maskMap.curPoint36);
     
-    float angleDif =  _previousAngleOf36and45 - curAngleOf36And45;
+    float angleDiff = _previousAngleOf36and45 - curAngleOf36And45;
     
     
     LandmarkInfo landmarkInfo;
     
-    landmarkInfo.angleChanged = angleDif;
+    landmarkInfo.angleChanged = angleDiff;
     landmarkInfo.curAngleOf36And45 = curAngleOf36And45;
     landmarkInfo.curDistOf36And45 = curDistOf36And45;
     

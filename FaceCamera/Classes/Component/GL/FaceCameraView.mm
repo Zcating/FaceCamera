@@ -87,13 +87,13 @@ GLfloat quadTextureData[] =  {
         _filter = [[FCMaskFilter alloc] init];
         
         [self setupLayer];
-        [self setupBuffers];
+//        [self setupBuffers];
         
         NSError *error = nil;
         NSURL *path = [[NSBundle mainBundle] URLForResource:@"mask" withExtension:@"json"];
         NSData *jsonData = [NSData dataWithContentsOfURL:path];
         NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
-//        [_filter setupImage:[UIImage imageNamed:@"mouth"] landmarks:array];
+        [_filter setupImage:[UIImage imageNamed:@"mouth"] landmarks:array];
     }
     return self;
 }
@@ -163,22 +163,25 @@ GLfloat quadTextureData[] =  {
 -(void)processframe:(CMSampleBufferRef)frame faces:(NSArray *)faces {
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(frame);
 //
-//    cv::Mat image = fc::PixelBufferToCvMat(pixelBuffer);
-//    [faces enumerateObjectsUsingBlock:^(NSValue * _Nonnull value, NSUInteger idx, BOOL * _Nonnull stop) {
-//        CGRect rectValue = value.CGRectValue;
-//        cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
-//        auto landmarks = [[FaceCameraCore shared] getLandmarksWith:image rect:faceRect];
-//        [self->_filter updateLandmarks:landmarks];
-//    }];
-    
-    [self displayPixelBuffer:pixelBuffer runFilter:^{
-        if (faces.count > 0) {
-            [self->_filter draw];
-        }
-    }];
+    cv::Mat image = fc::PixelBufferToCvMat(pixelBuffer);
+    CFRetain(frame);
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self displayPixelBuffer:pixelBuffer runFilter:^{
+            if (faces.count > 0) {
+                [faces enumerateObjectsUsingBlock:^(NSValue * _Nonnull value, NSUInteger idx, BOOL * _Nonnull stop) {
+                    CGRect rectValue = value.CGRectValue;
+                    cv::Rect faceRect(rectValue.origin.x, rectValue.origin.y, rectValue.size.width, rectValue.size.height);
+                    auto landmarks = [[FaceCameraCore shared] getLandmarksWith:image rect:faceRect];
+                    [self->_filter updateLandmarks:landmarks];
+                }];
+                [self->_filter draw];
+            }
+        }];
+    });
 }
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer runFilter:(FilterBlock)runFilter {
+    [self setupBuffers];
     int frameWidth = (int)CVPixelBufferGetWidth(pixelBuffer);
     int frameHeight = (int)CVPixelBufferGetHeight(pixelBuffer);
 
@@ -204,6 +207,7 @@ GLfloat quadTextureData[] =  {
     
     // Use shader program.
     [_shader use];
+    
     CGRect bounds = [UIScreen mainScreen].bounds;
     CGRect insideRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), bounds);
     CGFloat heightScaling, widthScaling;
